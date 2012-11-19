@@ -24,5 +24,6 @@
 - (IBAction)saveButtonAction:(id)sender;
 - (IBAction)defaultSettingsAction:(id)sender;
 - (IBAction)sensitivityValueChange:(id)sender;
+- (IBAction)cancelButtonAction:(id)sender;
 
 @end

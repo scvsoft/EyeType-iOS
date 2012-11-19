@@ -45,8 +45,8 @@
 }
 
 - (void)configureDefaultValues{
-    [[ETBlinkDetector sharedInstance] setAreaOK:cv::Rect(81,20,36,36)];
-    [[ETBlinkDetector sharedInstance] setAreaCancel:cv::Rect(131,20,36,36)];
+    areaOK = cv::Rect(81,20,36,36);
+    areaCancel = cv::Rect(131,20,36,36);
     
     delay = DEFAULT_DELAY;
     sensitivity = DEFAULT_SENSITIVITY;
@@ -147,8 +147,8 @@
 }
 
 - (bool)isAbleToSave{
-    int WOK = [[ETBlinkDetector sharedInstance] areaOK].width;
-    int WCA = [[ETBlinkDetector sharedInstance] areaCancel].width;
+    int WOK = areaOK.width;
+    int WCA = areaCancel.width;
     bool result = WOK > 0 &&  WCA > 0;
     return  result;
 }

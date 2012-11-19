@@ -113,6 +113,15 @@
     [self.model setSesitivity:self.sensitivitySlider.value];
 }
 
+- (IBAction)cancelButtonAction:(id)sender {
+    if ([self.model isAbleToSave]) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
 #pragma mark - VideoSourceDelegate
 
 - (void) frameCaptured:(cv::Mat) frame{
