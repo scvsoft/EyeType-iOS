@@ -12,18 +12,44 @@
 #define MINIMUM_SIZE cv::Size(12,12)
 #define MAXIMUM_SIZE cv::Size(36,36)
 
+#define DEFAULT_DELAY 3
+#define DEFAULT_SENSITIVITY 2
+
 @interface ETSettingsViewModel(){
     cv::Mat outputMat;
-    cv::Rect areaOK;
+    cv::Rect areaOK, areaCancel;
+
+    int delay, sensitivity;
 }
 
 @end
 
 @implementation ETSettingsViewModel
 
+- (id)init{
+    self = [super init];
+    if (self) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        delay = NSNotFound;
+        if ([defaults integerForKey:@"delay"]) {
+            delay = [defaults integerForKey:@"delay"];
+        }
+        
+        sensitivity = NSNotFound;
+        if([defaults integerForKey:@"sensitivity"]){
+            sensitivity = [defaults integerForKey:@"sensitivity"];
+        }
+    }
+    
+    return self;
+}
+
 - (void)configureDefaultValues{
     [[ETBlinkDetector sharedInstance] setAreaOK:cv::Rect(81,20,36,36)];
     [[ETBlinkDetector sharedInstance] setAreaCancel:cv::Rect(131,20,36,36)];
+    
+    delay = DEFAULT_DELAY;
+    sensitivity = DEFAULT_SENSITIVITY;
 }
 
 #pragma mark - opencv Methods
@@ -62,7 +88,6 @@
     }
     
     if (areaOK.width > 0) {
-        [[ETBlinkDetector sharedInstance] setAreaOK:areaOK];
         [self.delegate viewModel:self didConfigureArea:areaOK];
         cv::rectangle(outputMat, areaOK, cv::Scalar(0,0,255,255));
     }
@@ -72,7 +97,7 @@
 
 - (cv::Mat)identifyGestureCancel:(cv::Mat&)inputMat{
     //initialize area
-    cv::Rect areaCancel = cv::Rect(0,0,0,0);
+    areaCancel = cv::Rect(0,0,0,0);
     inputMat.copyTo(outputMat);
     
     //it is right because the image was flip
@@ -87,7 +112,6 @@
             areaCancel = objects[i];
         }
     }
-    
 
     if (areaCancel.width > 0) {
         cv::Point p1,p2,p3,p4,p5;
@@ -98,13 +122,45 @@
         p5 = cv::Point(areaOK.x + (areaOK.width/ 2),areaOK.y +  (areaOK.height/ 2));
         
         if(!areaCancel.contains(p1) && !areaCancel.contains(p2) && !areaCancel.contains(p3) && !areaCancel.contains(p4) && !areaCancel.contains(p5)){
-            [[ETBlinkDetector sharedInstance] setAreaCancel:areaCancel];
             [self.delegate viewModel:self didConfigureArea:areaCancel];
             cv::rectangle(outputMat, areaCancel, cv::Scalar(0,0,255,255));
         }
     }
     
     return outputMat;
+}
+
+- (int)delayTime{
+    return delay;
+}
+
+- (int)sensitivity{
+    return sensitivity;
+}
+
+- (void)setDelayTime:(float)value{
+    delay = (NSUInteger)(value + .5);
+}
+
+- (void)setSesitivity:(float)value{
+    sensitivity = (NSUInteger)(value + .5);
+}
+
+- (bool)isAbleToSave{
+    int WOK = [[ETBlinkDetector sharedInstance] areaOK].width;
+    int WCA = [[ETBlinkDetector sharedInstance] areaCancel].width;
+    bool result = WOK > 0 &&  WCA > 0;
+    return  result;
+}
+
+- (void)save{
+    [[ETBlinkDetector sharedInstance] setAreaCancel:areaCancel];
+    [[ETBlinkDetector sharedInstance] setAreaOK:areaOK];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setInteger:delay forKey:@"delay"];
+    [defaults setInteger:sensitivity forKey:@"sensitivity"];
+    [defaults synchronize];
 }
 
 @end

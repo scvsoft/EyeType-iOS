@@ -16,6 +16,14 @@
 - (void)configureDefaultValues;
 - (cv::Mat)identifyGestureOK:(cv::Mat&)inputMat;
 - (cv::Mat)identifyGestureCancel:(cv::Mat&)inputMat;
+
+- (int)delayTime;
+- (int)sensitivity;
+
+- (void)setDelayTime:(float)delay;
+- (void)setSesitivity:(float)value;
+- (void)save;
+- (bool)isAbleToSave;
 @end
 
 @protocol ETSettingsViewModelDelegate <NSObject>

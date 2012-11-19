@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21551BF7165A73E000A47EA5 /* ETBlinkDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */; };
 		216A5E331659B88E0008E6A3 /* ETSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21BC9C951659A3AF008BB2CA /* ETSettingsViewController.xib */; };
 		21BC9C991659A721008BB2CA /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21BC9C981659A721008BB2CA /* opencv2.framework */; };
 		21BC9C9B1659A747008BB2CA /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21BC9C9A1659A747008BB2CA /* CoreFoundation.framework */; };
@@ -34,7 +35,6 @@
 		21E6B85B1656E9110085A121 /* ETMainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B85A1656E9110085A121 /* ETMainViewController.mm */; };
 		21E6B86C1656EB170085A121 /* VideoSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B8691656EB170085A121 /* VideoSource.mm */; };
 		21E6B86D1656EB170085A121 /* GLESImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B86B1656EB170085A121 /* GLESImageView.mm */; };
-		21E6B87B1656EB2C0085A121 /* ETBlinkDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B86F1656EB2C0085A121 /* ETBlinkDetector.mm */; };
 		21E6B87C1656EB2C0085A121 /* ETVideoSourceViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B8711656EB2C0085A121 /* ETVideoSourceViewController.mm */; };
 		21E6B87D1656EB2C0085A121 /* ETVideoSourceViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B8731656EB2C0085A121 /* ETVideoSourceViewModel.mm */; };
 		21E6B87E1656EB2C0085A121 /* ETAlertViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B8751656EB2C0085A121 /* ETAlertViewController.mm */; };
@@ -52,6 +52,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETBlinkDetector.mm; sourceTree = "<group>"; };
 		21BC9C931659A3AF008BB2CA /* ETSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ETSettingsViewController.h; sourceTree = "<group>"; };
 		21BC9C941659A3AF008BB2CA /* ETSettingsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ETSettingsViewController.mm; sourceTree = "<group>"; };
 		21BC9C951659A3AF008BB2CA /* ETSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ETSettingsViewController.xib; sourceTree = "<group>"; };
@@ -90,7 +91,6 @@
 		21E6B86A1656EB170085A121 /* GLESImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLESImageView.h; sourceTree = "<group>"; };
 		21E6B86B1656EB170085A121 /* GLESImageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLESImageView.mm; sourceTree = "<group>"; };
 		21E6B86E1656EB2C0085A121 /* ETBlinkDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETBlinkDetector.h; sourceTree = "<group>"; };
-		21E6B86F1656EB2C0085A121 /* ETBlinkDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETBlinkDetector.mm; sourceTree = "<group>"; };
 		21E6B8701656EB2C0085A121 /* ETVideoSourceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETVideoSourceViewController.h; sourceTree = "<group>"; };
 		21E6B8711656EB2C0085A121 /* ETVideoSourceViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETVideoSourceViewController.mm; sourceTree = "<group>"; };
 		21E6B8721656EB2C0085A121 /* ETVideoSourceViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETVideoSourceViewModel.h; sourceTree = "<group>"; };
@@ -225,7 +225,7 @@
 				21E6B86A1656EB170085A121 /* GLESImageView.h */,
 				21E6B86B1656EB170085A121 /* GLESImageView.mm */,
 				21E6B86E1656EB2C0085A121 /* ETBlinkDetector.h */,
-				21E6B86F1656EB2C0085A121 /* ETBlinkDetector.mm */,
+				21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */,
 				21E6B8701656EB2C0085A121 /* ETVideoSourceViewController.h */,
 				21E6B8711656EB2C0085A121 /* ETVideoSourceViewController.mm */,
 				21E6B8721656EB2C0085A121 /* ETVideoSourceViewModel.h */,
@@ -346,7 +346,6 @@
 				21E6B85B1656E9110085A121 /* ETMainViewController.mm in Sources */,
 				21E6B86C1656EB170085A121 /* VideoSource.mm in Sources */,
 				21E6B86D1656EB170085A121 /* GLESImageView.mm in Sources */,
-				21E6B87B1656EB2C0085A121 /* ETBlinkDetector.mm in Sources */,
 				21E6B87C1656EB2C0085A121 /* ETVideoSourceViewController.mm in Sources */,
 				21E6B87D1656EB2C0085A121 /* ETVideoSourceViewModel.mm in Sources */,
 				21E6B87E1656EB2C0085A121 /* ETAlertViewController.mm in Sources */,
@@ -355,6 +354,7 @@
 				21BC9CB51659B1A8008BB2CA /* ETSettingsViewModel.mm in Sources */,
 				21BC9CB61659B1B0008BB2CA /* ETSettingsViewController.mm in Sources */,
 				21BC9CB71659B1B6008BB2CA /* ETMainViewModel.mm in Sources */,
+				21551BF7165A73E000A47EA5 /* ETBlinkDetector.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

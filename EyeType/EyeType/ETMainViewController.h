@@ -13,7 +13,7 @@
 #import "ETSettingsViewController.h"
 #import "ETAlertViewController.h"
 
-@interface ETMainViewController : ETVideoSourceViewController<ETMainViewModelDelegate, ETSettingsViewControllerDelegate, ETAlertDelegate>
+@interface ETMainViewController : ETVideoSourceViewController<ETMainViewModelDelegate, ETAlertDelegate>
 
 @property (strong, nonatomic) IBOutlet UILabel *charactersLabel;
 @property (strong, nonatomic) IBOutlet UIButton *okButton;

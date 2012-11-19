@@ -31,7 +31,6 @@ enum AlertActionCode{
     if (self) {
         self.model = [[ETMainViewModel alloc] initWithDelegate:self];
         self.settings = [[ETSettingsViewController alloc] init];
-        self.settings.delegate = self;
     }
     
     return self;
@@ -45,16 +44,6 @@ enum AlertActionCode{
 - (void) viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     [self stopDetect];
-}
-
-- (void)didReceiveMemoryWarning{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidLoad{
-    [super viewDidLoad];
-    self.titleLabel.text = @"Write a message";
 }
 
 - (void)viewDidUnload {
@@ -119,16 +108,12 @@ enum AlertActionCode{
         self.messageTextView.text = @"";
     } else if ([command isEqualToString:@"SEND BY EMAIL"]) {
         self.model.ableToDetect = NO;
-        
-        self.titleLabel.text = @"Write a subject";
         [self.model prepareEmail:self.messageTextView.text];
         self.messageTextView.text = @"";
     } else if ([command isEqualToString:@"SEND"]) {
-        self.titleLabel.text = @"Write a message";
         [self.model sendEmail];
         self.messageTextView.text = @"";
     } else if ([command isEqualToString:@"DONE"]) {
-        self.titleLabel.text = @"Chosse the recipies";
         [self.model subjectComplete:self.messageTextView.text];
         self.messageTextView.text = @"";
     } else if ([command isEqualToString:@"CANCEL EMAIL"]) {
@@ -157,11 +142,8 @@ enum AlertActionCode{
     self.cancelButton.selected = YES;
 }
 
-#pragma mark - ETSettingsViewControllerDelegate
-
-- (void)modal:(ETSettingsViewController*)controller didConfigureDelayTime:(float)delay{
-    self.model.delayTime = delay;
-    [self.settings dismissViewControllerAnimated:YES completion:nil];
+-(void)viewModel:(ETMainViewModel*)model didChangeTitle:(NSString *)title{
+    self.titleLabel.text = title;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
@@ -198,7 +180,7 @@ enum AlertActionCode{
     if (sender.actionCode == AlertActionCancelEmail) {
         [self.model cancelEmail];
         self.messageTextView.text = self.model.message;
-        self.titleLabel.text = @"Write a message";
+        self.titleLabel.text = @"";
         [self.model.selectedContacts removeAllObjects];
     }
     

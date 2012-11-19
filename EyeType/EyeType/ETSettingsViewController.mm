@@ -9,10 +9,6 @@
 #import "ETSettingsViewController.h"
 #import "GLESImageView.h"
 
-#define MAX_DELAY 10.
-#define MIN_DELAY 1.
-#define DEFAULT_DELAY 3.
-
 @interface ETSettingsViewController()
 @property (nonatomic, strong) GLESImageView *imageView;
 @property (nonatomic, strong) VideoSource * videoSource;
@@ -30,6 +26,7 @@
 @synthesize videoSource;
 @synthesize okActionSetting;
 @synthesize cancelActionSetting;
+@synthesize sensitivitySlider;
 
 - (id)init{
     self = [super init];
@@ -44,10 +41,15 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    self.delaySlider.minimumValue = MIN_DELAY;
-    self.delaySlider.maximumValue = MAX_DELAY;
-    self.delaySlider.value = DEFAULT_DELAY;
-    self.delayLabel.text = [NSString stringWithFormat:@"%.1f",self.delaySlider.value * .5];
+    if ([self.model delayTime] != NSNotFound) {
+        self.delaySlider.value = [self.model delayTime];
+        self.delayLabel.text = [NSString stringWithFormat:@"%.1f",self.delaySlider.value * .5];
+    }
+    
+    if ([self.model sensitivity] != NSNotFound) {
+        self.sensitivitySlider.value = [self.model sensitivity];
+    }
+    
     // Init the default view (video view layer)
     self.imageView = [[GLESImageView alloc] initWithFrame:self.configurationView.bounds];
     [self.imageView setAutoresizingMask:(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight)];
@@ -63,12 +65,13 @@
     [self setConfigurationView:nil];
     [self setOkButton:nil];
     [self setCancelButton:nil];
+    [self setSensitivitySlider:nil];
     [super viewDidUnload];
 }
 
 - (IBAction)sliderValueChange:(id)sender {
-    NSUInteger value = (NSUInteger)(self.delaySlider.value + .5);
-    self.delayLabel.text = [NSString stringWithFormat:@"%.1f",(float)value * .5];
+    [self.model setDelayTime:self.delaySlider.value];
+    self.delayLabel.text = [NSString stringWithFormat:@"%.1f",[self.model delayTime] * .5];
 }
 
 - (IBAction)OKButtonAction:(id)sender {
@@ -88,13 +91,26 @@
 }
 
 - (IBAction)saveButtonAction:(id)sender {
-    [self.delegate modal:self didConfigureDelayTime:[self.delayLabel.text floatValue]];
+    if ([self.model isAbleToSave]) {
+        [self.model save];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+
 }
 
 - (IBAction)defaultSettingsAction:(id)sender {
-    self.delaySlider.value = DEFAULT_DELAY;
-    self.delayLabel.text = [NSString stringWithFormat:@"%.1f",self.delaySlider.value * .5];
     [self.model configureDefaultValues];
+    self.delaySlider.value = [self.model delayTime];
+    self.delayLabel.text = [NSString stringWithFormat:@"%.1f",self.delaySlider.value * .5];
+    
+    self.sensitivitySlider.value = [self.model sensitivity];
+}
+
+- (IBAction)sensitivityValueChange:(id)sender {
+    [self.model setSesitivity:self.sensitivitySlider.value];
 }
 
 #pragma mark - VideoSourceDelegate

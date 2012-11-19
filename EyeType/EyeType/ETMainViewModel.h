@@ -38,9 +38,12 @@
 
 @protocol ETMainViewModelDelegate <NSObject>
 
+
 -(void)viewModel:(ETMainViewModel*)model didSelectCharacter:(NSString *)character;
 -(void)viewModel:(ETMainViewModel*)model didSelectCommand:(NSString *)command;
 -(void)viewModel:(ETMainViewModel*)model didSelectOption:(NSString *)option;
+
+-(void)viewModel:(ETMainViewModel*)model didChangeTitle:(NSString *)title;
 
 -(void)viewModelDidDetectCancelAction:(ETMainViewModel*)model;
 

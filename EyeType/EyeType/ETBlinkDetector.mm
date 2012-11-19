@@ -9,11 +9,14 @@
 #import "ETBlinkDetector.h"
 
 #define OPTIMUS_SIZE cv::Size(36,36)
+#define MAXIMUM_MOVEMENT 200
+#define DEFAULT_SESIVITY 90
 
 @interface ETBlinkDetector() {
     cv::Rect areaOK;
     cv::Rect areaCancel;
     cv::Mat previousImageOK, previousImageCancel, outputMat, processedImageOK, processedImageCancel;
+    int sensitivity;
 }
 
 - (cv::Rect)maximizeArea:(cv::Rect)area;
@@ -28,9 +31,14 @@
     if(self){
         areaOK = cv::Rect(0,0,0,0);
         areaCancel = cv::Rect(0,0,0,0);
+        sensitivity = DEFAULT_SESIVITY;
     }
     
     return self;
+}
+
+- (void)setSensivity:(int)value{
+    sensitivity = (5 - value) * 30;
 }
 
 + (id)sharedInstance
@@ -87,26 +95,24 @@
 
 - (bool)detectActionInMat:(cv::Mat)matROI{
     bool blink = NO;
-
-    std::vector<std::vector<cv::Point> > contours;
-    std::vector<cv::Vec4i> hierarchy;
-    
-    /// Find contours
-    cv::findContours( matROI, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-    
     int totalMovement = 0;
-    /// Get the moments
-    std::vector<cv::Moments> mu(contours.size() );
-    for( int i = 0; i < contours.size(); i++ )
-    {
-        mu[i] = moments( contours[i], false );
-        totalMovement += mu[i].m00;
+
+    int cols = matROI.cols;
+    int channels = matROI.channels();
+    uint8_t* pixelPtr = (uint8_t*)matROI.data;
+    for(int row=0; row<matROI.rows; row++){
+        for(int col=0; col<cols; col++){
+            int indexC3 = (row * cols * channels) + (col * channels);
+            totalMovement += pixelPtr[indexC3]; // G
+            totalMovement += pixelPtr[indexC3 + 1]; // B
+            totalMovement += pixelPtr[indexC3 + 2]; // R
+        }
     }
-    
-    if (totalMovement > 25) {
+
+    if (totalMovement > sensitivity & totalMovement < MAXIMUM_MOVEMENT) {
         blink = YES;
     }
-
+    
     return blink;
 }
 
@@ -122,12 +128,12 @@
     processedImageOK = cv::Mat(inputCopy, areaOK);
     cv::subtract(previousImageOK, processedImageOK, processedImageOK);
     cv::cvtColor(processedImageOK, processedImageOK, CV_BGRA2GRAY);
-    cv::threshold(processedImageOK, processedImageOK,40,255,cv::THRESH_BINARY);
+    cv::threshold(processedImageOK, processedImageOK,30,1,cv::THRESH_BINARY);
     
     processedImageCancel = cv::Mat(inputCopy, areaCancel);
     cv::subtract(previousImageCancel, processedImageCancel, processedImageCancel);
     cv::cvtColor(processedImageCancel, processedImageCancel, CV_BGRA2GRAY);
-    cv::threshold(processedImageCancel, processedImageCancel,40,255,cv::THRESH_BINARY);
+    cv::threshold(processedImageCancel, processedImageCancel,30,1,cv::THRESH_BINARY);
     
     inputImage.copyTo(inputCopy);
     previousImageOK = cv::Mat(inputCopy, areaOK);

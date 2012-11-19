@@ -47,7 +47,7 @@
     self = [super init];
     if (self) {
         self.delegate = Delegate;
-        [self loadDefaultLists];
+        [self loadDefaultValues];
         self.delayTime = 1.5;
         self.selectedContacts = [[NSMutableArray alloc] init];
     }
@@ -55,39 +55,42 @@
     return self;
 }
 
-- (void)loadDefaultLists{
+- (void)loadDefaultValues{
     self.optionSelected = NO;
     self.ableToDetect = NO;
     self.numbersList = [[NSMutableArray alloc] initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"0", nil];
     self.lettersList = [[NSMutableArray alloc] initWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
-    self.commandsList = [[NSMutableArray alloc] initWithObjects:@"BACKSPACE",@"SPACE",@"CLEAR",@"SEND BY EMAIL", nil];
+    self.commandsList = [[NSMutableArray alloc] initWithObjects:@"BACKSPACE",@"SPACE",@"CLEAR",@"SEND BY EMAIL",@"BACK", nil];
     self.characterList = [[NSMutableArray alloc] initWithObjects:self.lettersList,self.numbersList,self.commandsList, nil];
     self.optionsList = [[NSMutableArray alloc] initWithObjects:@"Letters",@"Numbers",@"Commands", nil];
     self.valueIndex = NSNotFound;
     self.optionIndex = NSNotFound;
+    [self.delegate viewModel:self didChangeTitle:@"Write a message"];
 }
 
-- (void)loadEmailContactsLists{
+- (void)loadEmailContactsValues{
     self.optionSelected = NO;
     self.ableToDetect = NO;
     [self loadContacts];
-    self.commandsList = [[NSMutableArray alloc] initWithObjects:@"DELETE LAST CONTACT",@"CLEAR",@"SEND",@"CANCEL EMAIL", nil];
+    self.commandsList = [[NSMutableArray alloc] initWithObjects:@"DELETE LAST CONTACT",@"CLEAR",@"SEND",@"CANCEL EMAIL","BACK", nil];
     self.characterList = [[NSMutableArray alloc] initWithObjects:self.contactsList, self.commandsList, nil];
-    self.optionsList = [[NSMutableArray alloc] initWithObjects:@"CONTACTS",@"COMMANDS", nil];
+    self.optionsList = [[NSMutableArray alloc] initWithObjects:@"CONTACTS",@"COMMANDS",@"BACK", nil];
     self.valueIndex = NSNotFound;
     self.optionIndex = NSNotFound;
+    [self.delegate viewModel:self didChangeTitle:@"Select recipies"];
 }
 
-- (void)loadEmailTitleLists{
+- (void)loadEmailTitleValues{
     self.optionSelected = NO;
     self.ableToDetect = NO;
     self.numbersList = [[NSMutableArray alloc] initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"0", nil];
     self.lettersList = [[NSMutableArray alloc] initWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
-    self.commandsList = [[NSMutableArray alloc] initWithObjects:@"BACKSPACE",@"SPACE",@"CLEAR",@"DONE",@"CANCEL EMAIL", nil];
+    self.commandsList = [[NSMutableArray alloc] initWithObjects:@"BACKSPACE",@"SPACE",@"CLEAR",@"DONE",@"CANCEL EMAIL",@"BACK", nil];
     self.characterList = [[NSMutableArray alloc] initWithObjects:self.lettersList,self.numbersList,self.commandsList, nil];
-    self.optionsList = [[NSMutableArray alloc] initWithObjects:@"Letters",@"Numbers",@"Commands", nil];
+    self.optionsList = [[NSMutableArray alloc] initWithObjects:@"Letters",@"Numbers",@"Commands",@"Back", nil];
     self.valueIndex = NSNotFound;
     self.optionIndex = NSNotFound;
+    [self.delegate viewModel:self didChangeTitle:@"Write a subject"];
 }
 
 -(void)activateDetection{
@@ -118,6 +121,10 @@
     }
 }
 
+- (void)back{
+    
+}
+
 - (bool)isAbleToStart{
     int WOK = [[ETBlinkDetector sharedInstance] areaOK].width;
     int WCA = [[ETBlinkDetector sharedInstance] areaCancel].width;
@@ -128,7 +135,7 @@
 - (void)executeOKAction{
     if(self.ableToDetect){
         self.ableToDetect = NO;
-        if (self.optionSelected) {
+        if (self.optionSelected && self.valueIndex != NSNotFound) {
             NSArray *list = [self.characterList objectAtIndex:optionIndex];
             NSString *value = [list objectAtIndex:self.valueIndex];
             
@@ -153,7 +160,7 @@
             self.optionSelected = NO;
             self.optionIndex = NSNotFound;
             
-        } else{
+        } else if(self.optionIndex != NSNotFound){
             NSString *option = [self.optionsList objectAtIndex:self.optionIndex];
             self.optionSelected = YES;
             [self.delegate viewModel:self didSelectOption:option];
@@ -197,18 +204,19 @@
 
 - (void)prepareEmail:(NSString *)Message{
     self.message = Message;
-    [self loadEmailTitleLists];
+    [self loadEmailTitleValues];
 }
 
 - (void)subjectComplete:(NSString *)Subject{
     self.subject = Subject;
     self.selectingContacts = YES;
-    [self loadEmailContactsLists];
+    [self loadEmailContactsValues];
+    [self.delegate viewModel:self didChangeTitle:@"Chosse the recipies"];
 }
 
 - (void)cancelEmail{
     self.selectingContacts = NO;
-    [self loadDefaultLists];
+    [self loadDefaultValues];
 }
 
 - (void)sendEmail{
@@ -219,6 +227,7 @@
     [mailComposeViewController setMessageBody:self.message isHTML:NO];
     
     [mailComposeViewController send];
+    [self.delegate viewModel:self didChangeTitle:@"Write a message"];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
