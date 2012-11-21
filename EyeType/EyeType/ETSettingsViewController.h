@@ -10,13 +10,17 @@
 #import "VideoSource.h"
 #import "ETSettingsViewModel.h"
 
-@interface ETSettingsViewController : UIViewController<VideoSourceDelegate, ETSettingsViewModelDelegate, UIAlertViewDelegate>
+@protocol ETSettingsViewControllerDelegate;
+
+@interface ETSettingsViewController : UIViewController<VideoSourceDelegate, ETSettingsViewModelDelegate, UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 @property (strong, nonatomic) IBOutlet UISlider *delaySlider;
 @property (strong, nonatomic) IBOutlet UITextField *delayLabel;
 @property (strong, nonatomic) IBOutlet UIView *configurationView;
 @property (strong, nonatomic) IBOutlet UIButton *okButton;
 @property (strong, nonatomic) IBOutlet UIButton *cancelButton;
+@property (strong, nonatomic) IBOutlet UIPickerView *colorPicker;
 @property (strong, nonatomic) IBOutlet UISlider *sensitivitySlider;
+@property (assign, nonatomic) id<ETSettingsViewControllerDelegate> delegate;
 
 - (IBAction)sliderValueChange:(id)sender;
 - (IBAction)OKButtonAction:(id)sender;
@@ -24,6 +28,12 @@
 - (IBAction)saveButtonAction:(id)sender;
 - (IBAction)defaultSettingsAction:(id)sender;
 - (IBAction)sensitivityValueChange:(id)sender;
-- (IBAction)cancelButtonAction:(id)sender;
+- (IBAction)exitButtonAction:(id)sender;
+
+@end
+
+@protocol ETSettingsViewControllerDelegate <NSObject>
+
+- (void)settings:(ETSettingsViewController *)control didSaveColor:(UIColor *)color delay:(float)delay;
 
 @end

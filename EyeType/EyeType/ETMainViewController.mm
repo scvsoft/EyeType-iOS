@@ -7,6 +7,7 @@
 //
 
 #import "ETMainViewController.h"
+#import "TTTAttributedLabel.h"
 
 @interface ETMainViewController ()
 
@@ -16,7 +17,8 @@
 @end
 
 enum AlertActionCode{
-    AlertActionCancelEmail = 0
+    AlertActionCancelEmail = 0,
+    AlertActionNotImplmented
 };
 
 @implementation ETMainViewController
@@ -25,12 +27,14 @@ enum AlertActionCode{
 @synthesize settings;
 @synthesize alert;
 @synthesize model;
+@synthesize previewContainer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.model = [[ETMainViewModel alloc] initWithDelegate:self];
         self.settings = [[ETSettingsViewController alloc] init];
+        self.settings.delegate = self;
     }
     
     return self;
@@ -52,6 +56,7 @@ enum AlertActionCode{
     [self setCancelButton:nil];
     [self setTitleLabel:nil];
     [self setMessageTextView:nil];
+    [self setPreviewContainer:nil];
     [super viewDidUnload];
 }
 
@@ -59,6 +64,48 @@ enum AlertActionCode{
     self.okButton.selected = NO;
     self.cancelButton.selected = NO;
     self.charactersLabel.text = [self.model nextValue];
+    self.charactersLabel.textColor = self.model.textColor;
+    [self loadPreview:self.charactersLabel.text];
+}
+
+- (void)loadPreview:(NSString *)currentValue{
+    NSString *preview = @"";
+    for (int i = 0; i < [self.model.currentValues count]; i++) {
+        preview = [preview stringByAppendingFormat:@" %@ ",[self.model.currentValues objectAtIndex:i]];
+    }
+    
+    TTTAttributedLabel *previewLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.previewContainer.frame.size.width, self.previewContainer.frame.size.height)];
+    previewLabel.font = [UIFont systemFontOfSize:30];
+    previewLabel.textColor = [UIColor blackColor];
+    previewLabel.numberOfLines = 3;
+    previewLabel.shadowColor = [UIColor colorWithWhite:0.87 alpha:1.0];
+    previewLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    previewLabel.textAlignment = UITextAlignmentCenter;
+    previewLabel.backgroundColor = [UIColor clearColor];
+    
+    [previewLabel setText:preview afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+        NSRange currentValueRange = [[mutableAttributedString string] rangeOfString:[NSString stringWithFormat:@" %@ ",currentValue] options:NSCaseInsensitiveSearch];
+        
+        // Core Text APIs use C functions without a direct bridge to UIFont. See Apple's "Core Text Programming Guide" to learn how to configure string attributes.
+        UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:40];
+        CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
+        if (font) {
+            [mutableAttributedString removeAttribute:(NSString *)kCTForegroundColorAttributeName range:currentValueRange];
+            [mutableAttributedString addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)[self.model.textColor CGColor] range:currentValueRange];
+            [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:currentValueRange];
+            CFRelease(font);
+        }
+        
+
+        
+        return mutableAttributedString;
+    }];
+    
+    for (UIView *view in [self.previewContainer subviews]) {
+        [view removeFromSuperview];
+    }
+    
+    [self.previewContainer addSubview:previewLabel];
 }
 
 - (void)startTimer{
@@ -131,6 +178,9 @@ enum AlertActionCode{
             
             [self.model.selectedContacts removeLastObject];
         }
+    }else if ([command isEqualToString:@"BACK"]) {
+        self.alert = [[ETAlertViewController alloc] initWithDelegate:self message:@"Not implemented yet" actionCode:AlertActionNotImplmented];
+        [self presentViewController:self.alert animated:YES completion:nil];
     }
 }
 
@@ -189,6 +239,11 @@ enum AlertActionCode{
 
 - (void)AlertViewControllerDidCancelActionExecute:(ETAlertViewController*)sender{
     [self.alert dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)settings:(ETSettingsViewController *)control didSaveColor:(UIColor *)color delay:(float)delay{
+    self.model.textColor = color;
+    self.model.delayTime = delay;
 }
 
 @end
