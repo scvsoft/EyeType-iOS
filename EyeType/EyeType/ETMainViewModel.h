@@ -23,6 +23,9 @@
 @property (strong,nonatomic) NSMutableArray* selectedContacts;
 @property (assign,nonatomic) bool selectingContacts;
 @property (assign,nonatomic) bool ableToDetect;
+@property (strong,nonatomic) UIColor *textColor;
+
+@property (strong,nonatomic) NSArray *currentValues;
 
 - (id)initWithDelegate:(id<ETMainViewModelDelegate>)delegate;
 - (NSString *)nextValue;

@@ -7,10 +7,11 @@
 //
 
 #import "ETBlinkDetector.h"
+#import "ETRect.h"
 
 #define OPTIMUS_SIZE cv::Size(36,36)
 #define MAXIMUM_MOVEMENT 200
-#define DEFAULT_SESIVITY 90
+#define DEFAULT_SENSITIVITY 90
 
 @interface ETBlinkDetector() {
     cv::Rect areaOK;
@@ -29,9 +30,26 @@
 - (id)init{
     self = [super init];
     if(self){
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
         areaOK = cv::Rect(0,0,0,0);
+        if([defaults objectForKey:@"areaOK"]){
+            NSData *areaOKData = [defaults objectForKey:@"areaOK"];
+            ETRect *aux = [NSKeyedUnarchiver unarchiveObjectWithData:areaOKData];
+            areaOK = [aux rect];
+        }
+        
         areaCancel = cv::Rect(0,0,0,0);
-        sensitivity = DEFAULT_SESIVITY;
+        if([defaults objectForKey:@"areaCancel"]){
+            NSData *areaCancelData = [defaults objectForKey:@"areaCancel"];
+            ETRect *aux = [NSKeyedUnarchiver unarchiveObjectWithData:areaCancelData];
+            areaCancel = [aux rect];
+        }
+        
+        sensitivity = DEFAULT_SENSITIVITY;
+        if([defaults integerForKey:@"sensitivity"]){
+            sensitivity = [defaults integerForKey:@"sensitivity"];
+        }
     }
     
     return self;
@@ -39,6 +57,10 @@
 
 - (void)setSensivity:(int)value{
     sensitivity = (5 - value) * 30;
+}
+
+- (int)sensitivity{
+    return sensitivity;
 }
 
 + (id)sharedInstance
