@@ -48,7 +48,7 @@
         
         sensitivity = DEFAULT_SENSITIVITY;
         if([defaults integerForKey:@"sensitivity"]){
-            sensitivity = [defaults integerForKey:@"sensitivity"];
+            [self setSensivity:[defaults integerForKey:@"sensitivity"]];
         }
     }
     
@@ -56,7 +56,7 @@
 }
 
 - (void)setSensivity:(int)value{
-    sensitivity = (5 - value) * 30;
+    sensitivity = (5 - value) * 25;
 }
 
 - (int)sensitivity{
@@ -124,16 +124,17 @@
     uint8_t* pixelPtr = (uint8_t*)matROI.data;
     for(int row=0; row<matROI.rows; row++){
         for(int col=0; col<cols; col++){
-            int indexC3 = (row * cols * channels) + (col * channels);
-            totalMovement += pixelPtr[indexC3]; // G
-            totalMovement += pixelPtr[indexC3 + 1]; // B
-            totalMovement += pixelPtr[indexC3 + 2]; // R
+            int indexC1 = (row * cols * channels) + (col * channels);
+            totalMovement += pixelPtr[indexC1]; // G
         }
     }
 
-    if (totalMovement > sensitivity & totalMovement < MAXIMUM_MOVEMENT) {
+    if (totalMovement > sensitivity && totalMovement < MAXIMUM_MOVEMENT) {
         blink = YES;
+        NSLog(@"%d Blink",totalMovement);
     }
+    
+    NSLog(@"%d",totalMovement);
     
     return blink;
 }
