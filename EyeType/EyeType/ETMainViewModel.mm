@@ -42,14 +42,26 @@
 @synthesize subject;
 @synthesize selectingContacts;
 @synthesize ableToDetect;
+@synthesize textColor;
+@synthesize currentValues;
 
 - (id)initWithDelegate:(id<ETMainViewModelDelegate>)Delegate{
     self = [super init];
     if (self) {
         self.delegate = Delegate;
         [self loadDefaultValues];
-        self.delayTime = 1.5;
-        self.selectedContacts = [[NSMutableArray alloc] init];
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        self.delayTime = 0;
+        if([defaults floatForKey:@"delay"]){
+            self.delayTime = [defaults floatForKey:@"delay"];
+        }
+        
+        self.textColor = [UIColor redColor];
+        if([defaults objectForKey:@"textColor"]){
+            NSData *colorData = [defaults objectForKey:@"textColor"];
+            self.textColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+        }
     }
     
     return self;
@@ -65,6 +77,7 @@
     self.optionsList = [[NSMutableArray alloc] initWithObjects:@"Letters",@"Numbers",@"Commands", nil];
     self.valueIndex = NSNotFound;
     self.optionIndex = NSNotFound;
+    self.selectedContacts = [[NSMutableArray alloc] init];
     [self.delegate viewModel:self didChangeTitle:@"Write a message"];
 }
 
@@ -107,6 +120,7 @@
             self.valueIndex++;
         
         NSString *value = [list objectAtIndex:self.valueIndex];
+        self.currentValues = [NSArray arrayWithArray:list];
         
         return value;
     } else{
@@ -116,6 +130,7 @@
             self.optionIndex++;
         
         NSString *option = [self.optionsList objectAtIndex:self.optionIndex];
+        self.currentValues = [NSArray arrayWithArray:self.optionsList];
         
         return option;
     }
@@ -191,11 +206,11 @@
     cv::rectangle(outputMat, [[ETBlinkDetector sharedInstance] areaOK], cv::Scalar(0,255,0,255));
     cv::rectangle(outputMat, [[ETBlinkDetector sharedInstance] areaCancel], cv::Scalar(0,0,255,255));
     
-    cv::Mat roi(outputMat, [[ETBlinkDetector sharedInstance] areaOK]);
-    cv::cvtColor([[ETBlinkDetector sharedInstance] matOK], roi, CV_GRAY2BGRA);
-
-    cv::Mat roi2(outputMat, [[ETBlinkDetector sharedInstance] areaCancel]);
-    cv::cvtColor([[ETBlinkDetector sharedInstance] matCancel], roi2, CV_GRAY2BGRA);
+//    cv::Mat roi(outputMat, [[ETBlinkDetector sharedInstance] areaOK]);
+//    cv::cvtColor([[ETBlinkDetector sharedInstance] matOK], roi, CV_GRAY2BGRA);
+//
+//    cv::Mat roi2(outputMat, [[ETBlinkDetector sharedInstance] areaCancel]);
+//    cv::cvtColor([[ETBlinkDetector sharedInstance] matCancel], roi2, CV_GRAY2BGRA);
     
     return outputMat;
 }

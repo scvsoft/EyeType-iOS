@@ -22,5 +22,7 @@
 - (cv::Mat)matOK;
 - (cv::Mat)matCancel;
 - (void)resetData;
+- (void)setSensivity:(int)value;
+- (int)sensitivity;
 
 @end

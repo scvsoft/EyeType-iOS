@@ -27,6 +27,8 @@
 @synthesize okActionSetting;
 @synthesize cancelActionSetting;
 @synthesize sensitivitySlider;
+@synthesize delegate;
+@synthesize colorPicker;
 
 - (id)init{
     self = [super init];
@@ -42,8 +44,8 @@
     [super viewDidLoad];
     
     if ([self.model delayTime] != NSNotFound) {
-        self.delaySlider.value = [self.model delayTime];
-        self.delayLabel.text = [NSString stringWithFormat:@"%.1f",self.delaySlider.value * .5];
+        self.delaySlider.value = [self.model delayTime] * 2;
+        self.delayLabel.text = [NSString stringWithFormat:@"%.1f",[self.model delayTime]];
     }
     
     if ([self.model sensitivity] != NSNotFound) {
@@ -59,6 +61,11 @@
     self.videoSource.delegate = self;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.colorPicker selectRow:[self.model selectedColorIndex] inComponent:0 animated:NO];
+}
+
 - (void)viewDidUnload {
     [self setDelaySlider:nil];
     [self setDelayLabel:nil];
@@ -66,12 +73,14 @@
     [self setOkButton:nil];
     [self setCancelButton:nil];
     [self setSensitivitySlider:nil];
+    [self setColorPicker:nil];
     [super viewDidUnload];
 }
 
 - (IBAction)sliderValueChange:(id)sender {
     [self.model setDelayTime:self.delaySlider.value];
-    self.delayLabel.text = [NSString stringWithFormat:@"%.1f",[self.model delayTime] * .5];
+    float aux = [self.model delayTime];
+    self.delayLabel.text = [NSString stringWithFormat:@"%.1f",aux];
 }
 
 - (IBAction)OKButtonAction:(id)sender {
@@ -93,12 +102,16 @@
 - (IBAction)saveButtonAction:(id)sender {
     if ([self.model isAbleToSave]) {
         [self.model save];
-        [self dismissViewControllerAnimated:YES completion:nil];
     } else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }
 
+}
+
+-(void)viewModelDidFinishSave{
+    [self.delegate settings:self didSaveColor:[self.model selectedColor] delay:[self.model delayTime]];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)defaultSettingsAction:(id)sender {
@@ -113,7 +126,7 @@
     [self.model setSesitivity:self.sensitivitySlider.value];
 }
 
-- (IBAction)cancelButtonAction:(id)sender {
+- (IBAction)exitButtonAction:(id)sender {
     if ([self.model isAbleToSave]) {
         [self dismissViewControllerAnimated:YES completion:nil];
     } else{
@@ -171,6 +184,24 @@
 }
 - (NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationLandscapeLeft;
+}
+
+// returns the number of 'columns' to display.
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    return 1;
+}
+
+// returns the # of rows in each component..
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    return [self.model colorsCount];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    return [self.model colorNameAtIndex:row];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+    [self.model selectColorAtIndex:row];
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import "ETSettingsViewModel.h"
 #import "ETBlinkDetector.h"
+#import "ETRect.h"
 
 #define MINIMUM_SIZE cv::Size(12,12)
 #define MAXIMUM_SIZE cv::Size(36,36)
@@ -18,38 +19,59 @@
 @interface ETSettingsViewModel(){
     cv::Mat outputMat;
     cv::Rect areaOK, areaCancel;
-
-    int delay, sensitivity;
+    int sensitivity;
+    float delay;
+    UIColor *selectedColor;
 }
 
+@property (nonatomic, strong) NSMutableDictionary *colors;
 @end
 
 @implementation ETSettingsViewModel
+@synthesize colors;
 
 - (id)init{
     self = [super init];
     if (self) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         delay = NSNotFound;
-        if ([defaults integerForKey:@"delay"]) {
-            delay = [defaults integerForKey:@"delay"];
+        if ([defaults floatForKey:@"delay"]) {
+            delay = [defaults floatForKey:@"delay"];
         }
         
-        sensitivity = NSNotFound;
-        if([defaults integerForKey:@"sensitivity"]){
-            sensitivity = [defaults integerForKey:@"sensitivity"];
+        selectedColor = [UIColor redColor];
+        if([defaults objectForKey:@"textColor"]){
+            NSData *colorData = [defaults objectForKey:@"textColor"];
+            selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
         }
+        
+        areaOK = [[ETBlinkDetector sharedInstance] areaOK];
+        areaCancel = [[ETBlinkDetector sharedInstance] areaCancel];
+        sensitivity = [[ETBlinkDetector sharedInstance] sensitivity];
+        
+        colors = [NSMutableDictionary dictionary];
+        [colors setObject:[UIColor whiteColor] forKey:@"White"];
+        [colors setObject:[UIColor blackColor] forKey:@"Black"];
+        [colors setObject:[UIColor redColor] forKey:@"Red"];
+        [colors setObject:[UIColor greenColor] forKey:@"Green"];
+        [colors setObject:[UIColor blueColor] forKey:@"Blue"];
+        [colors setObject:[UIColor grayColor] forKey:@"Gray"];
+        [colors setObject:[UIColor orangeColor] forKey:@"Orange"];
+        [colors setObject:[UIColor yellowColor] forKey:@"Yellow"];
+        [colors setObject:[UIColor purpleColor] forKey:@"Purple"];
     }
     
     return self;
 }
 
 - (void)configureDefaultValues{
-    areaOK = cv::Rect(81,20,36,36);
-    areaCancel = cv::Rect(131,20,36,36);
+    areaOK = cv::Rect(56,20,36,36);
+    areaCancel = cv::Rect(106,20,36,36);
     
     delay = DEFAULT_DELAY;
     sensitivity = DEFAULT_SENSITIVITY;
+    
+    selectedColor = [UIColor redColor];
 }
 
 #pragma mark - opencv Methods
@@ -130,7 +152,7 @@
     return outputMat;
 }
 
-- (int)delayTime{
+- (float)delayTime{
     return delay;
 }
 
@@ -139,7 +161,8 @@
 }
 
 - (void)setDelayTime:(float)value{
-    delay = (NSUInteger)(value + .5);
+    int aux = (NSUInteger)(value + .5);
+    delay = aux * .5;
 }
 
 - (void)setSesitivity:(float)value{
@@ -156,11 +179,56 @@
 - (void)save{
     [[ETBlinkDetector sharedInstance] setAreaCancel:areaCancel];
     [[ETBlinkDetector sharedInstance] setAreaOK:areaOK];
+    [[ETBlinkDetector sharedInstance] setSensivity:sensitivity];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setInteger:delay forKey:@"delay"];
+    [defaults setFloat:delay forKey:@"delay"];
     [defaults setInteger:sensitivity forKey:@"sensitivity"];
+    
+    NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:selectedColor];
+    [defaults setObject:colorData forKey:@"textColor"];
+    
+    ETRect *rectOK = [[ETRect alloc] initWithRect:areaOK];
+    NSData *myEncodedObject = [NSKeyedArchiver archivedDataWithRootObject:rectOK];
+    [defaults setObject:myEncodedObject forKey:@"areaOK"];
+    
+    ETRect *rectCancel = [[ETRect alloc] initWithRect:areaCancel];
+    NSData *myEncodedObject2 = [NSKeyedArchiver archivedDataWithRootObject:rectCancel];
+    [defaults setObject:myEncodedObject2 forKey:@"areaCancel"];
+    
     [defaults synchronize];
+    
+    [self.delegate viewModelDidFinishSave];
+}
+
+- (NSString *)colorNameAtIndex:(int)index{
+    NSString *key = [[colors allKeys] objectAtIndex:index];
+    return key;
+}
+
+- (void)selectColorAtIndex:(int)index{
+    NSString *key = [[colors allKeys] objectAtIndex:index];
+    UIColor *color = [colors objectForKey:key];
+    selectedColor = color;
+}
+
+- (int)selectedColorIndex{
+    for (int i = 0; i < [colors count]; i++) {
+        NSString *key = [[colors allKeys] objectAtIndex:i];
+        if ([selectedColor isEqual:[colors objectForKey:key]]) {
+            return i;
+        }
+    }
+    
+    return 0;
+}
+
+- (int)colorsCount{
+    return [colors count];
+}
+
+- (UIColor *)selectedColor{
+    return selectedColor;
 }
 
 @end

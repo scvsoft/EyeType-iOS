@@ -13,7 +13,7 @@
 #import "ETSettingsViewController.h"
 #import "ETAlertViewController.h"
 
-@interface ETMainViewController : ETVideoSourceViewController<ETMainViewModelDelegate, ETAlertDelegate>
+@interface ETMainViewController : ETVideoSourceViewController<ETMainViewModelDelegate, ETAlertDelegate, ETSettingsViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UILabel *charactersLabel;
 @property (strong, nonatomic) IBOutlet UIButton *okButton;
@@ -21,6 +21,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UITextView *messageTextView;
 @property (nonatomic, strong) ETMainViewModel *model;
+@property (strong, nonatomic) IBOutlet UIView *previewContainer;
 
 - (IBAction)configureButtonAction:(id)sender;
 - (IBAction)cancelButtonAction:(id)sender;
