@@ -8,8 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ETBlinkDetector : NSObject
+enum ETInputModelType{
+    ETInputModelTypeOneSource,
+    ETInputModelTypeTwoSources
+};
 
+@interface ETBlinkDetector : NSObject
+@property (nonatomic,assign) ETInputModelType inputType;
 + (id)sharedInstance;
 
 - (bool)detectActionInAreaOK;
@@ -22,7 +27,7 @@
 - (cv::Mat)matOK;
 - (cv::Mat)matCancel;
 - (void)resetData;
-- (void)setSensivity:(int)value;
+- (void)setSensitivity:(int)value;
 - (int)sensitivity;
 
 @end

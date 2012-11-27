@@ -13,6 +13,8 @@
 @interface ETSettingsViewModel : NSObject
 
 @property (nonatomic, assign) id<ETSettingsViewModelDelegate> delegate;
+@property (nonatomic, assign) ETInputModelType inputType;
+
 - (void)configureDefaultValues;
 - (cv::Mat)identifyGestureOK:(cv::Mat&)inputMat;
 - (cv::Mat)identifyGestureCancel:(cv::Mat&)inputMat;
@@ -29,6 +31,7 @@
 - (int)selectedColorIndex;
 - (int)colorsCount;
 - (UIColor *)selectedColor;
+- (void)setInputModel:(ETInputModelType)inputType;
 
 @end
 

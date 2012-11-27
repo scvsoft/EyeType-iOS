@@ -21,6 +21,7 @@
 @property (strong, nonatomic) IBOutlet UIPickerView *colorPicker;
 @property (strong, nonatomic) IBOutlet UISlider *sensitivitySlider;
 @property (assign, nonatomic) id<ETSettingsViewControllerDelegate> delegate;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *inputModelSelector;
 
 - (IBAction)sliderValueChange:(id)sender;
 - (IBAction)OKButtonAction:(id)sender;
@@ -29,6 +30,7 @@
 - (IBAction)defaultSettingsAction:(id)sender;
 - (IBAction)sensitivityValueChange:(id)sender;
 - (IBAction)exitButtonAction:(id)sender;
+- (IBAction)inputModelValueChange:(id)sender;
 
 @end
 

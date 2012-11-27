@@ -7,7 +7,6 @@
 //
 
 #import "ETSettingsViewModel.h"
-#import "ETBlinkDetector.h"
 #import "ETRect.h"
 
 #define MINIMUM_SIZE cv::Size(12,12)
@@ -29,6 +28,7 @@
 
 @implementation ETSettingsViewModel
 @synthesize colors;
+@synthesize inputType;
 
 - (id)init{
     self = [super init];
@@ -48,6 +48,7 @@
         areaOK = [[ETBlinkDetector sharedInstance] areaOK];
         areaCancel = [[ETBlinkDetector sharedInstance] areaCancel];
         sensitivity = [[ETBlinkDetector sharedInstance] sensitivity];
+        inputType = [[ETBlinkDetector sharedInstance] inputType];
         
         colors = [NSMutableDictionary dictionary];
         [colors setObject:[UIColor whiteColor] forKey:@"White"];
@@ -172,18 +173,21 @@
 - (bool)isAbleToSave{
     int WOK = areaOK.width;
     int WCA = areaCancel.width;
-    bool result = WOK > 0 &&  WCA > 0;
+    bool result = (WOK > 0 &&  WCA > 0) || (WOK > 0 && inputType == ETInputModelTypeOneSource);
     return  result;
 }
 
 - (void)save{
-    [[ETBlinkDetector sharedInstance] setAreaCancel:areaCancel];
-    [[ETBlinkDetector sharedInstance] setAreaOK:areaOK];
-    [[ETBlinkDetector sharedInstance] setSensivity:sensitivity];
+    ETBlinkDetector *bd = [ETBlinkDetector sharedInstance];
+    [bd setAreaCancel:areaCancel];
+    [bd setAreaOK:areaOK];
+    [bd setSensitivity:sensitivity];
+    bd.inputType = inputType;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setFloat:delay forKey:@"delay"];
     [defaults setInteger:sensitivity forKey:@"sensitivity"];
+    [defaults setInteger:inputType forKey:@"inputType"];
     
     NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:selectedColor];
     [defaults setObject:colorData forKey:@"textColor"];
@@ -231,4 +235,7 @@
     return selectedColor;
 }
 
+- (void)setInputModel:(ETInputModelType)inputModelType{
+    inputType = inputModelType;
+}
 @end

@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		21551BF7165A73E000A47EA5 /* ETBlinkDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */; };
+		21570573165E744000A83585 /* ETMovementDetectorDualArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21570572165E744000A83585 /* ETMovementDetectorDualArea.mm */; };
+		21570577165E745E00A83585 /* ETMovementDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21570576165E745E00A83585 /* ETMovementDetector.mm */; };
+		2157057A165E747E00A83585 /* ETMovementDetectorSingleArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21570579165E747E00A83585 /* ETMovementDetectorSingleArea.mm */; };
+		2157059A165FB9E300A83585 /* ETMenuValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 21570599165FB9E300A83585 /* ETMenuValue.m */; };
+		2157059E165FF9C800A83585 /* OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 2157059D165FF9C800A83585 /* OrderedDictionary.m */; };
 		216A5E331659B88E0008E6A3 /* ETSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21BC9C951659A3AF008BB2CA /* ETSettingsViewController.xib */; };
 		218E80A9165BDD3100F613CC /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 218E80A8165BDD3100F613CC /* CoreText.framework */; };
 		218E80AD165BDD7F00F613CC /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 218E80AC165BDD7F00F613CC /* TTTAttributedLabel.m */; };
@@ -56,6 +61,16 @@
 
 /* Begin PBXFileReference section */
 		21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETBlinkDetector.mm; sourceTree = "<group>"; };
+		21570571165E744000A83585 /* ETMovementDetectorDualArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETMovementDetectorDualArea.h; sourceTree = "<group>"; };
+		21570572165E744000A83585 /* ETMovementDetectorDualArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETMovementDetectorDualArea.mm; sourceTree = "<group>"; };
+		21570575165E745E00A83585 /* ETMovementDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETMovementDetector.h; sourceTree = "<group>"; };
+		21570576165E745E00A83585 /* ETMovementDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETMovementDetector.mm; sourceTree = "<group>"; };
+		21570578165E747E00A83585 /* ETMovementDetectorSingleArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETMovementDetectorSingleArea.h; sourceTree = "<group>"; };
+		21570579165E747E00A83585 /* ETMovementDetectorSingleArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETMovementDetectorSingleArea.mm; sourceTree = "<group>"; };
+		21570598165FB9E300A83585 /* ETMenuValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETMenuValue.h; sourceTree = "<group>"; };
+		21570599165FB9E300A83585 /* ETMenuValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETMenuValue.m; sourceTree = "<group>"; };
+		2157059C165FF9C800A83585 /* OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderedDictionary.h; sourceTree = "<group>"; };
+		2157059D165FF9C800A83585 /* OrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderedDictionary.m; sourceTree = "<group>"; };
 		218E80A8165BDD3100F613CC /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		218E80AB165BDD7F00F613CC /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		218E80AC165BDD7F00F613CC /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
@@ -149,6 +164,8 @@
 		218E80AE165BDDAB00F613CC /* external */ = {
 			isa = PBXGroup;
 			children = (
+				2157059C165FF9C800A83585 /* OrderedDictionary.h */,
+				2157059D165FF9C800A83585 /* OrderedDictionary.m */,
 				218E80AB165BDD7F00F613CC /* TTTAttributedLabel.h */,
 				218E80AC165BDD7F00F613CC /* TTTAttributedLabel.m */,
 				21E6B8681656EB170085A121 /* VideoSource.h */,
@@ -257,6 +274,14 @@
 				21E6B87A1656EB2C0085A121 /* ETEmailViewController.mm */,
 				218E80C1165D218E00F613CC /* ETRect.h */,
 				218E80C2165D218E00F613CC /* ETRect.mm */,
+				21570571165E744000A83585 /* ETMovementDetectorDualArea.h */,
+				21570572165E744000A83585 /* ETMovementDetectorDualArea.mm */,
+				21570575165E745E00A83585 /* ETMovementDetector.h */,
+				21570576165E745E00A83585 /* ETMovementDetector.mm */,
+				21570578165E747E00A83585 /* ETMovementDetectorSingleArea.h */,
+				21570579165E747E00A83585 /* ETMovementDetectorSingleArea.mm */,
+				21570598165FB9E300A83585 /* ETMenuValue.h */,
+				21570599165FB9E300A83585 /* ETMenuValue.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -379,6 +404,11 @@
 				21551BF7165A73E000A47EA5 /* ETBlinkDetector.mm in Sources */,
 				218E80AD165BDD7F00F613CC /* TTTAttributedLabel.m in Sources */,
 				218E80C3165D218E00F613CC /* ETRect.mm in Sources */,
+				21570573165E744000A83585 /* ETMovementDetectorDualArea.mm in Sources */,
+				21570577165E745E00A83585 /* ETMovementDetector.mm in Sources */,
+				2157057A165E747E00A83585 /* ETMovementDetectorSingleArea.mm in Sources */,
+				2157059A165FB9E300A83585 /* ETMenuValue.m in Sources */,
+				2157059E165FF9C800A83585 /* OrderedDictionary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,7 +483,8 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sebastian Borda (86X25987CU)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sebastian Borda (86X25987CU)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -463,7 +494,9 @@
 				INFOPLIST_FILE = "EyeType/EyeType-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "F5943614-D8B8-45DE-8EA6-69578882448B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F5943614-D8B8-45DE-8EA6-69578882448B";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -473,7 +506,8 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Sebastian Borda";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Sebastian Borda";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -483,7 +517,9 @@
 				INFOPLIST_FILE = "EyeType/EyeType-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "2E9D4DF5-D69F-48DF-B4C3-DA38CDAC9698";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2E9D4DF5-D69F-48DF-B4C3-DA38CDAC9698";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
