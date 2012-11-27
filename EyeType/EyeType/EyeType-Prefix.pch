@@ -11,6 +11,7 @@
 #ifdef __cplusplus
 #include <opencv2/opencv.hpp>
 #include <opencv2/nonfree/nonfree.hpp>
+#import "ETBlinkDetector.h"
 #endif
 
 #ifdef __OBJC__

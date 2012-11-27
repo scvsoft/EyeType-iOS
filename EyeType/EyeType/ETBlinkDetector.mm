@@ -11,7 +11,7 @@
 
 #define OPTIMUS_SIZE cv::Size(36,36)
 #define MAXIMUM_MOVEMENT 200
-#define DEFAULT_SENSITIVITY 90
+#define DEFAULT_SENSITIVITY 2
 
 @interface ETBlinkDetector() {
     cv::Rect areaOK;
@@ -26,6 +26,7 @@
 @end
 
 @implementation ETBlinkDetector
+@synthesize inputType;
 
 - (id)init{
     self = [super init];
@@ -46,21 +47,26 @@
             areaCancel = [aux rect];
         }
         
-        sensitivity = DEFAULT_SENSITIVITY;
+        [self setSensitivity:DEFAULT_SENSITIVITY];
         if([defaults integerForKey:@"sensitivity"]){
-            [self setSensivity:[defaults integerForKey:@"sensitivity"]];
+            [self setSensitivity:[defaults integerForKey:@"sensitivity"]];
+        }
+        
+        self.inputType = (ETInputModelType)0;
+        if([defaults integerForKey:@"inputType"]){
+            self.inputType = (ETInputModelType)[defaults integerForKey:@"inputType"];
         }
     }
     
     return self;
 }
 
-- (void)setSensivity:(int)value{
+- (void)setSensitivity:(int)value{
     sensitivity = (5 - value) * 25;
 }
 
 - (int)sensitivity{
-    return sensitivity;
+    return 5 - (sensitivity / 25);
 }
 
 + (id)sharedInstance
@@ -131,10 +137,7 @@
 
     if (totalMovement > sensitivity && totalMovement < MAXIMUM_MOVEMENT) {
         blink = YES;
-        NSLog(@"%d Blink",totalMovement);
     }
-    
-    NSLog(@"%d",totalMovement);
     
     return blink;
 }
@@ -162,6 +165,8 @@
     previousImageOK = cv::Mat(inputCopy, areaOK);
     previousImageCancel = cv::Mat(inputCopy, areaCancel);
 }
+
+
 
 - (void)resetData{
     previousImageOK = cv::Mat();

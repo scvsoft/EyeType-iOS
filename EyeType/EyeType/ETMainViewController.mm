@@ -135,11 +135,9 @@ enum AlertActionCode{
 
 -(void)viewModel:(ETMainViewModel*)model didSelectCharacter:(NSString *)character{
     self.okButton.selected = YES;
-    if(self.model.selectingContacts){
+    if([self.model.selectedContacts count] > 0){
         if ([self.messageTextView.text length] > 0)
             self.messageTextView.text = [self.messageTextView.text stringByAppendingString:@", "];
-        
-        [self.model.selectedContacts addObject:character];
     }
     
     self.messageTextView.text = [self.messageTextView.text stringByAppendingString:character];
@@ -179,8 +177,7 @@ enum AlertActionCode{
             [self.model.selectedContacts removeLastObject];
         }
     }else if ([command isEqualToString:@"BACK"]) {
-        self.alert = [[ETAlertViewController alloc] initWithDelegate:self message:@"Not implemented yet" actionCode:AlertActionNotImplmented];
-        [self presentViewController:self.alert animated:YES completion:nil];
+        [self.model back];
     }
 }
 
@@ -244,6 +241,7 @@ enum AlertActionCode{
 - (void)settings:(ETSettingsViewController *)control didSaveColor:(UIColor *)color delay:(float)delay{
     self.model.textColor = color;
     self.model.delayTime = delay;
+    [self.model configureMovementDetector];
 }
 
 @end
