@@ -7,7 +7,6 @@
 //
 
 #import "ETAlertViewModel.h"
-#import "ETBlinkDetector.h"
 
 @interface ETAlertViewModel()
 @property(nonatomic,strong) id<ETAlertViewModelDelegate> delegate;
@@ -33,14 +32,13 @@
     [self.delegate alertViewModelDidCancelActionExecute];
 }
 
-- (cv::Mat)detectAction:(cv::Mat)sourceMat {
-    [super detectAction:sourceMat];
-    cv::Mat outputMat;
-    sourceMat.copyTo(outputMat);
-    cv::rectangle(outputMat, [[ETBlinkDetector sharedInstance] areaOK], cv::Scalar(0,255,0,255));
-    cv::rectangle(outputMat, [[ETBlinkDetector sharedInstance] areaCancel], cv::Scalar(255,0,0,255));
+- (cv::Mat)movementDetector:(ETMovementDetector *)detector DidFinishWithMat:(cv::Mat)sourceMat{
+    cv::rectangle(sourceMat, [[ETBlinkDetector sharedInstance] areaOK], cv::Scalar(0,255,0,255));
+    if ([[ETBlinkDetector sharedInstance] inputType] == ETInputModelTypeTwoSources) {
+        cv::rectangle(sourceMat, [[ETBlinkDetector sharedInstance] areaCancel], cv::Scalar(0,0,255,255));
+    }
     
-    return outputMat;
+    return sourceMat;
 }
 
 @end

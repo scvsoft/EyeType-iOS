@@ -21,7 +21,6 @@
 @property (strong,nonatomic) NSString *message;
 @property (strong,nonatomic) NSString *subject;
 @property (strong,nonatomic) NSMutableArray* selectedContacts;
-@property (assign,nonatomic) bool selectingContacts;
 @property (assign,nonatomic) bool ableToDetect;
 @property (strong,nonatomic) UIColor *textColor;
 
@@ -36,6 +35,7 @@
 - (void)subjectComplete:(NSString *)Subject;
 - (void)cancelEmail;
 - (void)sendEmail;
+- (void)back;
 
 @end
 

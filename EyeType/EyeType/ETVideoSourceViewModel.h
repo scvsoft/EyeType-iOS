@@ -6,14 +6,17 @@
 //  Copyright (c) 2012 scvsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "ETMovementDetector.h"
+#import "ETMovementDetectorDualArea.h"
+#import "ETMovementDetectorSingleArea.h"
 
-@interface ETVideoSourceViewModel : NSObject
+@interface ETVideoSourceViewModel : NSObject<ETMovementDetectorDelegate>
+
+@property(nonatomic,strong) ETMovementDetector* movementDetector;
 
 - (cv::Mat)processFrame:(cv::Mat)frame;
-- (cv::Mat)detectAction:(cv::Mat)sourceMat;
-
 - (void)executeOKAction;
 - (void)executeCancelAction;
+- (void)configureMovementDetector;
 
 @end

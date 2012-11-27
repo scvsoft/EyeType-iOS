@@ -29,6 +29,7 @@
 @synthesize sensitivitySlider;
 @synthesize delegate;
 @synthesize colorPicker;
+@synthesize inputModelSelector;
 
 - (id)init{
     self = [super init];
@@ -64,6 +65,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.colorPicker selectRow:[self.model selectedColorIndex] inComponent:0 animated:NO];
+    self.inputModelSelector.selectedSegmentIndex = [self.model inputType];
 }
 
 - (void)viewDidUnload {
@@ -74,6 +76,8 @@
     [self setCancelButton:nil];
     [self setSensitivitySlider:nil];
     [self setColorPicker:nil];
+    [self setInputModelSelector:nil];
+    [self setInputModelSelector:nil];
     [super viewDidUnload];
 }
 
@@ -101,6 +105,7 @@
 
 - (IBAction)saveButtonAction:(id)sender {
     if ([self.model isAbleToSave]) {
+        [self.model setInputModel:(ETInputModelType)self.inputModelSelector.selectedSegmentIndex];
         [self.model save];
     } else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -133,6 +138,11 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }
+}
+
+- (IBAction)inputModelValueChange:(id)sender {
+    int index = ((UISegmentedControl *)sender).selectedSegmentIndex;
+    [self.model setInputModel:(ETInputModelType)index];
 }
 
 #pragma mark - VideoSourceDelegate
