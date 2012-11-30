@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 scvsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "VideoSource.h"
 #import "ETSettingsViewModel.h"
 
@@ -16,16 +15,13 @@
 @property (strong, nonatomic) IBOutlet UISlider *delaySlider;
 @property (strong, nonatomic) IBOutlet UITextField *delayLabel;
 @property (strong, nonatomic) IBOutlet UIView *configurationView;
-@property (strong, nonatomic) IBOutlet UIButton *okButton;
-@property (strong, nonatomic) IBOutlet UIButton *cancelButton;
 @property (strong, nonatomic) IBOutlet UIPickerView *colorPicker;
 @property (strong, nonatomic) IBOutlet UISlider *sensitivitySlider;
 @property (assign, nonatomic) id<ETSettingsViewControllerDelegate> delegate;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *inputModelSelector;
+@property (strong, nonatomic) IBOutlet UILabel *areaNameLabel;
 
 - (IBAction)sliderValueChange:(id)sender;
-- (IBAction)OKButtonAction:(id)sender;
-- (IBAction)cancelButtonAction:(id)sender;
 - (IBAction)saveButtonAction:(id)sender;
 - (IBAction)defaultSettingsAction:(id)sender;
 - (IBAction)sensitivityValueChange:(id)sender;

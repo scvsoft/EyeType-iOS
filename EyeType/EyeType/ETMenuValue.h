@@ -20,5 +20,7 @@
 - (NSString *)nextValue;
 - (void)reset;
 - (BOOL)returnOptions;
+- (NSArray *)availableValues;
+- (void)reStartValues;
 
 @end
