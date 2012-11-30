@@ -67,6 +67,13 @@
     return nil;
 }
 
+- (NSArray *)availableValues{
+    if (self.returnOptions) {
+        return [menu allKeys];
+    }else
+        return [self.menu objectForKey:selectedOption];
+}
+
 - (NSString *)nextValue{
     if(self.returnOptions){
         int index = [[self.menu allKeys] indexOfObject:selectedOption];
@@ -93,5 +100,8 @@
     return nil;
 }
 
+- (void)reStartValues{
+    currentValueIndex = NSNotFound;
+}
 
 @end
