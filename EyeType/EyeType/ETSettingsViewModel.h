@@ -7,17 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "ETAreaDetectionView.h"
 @protocol ETSettingsViewModelDelegate;
 
-@interface ETSettingsViewModel : NSObject
+@interface ETSettingsViewModel : NSObject<ETAreaDetectionViewDelegate>
 
 @property (nonatomic, assign) id<ETSettingsViewModelDelegate> delegate;
 @property (nonatomic, assign) ETInputModelType inputType;
+@property (nonatomic, assign) BOOL areaSelected;
 
 - (void)configureDefaultValues;
-- (cv::Mat)identifyGestureOK:(cv::Mat&)inputMat;
-- (cv::Mat)identifyGestureCancel:(cv::Mat&)inputMat;
 
 - (float)delayTime;
 - (int)sensitivity;
@@ -32,7 +31,11 @@
 - (int)colorsCount;
 - (UIColor *)selectedColor;
 - (void)setInputModel:(ETInputModelType)inputType;
-
+- (cv::Rect)areaOK;
+- (cv::Rect)areaCancel;
+- (NSString *)configuredAreaName;
+- (NSString *)configuringAreaName;
+- (void)removeConfiguredArea;
 @end
 
 @protocol ETSettingsViewModelDelegate <NSObject>

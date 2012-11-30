@@ -90,11 +90,11 @@
 }
 
 - (void)setAreaOK:(cv::Rect)area{
-    areaOK =  [self maximizeArea:area];
+    areaOK =  area;//[self maximizeArea:area];
 }
 
 - (void)setAreaCancel:(cv::Rect)area{
-    areaCancel = [self maximizeArea:area];
+    areaCancel = area;//[self maximizeArea:area];
 }
 
 - (cv::Rect)areaOK{
@@ -154,12 +154,12 @@
     processedImageOK = cv::Mat(inputCopy, areaOK);
     cv::subtract(previousImageOK, processedImageOK, processedImageOK);
     cv::cvtColor(processedImageOK, processedImageOK, CV_BGRA2GRAY);
-    cv::threshold(processedImageOK, processedImageOK,30,1,cv::THRESH_BINARY);
+    cv::threshold(processedImageOK, processedImageOK,20,1,cv::THRESH_BINARY);
     
     processedImageCancel = cv::Mat(inputCopy, areaCancel);
     cv::subtract(previousImageCancel, processedImageCancel, processedImageCancel);
     cv::cvtColor(processedImageCancel, processedImageCancel, CV_BGRA2GRAY);
-    cv::threshold(processedImageCancel, processedImageCancel,30,1,cv::THRESH_BINARY);
+    cv::threshold(processedImageCancel, processedImageCancel,20,1,cv::THRESH_BINARY);
     
     inputImage.copyTo(inputCopy);
     previousImageOK = cv::Mat(inputCopy, areaOK);

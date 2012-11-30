@@ -29,25 +29,25 @@
 - (id)initWithDelegate:(id<ETMainViewModelDelegate>)delegate;
 - (NSString *)nextValue;
 - (bool)isAbleToStart;
-- (void)prepareEmail:(NSString *)Message;
 - (void)executeOKAction;
 - (void)executeCancelAction;
-- (void)subjectComplete:(NSString *)Subject;
 - (void)cancelEmail;
 - (void)sendEmail;
 - (void)back;
+- (void)resetMenus;
 
 @end
 
 @protocol ETMainViewModelDelegate <NSObject>
 
 
--(void)viewModel:(ETMainViewModel*)model didSelectCharacter:(NSString *)character;
+-(void)viewModel:(ETMainViewModel*)model didSelectCharacter:(NSString *)message;
 -(void)viewModel:(ETMainViewModel*)model didSelectCommand:(NSString *)command;
 -(void)viewModel:(ETMainViewModel*)model didSelectOption:(NSString *)option;
 
 -(void)viewModel:(ETMainViewModel*)model didChangeTitle:(NSString *)title;
 
 -(void)viewModelDidDetectCancelAction:(ETMainViewModel*)model;
+-(void)viewModelWillCancelEmail;
 
 @end

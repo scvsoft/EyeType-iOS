@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2103601816650AFF00120E5F /* ETAreaDetectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2103601716650AFF00120E5F /* ETAreaDetectionView.mm */; };
 		21551BF7165A73E000A47EA5 /* ETBlinkDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */; };
 		21570573165E744000A83585 /* ETMovementDetectorDualArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21570572165E744000A83585 /* ETMovementDetectorDualArea.mm */; };
 		21570577165E745E00A83585 /* ETMovementDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21570576165E745E00A83585 /* ETMovementDetector.mm */; };
@@ -60,6 +61,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2103601616650AFF00120E5F /* ETAreaDetectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETAreaDetectionView.h; sourceTree = "<group>"; };
+		2103601716650AFF00120E5F /* ETAreaDetectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETAreaDetectionView.mm; sourceTree = "<group>"; };
 		21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETBlinkDetector.mm; sourceTree = "<group>"; };
 		21570571165E744000A83585 /* ETMovementDetectorDualArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETMovementDetectorDualArea.h; sourceTree = "<group>"; };
 		21570572165E744000A83585 /* ETMovementDetectorDualArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETMovementDetectorDualArea.mm; sourceTree = "<group>"; };
@@ -184,6 +187,8 @@
 				21BC9C951659A3AF008BB2CA /* ETSettingsViewController.xib */,
 				21BC9C961659A3AF008BB2CA /* ETSettingsViewModel.h */,
 				21BC9C971659A3AF008BB2CA /* ETSettingsViewModel.mm */,
+				2103601616650AFF00120E5F /* ETAreaDetectionView.h */,
+				2103601716650AFF00120E5F /* ETAreaDetectionView.mm */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -191,7 +196,6 @@
 		21E6B8321656E9110085A121 = {
 			isa = PBXGroup;
 			children = (
-				218E80A8165BDD3100F613CC /* CoreText.framework */,
 				21E6B8471656E9110085A121 /* EyeType */,
 				21E6B8401656E9110085A121 /* Frameworks */,
 				21E6B83E1656E9110085A121 /* Products */,
@@ -209,6 +213,7 @@
 		21E6B8401656E9110085A121 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				218E80A8165BDD3100F613CC /* CoreText.framework */,
 				21BC9CA21659A7BA008BB2CA /* AVFoundation.framework */,
 				21BC9CA31659A7BA008BB2CA /* CoreMedia.framework */,
 				21BC9CA41659A7BA008BB2CA /* CoreVideo.framework */,
@@ -409,6 +414,7 @@
 				2157057A165E747E00A83585 /* ETMovementDetectorSingleArea.mm in Sources */,
 				2157059A165FB9E300A83585 /* ETMenuValue.m in Sources */,
 				2157059E165FF9C800A83585 /* OrderedDictionary.m in Sources */,
+				2103601816650AFF00120E5F /* ETAreaDetectionView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,8 +500,8 @@
 				INFOPLIST_FILE = "EyeType/EyeType-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "F5943614-D8B8-45DE-8EA6-69578882448B";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F5943614-D8B8-45DE-8EA6-69578882448B";
+				PROVISIONING_PROFILE = "58DB942D-F924-4B53-A9D9-51CFDBAE223D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "58DB942D-F924-4B53-A9D9-51CFDBAE223D";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
