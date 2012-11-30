@@ -43,11 +43,19 @@ enum AlertActionCode{
 - (void) viewDidAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self startDetect];
+    [self disableApplicationAutoLock:YES];
 }
 
 - (void) viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     [self stopDetect];
+    [self disableApplicationAutoLock:NO];
+}
+
+//if disable is YES the application does not automatically suspend
+- (void)disableApplicationAutoLock:(BOOL)disable{
+    UIApplication *thisApp = [UIApplication sharedApplication];
+    thisApp.idleTimerDisabled = disable;
 }
 
 - (void)viewDidUnload {
@@ -161,6 +169,15 @@ enum AlertActionCode{
     self.titleLabel.text = title;
 }
 
+-(void)viewModelDidEnterInPause{
+    [self.timer invalidate];
+    [self nextValue];
+}
+
+-(void)viewModelDidLeavePause{
+    [self startTimer];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
     if (UIInterfaceOrientationLandscapeRight == toInterfaceOrientation) {
         return YES;
@@ -169,7 +186,7 @@ enum AlertActionCode{
 }
 
 - (BOOL)shouldAutorotate{
-    return YES;
+    return NO;
 }
 - (NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationLandscapeLeft;

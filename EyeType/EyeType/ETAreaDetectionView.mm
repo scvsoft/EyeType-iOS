@@ -98,7 +98,7 @@
         
         CGContextSetStrokeColorWithColor(context, [color CGColor]);
         CGContextSetLineCap(context, kCGLineCapRound);
-        CGContextSetLineWidth(context, 15);
+        CGContextSetLineWidth(context, 8);
         
         CGPoint point = [[self.points objectAtIndex:0] CGPointValue];
         CGContextMoveToPoint(context, point.x, point.y);

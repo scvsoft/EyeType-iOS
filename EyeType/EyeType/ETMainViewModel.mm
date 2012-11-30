@@ -9,6 +9,8 @@
 #import "ETMainViewModel.h"
 #import "ETMenuValue.h"
 
+#define INTERVAL_FOR_PAUSE 1.5
+
 @interface ETMainViewModel()
 
 @property (nonatomic,strong) NSMutableArray *contactsList;
@@ -16,6 +18,8 @@
 @property (strong,nonatomic) NSMutableArray *menus;
 @property (strong,nonatomic) ETMenuValue *currentMenu;
 @property (assign, nonatomic) BOOL writingSubject;
+@property (assign, nonatomic) BOOL paused;
+@property (assign, nonatomic) NSTimeInterval lastActionTime;
 - (void)mainMenuAction;
 - (void)emailSubjectMenuAction;
 - (void)contactsMenuAction;
@@ -35,6 +39,8 @@
 @synthesize currentValues;
 @synthesize menus;
 @synthesize currentMenu;
+@synthesize paused;
+@synthesize lastActionTime;
 
 - (id)initWithDelegate:(id<ETMainViewModelDelegate>)Delegate{
     self = [super init];
@@ -68,9 +74,14 @@
 
 - (NSString *)nextValue{
     [self performSelector:@selector(activateDetection) withObject:nil afterDelay:.3];
-    
-    NSString *value = [self.currentMenu nextValue];
-    self.currentValues = [self.currentMenu availableValues];
+    NSString *value = @"";
+    self.currentValues = [NSArray array];
+    if (!self.paused) {
+        value = [self.currentMenu nextValue];
+        self.currentValues = [self.currentMenu availableValues];
+    } else{
+        value = @"PAUSE, TO ACTIVE THE APPLICATION 2 BLINKS IN LESS THAN 1 SECOND";
+    }
     
     return value;
 }
@@ -87,22 +98,37 @@
 }
 
 - (void)executeOKAction{
-    if(self.ableToDetect){
-        self.ableToDetect = NO;
-        if(self.currentMenu.returnOptions){
-            NSString *option = [self.currentMenu currentValue];
-            [self executeMenuAction:option];
-            [self.delegate viewModel:self didSelectCommand:option];
-        }else{
-            if ([self respondsToSelector:self.currentMenu.menuActionSelector]) {
-                [self performSelector:self.currentMenu.menuActionSelector];
+    if (!paused) {
+        if(self.ableToDetect){
+            self.ableToDetect = NO;
+            if(self.currentMenu.returnOptions){
+                NSString *option = [self.currentMenu currentValue];
+                [self executeMenuAction:option];
+                [self.delegate viewModel:self didSelectCommand:option];
+            }else{
+                if ([self respondsToSelector:self.currentMenu.menuActionSelector]) {
+                    [self performSelector:self.currentMenu.menuActionSelector];
+                }
+                
+                [self.currentMenu reStartValues];
             }
-            
-            [self.currentMenu reStartValues];
         }
+    } else{
+        [self actionInPause];
     }
     
     [[ETBlinkDetector sharedInstance] resetData];
+}
+
+- (void)actionInPause{
+    NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+    NSTimeInterval interval = now - self.lastActionTime;
+    if (interval < INTERVAL_FOR_PAUSE) {
+        self.paused = NO;
+        [self.delegate viewModelDidLeavePause];
+    }
+    
+    self.lastActionTime = now;
 }
 
 - (void)executeMenuAction:(NSString*)action {
@@ -140,6 +166,9 @@
             [self prepareEmail];
             
             [self.delegate viewModel:self didSelectCharacter:self.subject];
+        } else if ([value isEqualToString:@"PAUSE"]) {
+            self.paused = YES;
+            [self.delegate viewModelDidEnterInPause];
         }
     }
 }
@@ -276,7 +305,7 @@
     mainMenu.menuActionSelector = @selector(mainMenuAction);
     [mainMenu.menu setObject:lettersList forKey:@"LETTERS"];
     [mainMenu.menu setObject:numbersList forKey:@"NUMBERS"];
-    [mainMenu.menu setObject:[[NSArray alloc] initWithObjects:@"SEND BY EMAIL",@"BACK", nil] forKey:@"COMMANDS"];
+    [mainMenu.menu setObject:[[NSArray alloc] initWithObjects:@"SEND BY EMAIL", @"PAUSE", @"BACK", nil] forKey:@"COMMANDS"];
     
     ETMenuValue *emailSubjectMenu = [[ETMenuValue alloc] init];
     emailSubjectMenu.title = @"Write a subject";

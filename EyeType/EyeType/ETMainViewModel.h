@@ -49,5 +49,7 @@
 
 -(void)viewModelDidDetectCancelAction:(ETMainViewModel*)model;
 -(void)viewModelWillCancelEmail;
+-(void)viewModelDidEnterInPause;
+-(void)viewModelDidLeavePause;
 
 @end
