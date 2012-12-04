@@ -43,11 +43,19 @@ enum AlertActionCode{
 - (void) viewDidAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self startDetect];
+    [self disableApplicationAutoLock:YES];
 }
 
 - (void) viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
     [self stopDetect];
+    [self disableApplicationAutoLock:NO];
+}
+
+//if disable is YES the application does not automatically suspend
+- (void)disableApplicationAutoLock:(BOOL)disable{
+    UIApplication *thisApp = [UIApplication sharedApplication];
+    thisApp.idleTimerDisabled = disable;
 }
 
 - (void)viewDidUnload {
@@ -60,6 +68,13 @@ enum AlertActionCode{
     [super viewDidUnload];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    if (UIInterfaceOrientationLandscapeRight == toInterfaceOrientation) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)nextValue{
     self.okButton.selected = NO;
     self.cancelButton.selected = NO;
@@ -69,48 +84,51 @@ enum AlertActionCode{
 }
 
 - (void)loadPreview:(NSString *)currentValue{
-    NSString *preview = @"";
-    for (int i = 0; i < [self.model.currentValues count]; i++) {
-        preview = [preview stringByAppendingFormat:@" %@ ",[self.model.currentValues objectAtIndex:i]];
-    }
-    
-    TTTAttributedLabel *previewLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.previewContainer.frame.size.width, self.previewContainer.frame.size.height)];
-    previewLabel.font = [UIFont systemFontOfSize:30];
-    previewLabel.textColor = [UIColor blackColor];
-    previewLabel.numberOfLines = 3;
-    previewLabel.shadowColor = [UIColor colorWithWhite:0.87 alpha:1.0];
-    previewLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-    previewLabel.textAlignment = UITextAlignmentCenter;
-    previewLabel.backgroundColor = [UIColor clearColor];
-    
-    [previewLabel setText:preview afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-        NSRange currentValueRange = [[mutableAttributedString string] rangeOfString:[NSString stringWithFormat:@" %@ ",currentValue] options:NSCaseInsensitiveSearch];
-        
-        // Core Text APIs use C functions without a direct bridge to UIFont. See Apple's "Core Text Programming Guide" to learn how to configure string attributes.
-        UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:40];
-        CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
-        if (font) {
-            [mutableAttributedString removeAttribute:(NSString *)kCTForegroundColorAttributeName range:currentValueRange];
-            [mutableAttributedString addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)[self.model.textColor CGColor] range:currentValueRange];
-            [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:currentValueRange];
-            CFRelease(font);
-        }
-        
-
-        
-        return mutableAttributedString;
-    }];
-    
     for (UIView *view in [self.previewContainer subviews]) {
         [view removeFromSuperview];
     }
     
-    [self.previewContainer addSubview:previewLabel];
+    if([self.model.currentValues count] > 1){
+        NSString *preview = @"";
+        for (int i = 0; i < [self.model.currentValues count]; i++) {
+            preview = [preview stringByAppendingFormat:@" %@ ",[self.model.currentValues objectAtIndex:i]];
+        }
+        
+        TTTAttributedLabel *previewLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.previewContainer.frame.size.width, self.previewContainer.frame.size.height)];
+        previewLabel.font = [UIFont systemFontOfSize:30];
+        previewLabel.textColor = [UIColor blackColor];
+        previewLabel.numberOfLines = 3;
+        previewLabel.shadowColor = [UIColor colorWithWhite:0.87 alpha:1.0];
+        previewLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+        previewLabel.textAlignment = UITextAlignmentCenter;
+        previewLabel.backgroundColor = [UIColor clearColor];
+        
+        [previewLabel setText:preview afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+            NSRange currentValueRange = [[mutableAttributedString string] rangeOfString:[NSString stringWithFormat:@" %@ ",currentValue] options:NSCaseInsensitiveSearch];
+            
+            // Core Text APIs use C functions without a direct bridge to UIFont. See Apple's "Core Text Programming Guide" to learn how to configure string attributes.
+            UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:40];
+            CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
+            if (font) {
+                [mutableAttributedString removeAttribute:(NSString *)kCTForegroundColorAttributeName range:currentValueRange];
+                [mutableAttributedString addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)[self.model.textColor CGColor] range:currentValueRange];
+                [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:currentValueRange];
+                CFRelease(font);
+            }
+            
+            
+            
+            return mutableAttributedString;
+        }];
+        [self.previewContainer addSubview:previewLabel];
+    }
 }
 
 - (void)startTimer{
-    float delay = self.model.delayTime;
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(nextValue) userInfo:nil repeats:YES];
+    if (![self.timer isValid]) {
+        float delay = self.model.delayTime;
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(nextValue) userInfo:nil repeats:YES];
+    }
 }
 
 - (IBAction)configureButtonAction:(id)sender {
@@ -132,6 +150,11 @@ enum AlertActionCode{
     }
 }
 
+- (void)resetTimer{
+    [self.timer invalidate];
+    [self performSelector:@selector(startTimer) withObject:nil afterDelay:.5];
+}
+
 #pragma mark - ETViewModelDelegate
 
 -(void)viewModel:(ETMainViewModel*)model didSelectCharacter:(NSString *)message{
@@ -139,8 +162,15 @@ enum AlertActionCode{
     self.messageTextView.text = message;
 }
 
--(void)viewModel:(ETMainViewModel*)model didSelectCommand:(NSString *)command{
-    self.okButton.selected = YES;
+-(void)viewModel:(ETMainViewModel*)model didChangeTitle:(NSString *)title{
+    self.titleLabel.text = title;
+}
+
+-(void)viewModelDidEnterInPause{
+}
+
+-(void)viewModelDidLeavePause{
+    [self resetTimer];
 }
 
 - (void)viewModelWillCancelEmail{
@@ -149,30 +179,14 @@ enum AlertActionCode{
     [self presentViewController:self.alert animated:YES completion:nil];
 }
 
--(void)viewModel:(ETMainViewModel*)model didSelectOption:(NSString *)option{
+-(void)viewModelDidDetectOKAction:(ETMainViewModel*)model{
     self.okButton.selected = YES;
+    [self resetTimer];
 }
 
 -(void)viewModelDidDetectCancelAction:(ETMainViewModel*)model{
     self.cancelButton.selected = YES;
-}
-
--(void)viewModel:(ETMainViewModel*)model didChangeTitle:(NSString *)title{
-    self.titleLabel.text = title;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
-    if (UIInterfaceOrientationLandscapeRight == toInterfaceOrientation) {
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)shouldAutorotate{
-    return YES;
-}
-- (NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationLandscapeLeft;
+    [self resetTimer];
 }
 
 - (IBAction)cancelButtonAction:(id)sender {

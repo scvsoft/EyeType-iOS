@@ -9,18 +9,17 @@
 #import "ETMainViewModel.h"
 #import "ETMenuValue.h"
 
+#define INTERVAL_FOR_PAUSE 1.5
+
 @interface ETMainViewModel()
 
 @property (nonatomic,strong) NSMutableArray *contactsList;
 @property (nonatomic,assign) int currentContactIndex;
-@property (strong,nonatomic) NSMutableArray *menus;
-@property (strong,nonatomic) ETMenuValue *currentMenu;
+@property (strong,nonatomic) NSMutableDictionary *menus;
+@property (strong,nonatomic) NSMutableArray *menuNavigation;
 @property (assign, nonatomic) BOOL writingSubject;
-- (void)mainMenuAction;
-- (void)emailSubjectMenuAction;
-- (void)contactsMenuAction;
-- (void)prepareEmail;
-- (void)subjectComplete;
+@property (assign, nonatomic) BOOL paused;
+@property (assign, nonatomic) NSTimeInterval lastActionTime;
 
 @end
 
@@ -34,7 +33,9 @@
 @synthesize textColor;
 @synthesize currentValues;
 @synthesize menus;
-@synthesize currentMenu;
+@synthesize menuNavigation;
+@synthesize paused;
+@synthesize lastActionTime;
 
 - (id)initWithDelegate:(id<ETMainViewModelDelegate>)Delegate{
     self = [super init];
@@ -68,15 +69,35 @@
 
 - (NSString *)nextValue{
     [self performSelector:@selector(activateDetection) withObject:nil afterDelay:.3];
-    
-    NSString *value = [self.currentMenu nextValue];
-    self.currentValues = [self.currentMenu availableValues];
+    NSString *value = @"";
+    self.currentValues = [NSArray array];
+    if (!self.paused) {
+        ETMenuValue *menu = [self currentMenu];
+        value = [menu nextValue];
+        self.currentValues = [menu availableValues];
+    } else{
+        value = @"2 BLINKS IN LESS THAN 1 SECOND TO ACTIVE THE APPLICATION";
+    }
     
     return value;
 }
 
+- (float)delayTime{
+    float delay = delayTime;
+    if ([[self currentMenu] returnOptions]) {
+        delay = MAX(delay, 1.);
+    }
+    
+    return delay;
+}
+
 - (void)back{
-    [self.currentMenu reset];
+    if([[self currentMenu] returnOptions] && [self.menuNavigation count] > 1){
+        [self.menuNavigation removeLastObject];
+        [self.delegate viewModel:self didChangeTitle:[self currentMenu].title];
+    }
+        
+    [[self currentMenu] reset];
 }
 
 - (bool)isAbleToStart{
@@ -86,83 +107,121 @@
     return  result;
 }
 
-- (void)executeOKAction{
-    if(self.ableToDetect){
-        self.ableToDetect = NO;
-        if(self.currentMenu.returnOptions){
-            NSString *option = [self.currentMenu currentValue];
-            [self executeMenuAction:option];
-            [self.delegate viewModel:self didSelectCommand:option];
-        }else{
-            if ([self respondsToSelector:self.currentMenu.menuActionSelector]) {
-                [self performSelector:self.currentMenu.menuActionSelector];
-            }
-            
-            [self.currentMenu reStartValues];
-        }
-    }
-    
-    [[ETBlinkDetector sharedInstance] resetData];
-}
-
-- (void)executeMenuAction:(NSString*)action {
-        id value = [self.currentMenu.menu objectForKey:action];
-        if ([value isKindOfClass:[ETMenuValue class]]) {
-            [self.currentMenu reset];
-            self.currentMenu = value;
-        } else if(value != nil){
-            [self.currentMenu selectCurrentOption];
-        }
+- (ETMenuValue *)currentMenu{
+    return [self.menuNavigation lastObject];
 }
 
 - (void)executeCancelAction{
     if(self.ableToDetect){
         self.ableToDetect = NO;
-        if(self.currentMenu.returnOptions){
-            [self executeMenuAction:@"BACK"];
-        }
-        
         [self back];
         [self.delegate viewModelDidDetectCancelAction:self];
     }
 }
 
+- (void)executeOKAction{
+    if (!paused) {
+        if(self.ableToDetect){
+            ETMenuValue *menu = [self currentMenu];
+            self.ableToDetect = NO;
+            NSString *option = [menu currentValue];
+            id value = [menu.menu objectForKey:option];
+            if ([value isKindOfClass:[NSString class]] || !menu.returnOptions)
+                [self performSelector:menu.menuActionSelector];
+            else
+                [menu selectCurrentOption];
+        }
+    } else
+        [self actionInPause];
+    
+    [self.delegate viewModelDidDetectOKAction:self];
+    [[ETBlinkDetector sharedInstance] resetData];
+}
+
+- (void)actionInPause{
+    NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+    NSTimeInterval interval = now - self.lastActionTime;
+    if (interval < INTERVAL_FOR_PAUSE) {
+        self.paused = NO;
+        [self.delegate viewModel:self didChangeTitle:[self currentMenu].title];
+        [self.delegate viewModelDidLeavePause];
+    }
+    
+    self.lastActionTime = now;
+}
+
 - (void)mainMenuAction{
     self.writingSubject = NO;
-    if ([[self.currentMenu selectedOption] isEqualToString:@"LETTERS"] || [[self.currentMenu selectedOption] isEqualToString:@"NUMBERS"]) {
-        [self writeMessageAction];
-    } else if([[self.currentMenu selectedOption] isEqualToString:@"COMMANDS"]){
-         NSString *value = [self.currentMenu currentValue];
-        if([value isEqualToString:@"BACK"]){
-            [self back];
-        } else if ([value isEqualToString:@"SEND BY EMAIL"]) {
-            self.ableToDetect = NO;
-            [self prepareEmail];
-            
-            [self.delegate viewModel:self didSelectCharacter:self.subject];
-        }
+    ETMenuValue *menu = [self currentMenu];
+    if ([[menu selectedOption] isEqualToString:@"SPELL"]) {
+        [self.delegate viewModel:self didChangeTitle:menu.title];
+        [self.menuNavigation addObject:[self.menus objectForKey:[menu selectedOption]]];
+    } else if ([[menu selectedOption] isEqualToString:@"CLEAR"]) {
+        [self writeMessageAction:[menu selectedOption]];
+    }else if([[menu selectedOption] isEqualToString:@"BACK"]){
+        [self back];
+    } else if ([[menu selectedOption] isEqualToString:@"SEND EMAIL"]) {
+        self.subject = @"";
+        [self.delegate viewModel:self didSelectCharacter:self.subject];
+        [self.delegate viewModel:self didChangeTitle:menu.title];
+        NSString *value = [menu.menu objectForKey:[menu selectedOption]];
+        [self.menuNavigation addObject:[self.menus objectForKey:value]];
+    } else if ([[menu selectedOption] isEqualToString:@"PAUSE"]) {
+        self.paused = YES;
+        [self.delegate viewModel:self didChangeTitle:@"PAUSE"];
+        [self.delegate viewModelDidEnterInPause];
     }
 }
 
-- (void)emailSubjectMenuAction{
+- (void)emailMenuAction{
     self.writingSubject = YES;
-    if ([[self.currentMenu selectedOption] isEqualToString:@"LETTERS"] || [[self.currentMenu selectedOption] isEqualToString:@"NUMBERS"]) {
-        [self writeMessageAction];
-    } else if([[self.currentMenu selectedOption] isEqualToString:@"COMMANDS"]){
-        NSString *value = [self.currentMenu currentValue];
-        if([value isEqualToString:@"BACK"]){
+    ETMenuValue *menu = [self currentMenu];
+    if([[menu selectedOption] isEqualToString:@"BACK"]){
+        [self back];
+    } else if ([[menu selectedOption] isEqualToString:@"SEND"]) {
+        [self sendEmail];
+    } else if ([[menu selectedOption] isEqualToString:@"CANCEL"]){
+        [self.delegate viewModelWillCancelEmail];
+    } else if([[menu selectedOption] isEqualToString:@"SELECT ADDRESS"]){
+        NSString *value = [menu currentValue];
+        if ([value isEqualToString:@"REMOVE"]) {
+            if ([self.selectedContacts count] > 0) {
+                [self.selectedContacts removeLastObject];
+                NSString *text = [self.selectedContacts componentsJoinedByString:@", "];
+                [self.delegate viewModel:self didSelectCharacter:text];
+                [[self currentMenu] reStartValues];
+            }
+        } else if([value isEqualToString:@"BACK"]){
             [self back];
-        } else if ([value isEqualToString:@"DONE"]) {
-            [self subjectComplete];
-            [self.delegate viewModel:self didSelectCharacter:@""];
-        } else if ([value isEqualToString:@"CANCEL EMAIL"]){
-            [self.delegate viewModelWillCancelEmail];
+        }else if([value length] > 0){
+            [self.selectedContacts addObject:value];
+            NSString *text = [self.selectedContacts componentsJoinedByString:@", "];
+            [self.delegate viewModel:self didSelectCharacter:text];
+            [[self currentMenu] reStartValues];
         }
+
+    } else if ([[menu selectedOption] isEqualToString:@"SUBJECT"]){
+        NSString *value = [menu.menu objectForKey:[menu selectedOption]];
+        [self.delegate viewModel:self didChangeTitle:menu.title];
+        [self.menuNavigation addObject:[self.menus objectForKey:value]];
     }
 }
 
-- (void)writeMessageAction{
-    NSString *value = [self.currentMenu currentValue];
+- (void)spellMenuAction{
+    ETMenuValue *menu = [self currentMenu];
+    NSString *value = [menu currentValue];
+    if ([[menu selectedOption] isEqualToString:@"LETTERS"] || [[menu selectedOption] isEqualToString:@"NUMBERS"]) {
+        [self writeMessageAction:value];
+    } else if([[menu selectedOption] isEqualToString:@"BACK"]){
+        [self back];
+    } else if ([[menu selectedOption] isEqualToString:@"SPACE"]) {
+        [self writeMessageAction:value];
+    } else if ([[menu selectedOption] isEqualToString:@"BACKSPACE"]){
+        [self writeMessageAction:value];
+    }
+}
+
+- (void)writeMessageAction:(NSString*)value{
     NSString *text = @"";
     if (self.writingSubject) {
         text = self.subject ;
@@ -174,7 +233,7 @@
     }else if([value isEqualToString:@"BACK"]){
         [self back];
         return;
-    }else if ([value isEqualToString:@"DELETE"] && [text length] > 0) {
+    }else if ([value isEqualToString:@"BACKSPACE"] && [text length] > 0) {
         text = [text substringToIndex:[text length] - 1];
     }else if ([value isEqualToString:@"CLEAR"]) {
         text = @"";
@@ -189,30 +248,7 @@
     }
     
     [self.delegate viewModel:self didSelectCharacter:text];
-}
-
-- (void)contactsMenuAction{
-     NSString *value = [self.currentMenu currentValue];
-    if ([[self.currentMenu selectedOption] isEqualToString:@"CONTACTS"]) {
-        if ([value isEqualToString:@"REMOVE"]) {
-            if ([self.selectedContacts count] > 0) {
-                [self.selectedContacts removeLastObject];
-                NSString *text = [self.selectedContacts componentsJoinedByString:@", "];
-                [self.delegate viewModel:self didSelectCharacter:text];
-            }
-        } else if([value isEqualToString:@"CLEAR"]){
-            [self.selectedContacts removeAllObjects];
-            [self.delegate viewModel:self didSelectCharacter:@""];
-        }else{
-            [self.selectedContacts addObject:value];
-            NSString *text = [self.selectedContacts componentsJoinedByString:@", "];
-            [self.delegate viewModel:self didSelectCharacter:text];
-        }
-    } else if([[self.currentMenu selectedOption] isEqualToString:@"SEND"]){
-            [self sendEmail];
-    } else if([[self.currentMenu selectedOption] isEqualToString:@"CANCEL EMAIL"]){
-        [self.delegate viewModelWillCancelEmail];
-    }
+    [[self currentMenu] reStartValues];
 }
 
 - (BOOL)movementDetectorWillStart{
@@ -229,21 +265,6 @@
 
 #pragma mark - Email Methods
 
-- (void)prepareEmail{
-    [self.currentMenu reset];
-    self.subject = @"";
-    
-    //write email subject
-    self.currentMenu = [self.menus objectAtIndex:1];
-}
-
-- (void)subjectComplete{
-    [self.currentMenu reset];
-    
-    //write email reciepes
-    self.currentMenu = [self.menus objectAtIndex:2];
-    [self.delegate viewModel:self didChangeTitle:self.currentMenu.title];
-}
 
 - (void)cancelEmail{
     [self resetMenus];
@@ -267,43 +288,52 @@
 }
 
 - (void)resetMenus{
-    NSArray *numbersList = [[NSArray alloc] initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"0",@"DELETE",@"CLEAR",@"BACK", nil];
-    NSArray *lettersList = [[NSArray alloc] initWithObjects:@"E",@"T",@"A",@"O",@"I",@"N",@"S",@"R",@"H",@"L",@"D",@"C",@"U",@"M",@"F",@"P",@"G",@"W",@"Y",@"B",@"V",@"K",@"X",@"J",@"Q",@"Z",@"SPACE",@"DELETE",@"CLEAR",@"BACK", nil];
+    NSString *back = [[ETBlinkDetector sharedInstance] inputType] == ETInputModelTypeOneSource ? @"BACK":nil;
+    NSMutableArray *numbersList = [[NSMutableArray alloc] initWithObjects:@"",@"BACKSPACE",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"0", nil];
+    NSMutableArray *lettersList = [[NSMutableArray alloc] initWithObjects:@"",@"BACKSPACE",@"E",@"T",@"A",@"O",@"I",@"N",@"S",@"R",@"H",@"L",@"D",@"C",@"U",@"M",@"F",@"P",@"G",@"W",@"Y",@"B",@"V",@"K",@"X",@"J",@"Q",@"Z", nil];
     
-    self.menus = [[NSMutableArray alloc] init];
-    ETMenuValue *mainMenu = [[ETMenuValue alloc] init];
-    mainMenu.title = @"Write a message";
-    mainMenu.menuActionSelector = @selector(mainMenuAction);
-    [mainMenu.menu setObject:lettersList forKey:@"LETTERS"];
-    [mainMenu.menu setObject:numbersList forKey:@"NUMBERS"];
-    [mainMenu.menu setObject:[[NSArray alloc] initWithObjects:@"SEND BY EMAIL",@"BACK", nil] forKey:@"COMMANDS"];
+    if (back != nil) {
+        [numbersList insertObject:back atIndex:1];
+        [lettersList insertObject:back atIndex:1];
+    }
     
-    ETMenuValue *emailSubjectMenu = [[ETMenuValue alloc] init];
-    emailSubjectMenu.title = @"Write a subject";
-    emailSubjectMenu.menuActionSelector = @selector(emailSubjectMenuAction);
-    [emailSubjectMenu.menu setObject:lettersList forKey:@"LETTERS"];
-    [emailSubjectMenu.menu setObject:numbersList forKey:@"NUMBERS"];
-    [emailSubjectMenu.menu setObject:[[NSArray alloc] initWithObjects:@"DONE",@"CANCEL EMAIL",@"BACK", nil] forKey:@"COMMANDS"];
-    [emailSubjectMenu.menu setObject:mainMenu forKey:@"BACK"];
+    self.menus = [[NSMutableDictionary alloc] init];
+    ETMenuValue *spellMenu = [[ETMenuValue alloc] init];
+    spellMenu.title = @"Write a message";
+    spellMenu.menuActionSelector = @selector(spellMenuAction);
+    [spellMenu.menu setObject:lettersList forKey:@"LETTERS"];
+    [spellMenu.menu setObject:numbersList forKey:@"NUMBERS"];
+    [spellMenu.menu setObject:@"SPACE" forKey:@"SPACE"];
+    [spellMenu.menu setObject:@"BACKSPACE" forKey:@"BACKSPACE"];
+    [spellMenu.menu setObject:back forKey:back];
     
     self.selectedContacts = [[NSMutableArray alloc] init];
     [self loadContacts];
     
-    ETMenuValue *emailContactsMenu = [[ETMenuValue alloc] init];
-    emailContactsMenu.title = @"Chosse the recipies";
-    emailContactsMenu.menuActionSelector = @selector(contactsMenuAction);
-    [emailContactsMenu.menu setObject:self.contactsList forKey:@"CONTACTS"];
-    [emailContactsMenu.menu setObject:@"SEND" forKey:@"SEND"];
-    [emailContactsMenu.menu setObject:emailSubjectMenu forKey:@"BACK"];
-    [emailContactsMenu.menu setObject:@"CANCEL EMAIL" forKey:@"CANCEL EMAIL"];
+    ETMenuValue *emailMenu = [[ETMenuValue alloc] init];
+    emailMenu.title = @"Write a email";
+    emailMenu.menuActionSelector = @selector(emailMenuAction);
+    [emailMenu.menu setObject:@"SPELL" forKey:@"SUBJECT"];
+    [emailMenu.menu setObject:self.contactsList forKey:@"SELECT ADDRESS"];
+    [emailMenu.menu setObject:@"SEND" forKey:@"SEND"];
+    [emailMenu.menu setObject:@"CANCEL" forKey:@"CANCEL"];
+    [emailMenu.menu setObject:back forKey:back];
     
+    ETMenuValue *mainMenu = [[ETMenuValue alloc] init];
+    mainMenu.title = @"Main Menu";
+    mainMenu.menuActionSelector = @selector(mainMenuAction);
+    [mainMenu.menu setObject:@"SPELL" forKey:@"SPELL"];
+    [mainMenu.menu setObject:@"EMAIL" forKey:@"SEND EMAIL"];
+    [mainMenu.menu setObject:@"CLEAR" forKey:@"CLEAR"];
+    [mainMenu.menu setObject:@"PAUSE" forKey:@"PAUSE"];
     
-    [self.menus addObject:mainMenu];
-    [self.menus addObject:emailSubjectMenu];
-    [self.menus addObject:emailContactsMenu];
+    [self.menus setObject:mainMenu forKey:@"MAIN"];
+    [self.menus setObject:spellMenu forKey:@"SPELL"];
+    [self.menus setObject:emailMenu forKey:@"EMAIL"];
     
-    self.currentMenu = [self.menus objectAtIndex:0];
-    [self.delegate viewModel:self didChangeTitle:self.currentMenu.title];
+    self.menuNavigation = [NSMutableArray array];
+    [self.menuNavigation addObject:mainMenu];
+    [self.delegate viewModel:self didChangeTitle:mainMenu.title];
 }
 
 - (void)loadContacts{
@@ -326,8 +356,10 @@
 	}
     CFRelease(allPeople);
     self.contactsList = nameMapping;
-    [self.contactsList addObject:@"REMOVE"];//added option to remove a selected contact
-    [self.contactsList addObject:@"CLEAR"];//added option to remove all the selected contacts
+    [self.contactsList insertObject:@"" atIndex:0];//added option to remove all the selected contacts
+    [self.contactsList insertObject:@"BACK" atIndex:1];//added option to back previous menu
+    [self.contactsList insertObject:@"REMOVE" atIndex:2];//added option to remove a selected contact
+    
 }
 
 @end

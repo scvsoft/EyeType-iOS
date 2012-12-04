@@ -21,7 +21,8 @@
     } else {
         self.viewController = [[ETMainViewController alloc] initWithNibName:@"ETMainViewController_iPad" bundle:nil];
     }
-    self.window.rootViewController = self.viewController;
+
+    [self.window setRootViewController:self.viewController];
     [self.window makeKeyAndVisible];
     return YES;
 }

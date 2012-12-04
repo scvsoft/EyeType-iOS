@@ -68,13 +68,14 @@ NSString *DescriptionForObject(NSObject *object, id locale, NSUInteger indent)
 	return [self mutableCopy];
 }
 
-- (void)setObject:(id)anObject forKey:(id)aKey
-{
-	if (![dictionary objectForKey:aKey])
-	{
-		[array addObject:aKey];
-	}
-	[dictionary setObject:anObject forKey:aKey];
+- (void)setObject:(id)anObject forKey:(id)aKey{
+    if (aKey != nil) {
+        if (![dictionary objectForKey:aKey])
+        {
+            [array addObject:aKey];
+        }
+        [dictionary setObject:anObject forKey:aKey];
+    }
 }
 
 - (void)removeObjectForKey:(id)aKey
