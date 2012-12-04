@@ -42,12 +42,12 @@
 
 
 -(void)viewModel:(ETMainViewModel*)model didSelectCharacter:(NSString *)message;
--(void)viewModel:(ETMainViewModel*)model didSelectCommand:(NSString *)command;
--(void)viewModel:(ETMainViewModel*)model didSelectOption:(NSString *)option;
-
 -(void)viewModel:(ETMainViewModel*)model didChangeTitle:(NSString *)title;
 
+-(void)viewModelDidDetectOKAction:(ETMainViewModel*)model;
 -(void)viewModelDidDetectCancelAction:(ETMainViewModel*)model;
 -(void)viewModelWillCancelEmail;
+-(void)viewModelDidEnterInPause;
+-(void)viewModelDidLeavePause;
 
 @end
