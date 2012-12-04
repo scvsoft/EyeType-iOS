@@ -19,9 +19,7 @@
 @end
 
 @implementation ETSettingsViewController
-@synthesize delaySlider;
-@synthesize delayLabel;
-@synthesize configurationView;
+@synthesize delaySlider;@synthesize configurationView;
 @synthesize imageView;
 @synthesize videoSource;
 @synthesize sensitivitySlider;
@@ -57,11 +55,14 @@
     self.videoSource.delegate = self;
 }
 
-- (void)updateViewFromModel{
+- (void)updateDelayTime{
     if ([self.model delayTime] != NSNotFound) {
-        self.delaySlider.value = [self.model delayTime] * 2;
-        self.delayLabel.text = [NSString stringWithFormat:@"%.1f",[self.model delayTime]];
+        self.delaySlider.value = [self.model delayTime] * 4;
     }
+}
+
+- (void)updateViewFromModel{
+    [self updateDelayTime];
     
     if ([self.model sensitivity] != NSNotFound) {
         self.sensitivitySlider.value = [self.model sensitivity];
@@ -91,7 +92,6 @@
 
 - (void)viewDidUnload {
     [self setDelaySlider:nil];
-    [self setDelayLabel:nil];
     [self setConfigurationView:nil];
     [self setSensitivitySlider:nil];
     [self setColorPicker:nil];
@@ -102,8 +102,7 @@
 
 - (IBAction)sliderValueChange:(id)sender {
     [self.model setDelayTime:self.delaySlider.value];
-    float aux = [self.model delayTime];
-    self.delayLabel.text = [NSString stringWithFormat:@"%.1f",aux];
+    [self updateDelayTime];
 }
 
 - (IBAction)saveButtonAction:(id)sender {
@@ -123,10 +122,7 @@
 
 - (IBAction)defaultSettingsAction:(id)sender {
     [self.model configureDefaultValues];
-    self.delaySlider.value = [self.model delayTime];
-    self.delayLabel.text = [NSString stringWithFormat:@"%.1f",self.delaySlider.value * .5];
-    
-    self.sensitivitySlider.value = [self.model sensitivity];
+    [self updateDelayTime];
     
     [self updateViewFromModel];
 }

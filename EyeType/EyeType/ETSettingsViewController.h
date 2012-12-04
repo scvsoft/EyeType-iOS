@@ -13,7 +13,6 @@
 
 @interface ETSettingsViewController : UIViewController<VideoSourceDelegate, ETSettingsViewModelDelegate, UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 @property (strong, nonatomic) IBOutlet UISlider *delaySlider;
-@property (strong, nonatomic) IBOutlet UITextField *delayLabel;
 @property (strong, nonatomic) IBOutlet UIView *configurationView;
 @property (strong, nonatomic) IBOutlet UIPickerView *colorPicker;
 @property (strong, nonatomic) IBOutlet UISlider *sensitivitySlider;

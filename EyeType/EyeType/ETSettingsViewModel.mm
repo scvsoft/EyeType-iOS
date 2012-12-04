@@ -96,6 +96,11 @@
     return delay;
 }
 
+- (void)setDelayTime:(float)value{
+    int aux = (NSUInteger)(value + .5);
+    delay = aux * .25;
+}
+
 - (int)sensitivity{
     return sensitivity;
 }
@@ -107,11 +112,6 @@
     } else if ([configuringAreaName isEqualToString:@"OK"]) {
         areaOK = cv::Rect(0,0,0,0);
     }
-}
-
-- (void)setDelayTime:(float)value{
-    int aux = (NSUInteger)(value + .5);
-    delay = aux * .5;
 }
 
 - (void)setSesitivity:(float)value{
