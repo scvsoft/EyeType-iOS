@@ -5,16 +5,13 @@
 //  Created by scvsoft on 11/13/12.
 //  Copyright (c) 2012 scvsoft. All rights reserved.
 //
+// It class inherits from MFMailComposeViewController to add a send method
 
 #import "ETEmailViewController.h"
 
-@interface ETEmailViewController ()
-
-@end
-
 @implementation ETEmailViewController
 
-- (void)send{
+- (void)send {
     //call the methods that load the view values
     [self view];
     
@@ -23,9 +20,8 @@
     [self performSelector:@selector(throwSendAction:) withObject:self.view afterDelay:0.4];
 }
 
-//this method looking for the send button from the email compose and execute the action associated
-- (void)throwSendAction:(UIView *)view
-{
+//This method looking for the send button from the email compose and execute the action associated
+- (void)throwSendAction:(UIView *)view {
     if ([view isKindOfClass:[UIButton class]])
     {
         UIButton *button = (UIButton *)view;

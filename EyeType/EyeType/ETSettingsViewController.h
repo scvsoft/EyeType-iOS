@@ -16,9 +16,11 @@
 @property (strong, nonatomic) IBOutlet UIView *configurationView;
 @property (strong, nonatomic) IBOutlet UIPickerView *colorPicker;
 @property (strong, nonatomic) IBOutlet UISlider *sensitivitySlider;
+@property (strong, nonatomic) IBOutlet UISlider *sensitivityCancelSlider;
 @property (assign, nonatomic) id<ETSettingsViewControllerDelegate> delegate;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *inputModelSelector;
 @property (strong, nonatomic) IBOutlet UILabel *areaNameLabel;
+@property (strong, nonatomic) IBOutlet UITextField *subjectTextField;
 
 - (IBAction)sliderValueChange:(id)sender;
 - (IBAction)saveButtonAction:(id)sender;

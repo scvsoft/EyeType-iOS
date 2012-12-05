@@ -19,10 +19,13 @@
 - (void)configureDefaultValues;
 
 - (float)delayTime;
-- (int)sensitivity;
+- (int)sensitivitySectionOK;
+- (int)sensitivitySectionCancel;
 
 - (void)setDelayTime:(float)delay;
-- (void)setSesitivity:(float)value;
+- (void)setSensitivitySectionOK:(float)value;
+- (void)setSensitivitySectionCancel:(float)value;
+
 - (void)save;
 - (bool)isAbleToSave;
 - (NSString *)colorNameAtIndex:(int)index;

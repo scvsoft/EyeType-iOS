@@ -27,7 +27,9 @@ enum ETInputModelType{
 - (cv::Mat)matOK;
 - (cv::Mat)matCancel;
 - (void)resetData;
-- (void)setSensitivity:(int)value;
-- (int)sensitivity;
+- (void)setSensitivitySectionOK:(int)value;
+- (int)sensitivitySectionOK;
+- (void)setSensitivitySectionCancel:(int)value;
+- (int)sensitivitySectionCancel;
 
 @end

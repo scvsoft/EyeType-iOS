@@ -17,11 +17,8 @@
     cv::Rect areaOK;
     cv::Rect areaCancel;
     cv::Mat previousImageOK, previousImageCancel, outputMat, processedImageOK, processedImageCancel;
-    int sensitivity;
+    int sensitivitySectionOK, sensitivitySectionCancel;
 }
-
-- (cv::Rect)maximizeArea:(cv::Rect)area;
-- (bool)detectActionInMat:(cv::Mat)mat;
 
 @end
 
@@ -32,7 +29,6 @@
     self = [super init];
     if(self){
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        
         areaOK = cv::Rect(0,0,0,0);
         if([defaults objectForKey:@"areaOK"]){
             NSData *areaOKData = [defaults objectForKey:@"areaOK"];
@@ -47,9 +43,14 @@
             areaCancel = [aux rect];
         }
         
-        [self setSensitivity:DEFAULT_SENSITIVITY];
-        if([defaults integerForKey:@"sensitivity"]){
-            [self setSensitivity:[defaults integerForKey:@"sensitivity"]];
+        [self setSensitivitySectionOK:DEFAULT_SENSITIVITY];
+        if([defaults integerForKey:@"sensitivitySectionOK"]){
+            [self setSensitivitySectionOK:[defaults integerForKey:@"sensitivitySectionOK"]];
+        }
+        
+        [self setSensitivitySectionCancel:DEFAULT_SENSITIVITY];
+        if([defaults integerForKey:@"sensitivitySectionCancel"]){
+            [self setSensitivitySectionCancel:[defaults integerForKey:@"sensitivitySectionCancel"]];
         }
         
         self.inputType = (ETInputModelType)0;
@@ -61,16 +62,27 @@
     return self;
 }
 
-- (void)setSensitivity:(int)value{
-    sensitivity = (5 - value) * 25;
+- (void)setSensitivitySectionOK:(int)value{
+    //modified value to adapt to movement quantity
+    sensitivitySectionOK = (5 - value) * 25;
 }
 
-- (int)sensitivity{
-    return 5 - (sensitivity / 25);
+- (int)sensitivitySectionOK{
+    //return the original value of sensitivity
+    return 5 - (sensitivitySectionOK / 25);
 }
 
-+ (id)sharedInstance
-{
+- (void)setSensitivitySectionCancel:(int)value{
+    //modified value to adapt to movement quantity
+    sensitivitySectionCancel = (5 - value) * 25;
+}
+
+- (int)sensitivitySectionCancel{
+    //return the original value of sensitivity
+    return 5 - (sensitivitySectionCancel / 25);
+}
+
++ (id)sharedInstance {
     static dispatch_once_t pred = 0;
     __strong static id _sharedObject = nil;
     dispatch_once(&pred, ^{
@@ -79,51 +91,42 @@
     return _sharedObject;
 }
 
-- (cv::Rect)maximizeArea:(cv::Rect)area{
-    int deltaW = OPTIMUS_SIZE.width - area.width;
-    int deltaH = OPTIMUS_SIZE.height - area.height;
-    
-    int x = area.x - (deltaW / 2);
-    int y = area.y - (deltaH / 2);
-    
-    return cv::Rect(x > 0 ? x:0, y > 0 ? y:0, OPTIMUS_SIZE.width, OPTIMUS_SIZE.height);
+- (void)setAreaOK:(cv::Rect)area {
+    areaOK =  area;
 }
 
-- (void)setAreaOK:(cv::Rect)area{
-    areaOK =  area;//[self maximizeArea:area];
+- (void)setAreaCancel:(cv::Rect)area {
+    areaCancel = area;
 }
 
-- (void)setAreaCancel:(cv::Rect)area{
-    areaCancel = area;//[self maximizeArea:area];
-}
-
-- (cv::Rect)areaOK{
+- (cv::Rect)areaOK {
     return areaOK;
 }
 
-- (cv::Rect)areaCancel{
+- (cv::Rect)areaCancel {
     return areaCancel;
 }
 
-- (cv::Mat)matOK{
+- (cv::Mat)matOK {
     return processedImageOK;
 }
 
-- (cv::Mat)matCancel{
+- (cv::Mat)matCancel {
     return processedImageCancel;
 }
 
-- (bool)detectActionInAreaOK{
-    return [self detectActionInMat:processedImageOK];
+- (bool)detectActionInAreaOK {
+    return [self detectActionInMat:processedImageOK withSensitivity:sensitivitySectionOK];
 }
 
-- (bool)detectActionInAreaCancel{
-    return [self detectActionInMat:processedImageCancel];
+- (bool)detectActionInAreaCancel {
+    return [self detectActionInMat:processedImageCancel withSensitivity:sensitivitySectionCancel];
 }
 
-- (bool)detectActionInMat:(cv::Mat)matROI{
-    bool blink = NO;
-    int totalMovement = 0;
+//This method is the responsible of detect the movement
+- (bool)detectActionInMat:(cv::Mat)matROI withSensitivity:(int)sensitivity{
+    bool detectedMovement = NO;
+    int movementQuantity = 0;
 
     int cols = matROI.cols;
     int channels = matROI.channels();
@@ -131,44 +134,50 @@
     for(int row=0; row<matROI.rows; row++){
         for(int col=0; col<cols; col++){
             int indexC1 = (row * cols * channels) + (col * channels);
-            totalMovement += pixelPtr[indexC1]; // G
+            movementQuantity += pixelPtr[indexC1]; // Gray
         }
     }
-
-    if (totalMovement > sensitivity && totalMovement < MAXIMUM_MOVEMENT) {
-        blink = YES;
+    
+    //if movementQuantity is mayor that the minimum required (sensitivity) then a movement is detected
+    if (movementQuantity > sensitivity && movementQuantity < MAXIMUM_MOVEMENT) {
+        detectedMovement = YES;
     }
     
-    return blink;
+    return detectedMovement;
 }
 
-- (void)prepareMatrixForAnalysis:(const cv::Mat&)inputImage{
+//Prepare the neccesary data to start the movement analysis
+- (void)prepareMatrixForAnalysis:(const cv::Mat&)inputImage {
     cv::Mat inputCopy;
     inputImage.copyTo(inputCopy);
+    
+    //If the first time that the method is executed the previous images need be setted
     if (previousImageOK.empty()) {
         previousImageOK = cv::Mat(inputCopy, areaOK);
         previousImageCancel = cv::Mat(inputCopy, areaCancel);
     }
     
+    //section "OK" is processed, return a binary matrix (processedImageOK)
     inputImage.copyTo(inputCopy);
     processedImageOK = cv::Mat(inputCopy, areaOK);
     cv::subtract(previousImageOK, processedImageOK, processedImageOK);
     cv::cvtColor(processedImageOK, processedImageOK, CV_BGRA2GRAY);
     cv::threshold(processedImageOK, processedImageOK,20,1,cv::THRESH_BINARY);
     
+    //section "CANCEL" is processed, return a binary matrix (processedImageCancel)
     processedImageCancel = cv::Mat(inputCopy, areaCancel);
     cv::subtract(previousImageCancel, processedImageCancel, processedImageCancel);
     cv::cvtColor(processedImageCancel, processedImageCancel, CV_BGRA2GRAY);
     cv::threshold(processedImageCancel, processedImageCancel,20,1,cv::THRESH_BINARY);
     
+    // set the current image as previuos images for the next analysis
     inputImage.copyTo(inputCopy);
     previousImageOK = cv::Mat(inputCopy, areaOK);
     previousImageCancel = cv::Mat(inputCopy, areaCancel);
 }
 
-
-
-- (void)resetData{
+//set the important values for analysis as empty
+- (void)resetData {
     previousImageOK = cv::Mat();
     processedImageOK = cv::Mat();
     
