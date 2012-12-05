@@ -18,7 +18,7 @@
 @interface ETSettingsViewModel(){
     cv::Mat outputMat;
     cv::Rect areaOK, areaCancel;
-    int sensitivity;
+    int sensitivitySectionOK, sensitivitySectionCancel;
     float delay;
     UIColor *selectedColor;
     NSString *configuringAreaName, *lastConfiguredArea;
@@ -49,7 +49,8 @@
         
         areaOK = [[ETBlinkDetector sharedInstance] areaOK];
         areaCancel = [[ETBlinkDetector sharedInstance] areaCancel];
-        sensitivity = [[ETBlinkDetector sharedInstance] sensitivity];
+        sensitivitySectionOK = [[ETBlinkDetector sharedInstance] sensitivitySectionOK];
+        sensitivitySectionCancel = [[ETBlinkDetector sharedInstance] sensitivitySectionCancel];
         inputType = [[ETBlinkDetector sharedInstance] inputType];
         
         colors = [NSMutableDictionary dictionary];
@@ -77,7 +78,8 @@
     areaCancel = cv::Rect(0,0,0,0);
     
     [self setDelayTime:DEFAULT_DELAY];
-    sensitivity = DEFAULT_SENSITIVITY;
+    sensitivitySectionOK = DEFAULT_SENSITIVITY;
+    sensitivitySectionCancel = DEFAULT_SENSITIVITY;
     selectedColor = [UIColor greenColor];
 }
 
@@ -101,8 +103,20 @@
     delay = aux * .25;
 }
 
-- (int)sensitivity{
-    return sensitivity;
+- (int)sensitivitySectionOK{
+    return sensitivitySectionOK;
+}
+
+- (int)sensitivitySectionCancel{
+    return sensitivitySectionCancel;
+}
+
+- (void)setSensitivitySectionOK:(float)value{
+    sensitivitySectionOK = (NSUInteger)(value + .5);
+}
+
+- (void)setSensitivitySectionCancel:(float)value{
+    sensitivitySectionCancel = (NSUInteger)(value + .5);
 }
 
 - (void)removeConfiguredArea{
@@ -112,10 +126,6 @@
     } else if ([configuringAreaName isEqualToString:@"OK"]) {
         areaOK = cv::Rect(0,0,0,0);
     }
-}
-
-- (void)setSesitivity:(float)value{
-    sensitivity = (NSUInteger)(value + .5);
 }
 
 - (bool)isAbleToSave{
@@ -130,20 +140,26 @@
         [self setDelayTime:DEFAULT_DELAY];
     }
     
-    if (sensitivity == NSNotFound) {
-        sensitivity = DEFAULT_SENSITIVITY;
+    if (sensitivitySectionOK == NSNotFound) {
+        sensitivitySectionOK = DEFAULT_SENSITIVITY;
+    }
+    
+    if (sensitivitySectionCancel == NSNotFound) {
+        sensitivitySectionCancel = DEFAULT_SENSITIVITY;
     }
     
     ETBlinkDetector *bd = [ETBlinkDetector sharedInstance];
     [bd setAreaCancel:areaCancel];
     [bd setAreaOK:areaOK];
-    [bd setSensitivity:sensitivity];
+    [bd setSensitivitySectionCancel:sensitivitySectionCancel];
+    [bd setSensitivitySectionOK:sensitivitySectionOK];
     bd.inputType = inputType;
     [bd resetData];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setFloat:delay forKey:@"delay"];
-    [defaults setInteger:sensitivity forKey:@"sensitivity"];
+    [defaults setInteger:sensitivitySectionOK forKey:@"sensitivitySectionOK"];
+    [defaults setInteger:sensitivitySectionCancel forKey:@"sensitivitySectionCancel"];
     [defaults setInteger:(int)inputType forKey:@"inputType"];
     
     NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:selectedColor];

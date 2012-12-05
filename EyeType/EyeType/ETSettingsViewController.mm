@@ -64,8 +64,11 @@
 - (void)updateViewFromModel{
     [self updateDelayTime];
     
-    if ([self.model sensitivity] != NSNotFound) {
-        self.sensitivitySlider.value = [self.model sensitivity];
+    if ([self.model sensitivitySectionOK] != NSNotFound) {
+        self.sensitivitySlider.value = [self.model sensitivitySectionOK];
+    }
+    if ([self.model sensitivitySectionCancel] != NSNotFound) {
+        self.sensitivityCancelSlider.value = [self.model sensitivitySectionCancel];
     }
     
     [self.colorPicker selectRow:[self.model selectedColorIndex] inComponent:0 animated:NO];
@@ -97,6 +100,8 @@
     [self setColorPicker:nil];
     [self setInputModelSelector:nil];
     [self setAreaNameLabel:nil];
+    [self setSensitivityCancelSlider:nil];
+    [self setSubjectTextField:nil];
     [super viewDidUnload];
 }
 
@@ -128,7 +133,11 @@
 }
 
 - (IBAction)sensitivityValueChange:(id)sender {
-    [self.model setSesitivity:self.sensitivitySlider.value];
+    if (((UISlider *)sender).tag == 0) {
+        [self.model setSensitivitySectionOK:self.sensitivitySlider.value];
+    } else if(((UISlider *)sender).tag == 1) {
+        [self.model setSensitivitySectionCancel:self.sensitivityCancelSlider.value];
+    }
 }
 
 - (IBAction)exitButtonAction:(id)sender {
@@ -198,12 +207,10 @@
     return UIInterfaceOrientationLandscapeLeft;
 }
 
-// returns the number of 'columns' to display.
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     return 1;
 }
 
-// returns the # of rows in each component..
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
     return [self.model colorsCount];
 }

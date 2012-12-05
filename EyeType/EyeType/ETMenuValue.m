@@ -39,8 +39,8 @@
 
 - (void)reset{
     self.returnOptions = YES;
-    currentValueIndex = NSNotFound;
     selectedOption = nil;
+    [self reStartValues];
 }
 
 - (void)selectCurrentOption{
@@ -67,12 +67,14 @@
     return nil;
 }
 
+//Return a list with the all selectable options/values
 - (NSArray *)availableValues{
-    if (self.returnOptions) {
+    if (self.returnOptions) 
         return [menu allKeys];
-    }else
+    else
         return [self.menu objectForKey:selectedOption];
 }
+
 
 - (NSString *)nextValue{
     if(self.returnOptions){

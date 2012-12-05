@@ -13,7 +13,7 @@
 - (void)proccess:(cv::Mat)inputMat{
     [[ETBlinkDetector sharedInstance] prepareMatrixForAnalysis:inputMat];
     bool blinkOK =[[ETBlinkDetector sharedInstance] detectActionInAreaOK];
-
+    
     if (blinkOK) {
         [self.delegate movementDetector:self didMovementDetected:ETMovementSection1];
     }
