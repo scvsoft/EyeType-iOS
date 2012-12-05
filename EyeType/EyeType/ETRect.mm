@@ -16,8 +16,7 @@
 
 @implementation ETRect
 
-- (id)initWithRect:(cv::Rect)rect
-{
+- (id)initWithRect:(cv::Rect)rect {
     self = [super init];
     if (self) {
         area = rect;
@@ -45,7 +44,7 @@
     [aCoder encodeInt64:area.height forKey:@"h"];
 }
 
-- (cv::Rect)rect{
+- (cv::Rect)rect {
     return  area;
 }
 

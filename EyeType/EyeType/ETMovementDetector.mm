@@ -11,8 +11,9 @@
 @implementation ETMovementDetector
 
 - (cv::Mat)detectAction:(cv::Mat)sourceMat{
-    [self.delegate movementDetectorWillStart];
-    [self proccess:sourceMat];
+    if([self.delegate movementDetectorWillStart])
+        [self proccess:sourceMat];
+    
     sourceMat = [self.delegate movementDetector:self DidFinishWithMat:sourceMat];
     
     return sourceMat;

@@ -26,12 +26,12 @@
     }
 
     self.videoSource = [[VideoSource alloc] init];
-//    self.videoSource.quality = videoQualityMedium;
     self.videoSource.delegate = self;
 }
 
 #pragma mark - VideoSourceDelegate
 
+//The current frame is received as parameter
 - (void) frameCaptured:(cv::Mat) frame{
     cv::Mat resultMat = [self.model processFrame:frame];
     
