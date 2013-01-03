@@ -7,7 +7,7 @@
 //
 
 #import "ETMainViewController.h"
-#import "TTTAttributedLabel.h"
+#import "ETOptionContainer.h"
 
 @interface ETMainViewController ()
 
@@ -22,12 +22,11 @@ enum AlertActionCode{
 };
 
 @implementation ETMainViewController
-@synthesize charactersLabel;
 @synthesize timer;
 @synthesize settings;
 @synthesize alert;
 @synthesize model;
-@synthesize previewContainer;
+@synthesize optionsContainers;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -40,10 +39,31 @@ enum AlertActionCode{
     return self;
 }
 
-- (void) viewDidAppear:(BOOL)animated{
+- (void)clearMenus{
+    [self.optionsContainers clear];
+    [self.valuesContainer hide];
+    [self.model initializeMenus];
+}
+
+- (void)viewDidLoad{
+    [super viewDidLoad];
+#ifdef DEBUG
+    self.okButton.hidden = NO;
+    self.cancelButton.hidden = NO;
+#endif
+}
+
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self clearMenus];
+    [self loadPreview];
+}
+
+- (void) viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     [self startDetect];
     [self disableApplicationAutoLock:YES];
+    [self.messageTextView setFont:[UIFont fontWithName:@"Calibri" size:20.]];
 }
 
 - (void) viewDidDisappear:(BOOL)animated{
@@ -62,9 +82,9 @@ enum AlertActionCode{
     [self.timer invalidate];
     [self setOkButton:nil];
     [self setCancelButton:nil];
-    [self setTitleLabel:nil];
     [self setMessageTextView:nil];
-    [self setPreviewContainer:nil];
+    [self setOptionsContainers:nil];
+    [self setValuesContainer:nil];
     [super viewDidUnload];
 }
 
@@ -78,54 +98,42 @@ enum AlertActionCode{
 - (void)nextValue{
     self.okButton.selected = NO;
     self.cancelButton.selected = NO;
-    self.charactersLabel.text = [self.model nextValue];
-    self.charactersLabel.textColor = self.model.textColor;
-    [self loadPreview:self.charactersLabel.text];
+    [self.model performSelector:@selector(activateDetection) withObject:nil afterDelay:.3];
+    NSString *value = @"";
+    if (!self.model.paused) {
+        [self selectNextItem];
+    } else
+        value = @"2 BLINKS IN LESS THAN 1 SECOND TO ACTIVE THE APPLICATION";
 }
 
-- (void)loadPreview:(NSString *)currentValue{
-    for (UIView *view in [self.previewContainer subviews]) {
-        [view removeFromSuperview];
+- (void)selectNextItem{
+    if ([self.valuesContainer isVisible]) {
+        [self.valuesContainer selectNextItem];
+    }else{
+        [self.optionsContainers selectNextItem];
     }
-    
-    if([self.model.currentValues count] > 1){
-        NSString *preview = @"";
-        for (int i = 0; i < [self.model.currentValues count]; i++) {
-            preview = [preview stringByAppendingFormat:@" %@ ",[self.model.currentValues objectAtIndex:i]];
+}
+
+- (void)loadPreview{
+    if ([self.model isReturningOptions]) {
+        ETOptionContainer *container = [[ETOptionContainer alloc] init];
+        for (NSString *text in [self.model currentValues]) {
+            [container addItemWithText:text];
         }
         
-        TTTAttributedLabel *previewLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.previewContainer.frame.size.width, self.previewContainer.frame.size.height)];
-        previewLabel.font = [UIFont systemFontOfSize:30];
-        previewLabel.textColor = [UIColor blackColor];
-        previewLabel.numberOfLines = 3;
-        previewLabel.shadowColor = [UIColor colorWithWhite:0.87 alpha:1.0];
-        previewLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-        previewLabel.textAlignment = UITextAlignmentCenter;
-        previewLabel.backgroundColor = [UIColor clearColor];
-        
-        [previewLabel setText:preview afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-            NSRange currentValueRange = [[mutableAttributedString string] rangeOfString:[NSString stringWithFormat:@" %@ ",currentValue] options:NSCaseInsensitiveSearch];
-            
-            // Core Text APIs use C functions without a direct bridge to UIFont. See Apple's "Core Text Programming Guide" to learn how to configure string attributes.
-            UIFont *boldSystemFont = [UIFont boldSystemFontOfSize:40];
-            CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)boldSystemFont.fontName, boldSystemFont.pointSize, NULL);
-            if (font) {
-                [mutableAttributedString removeAttribute:(NSString *)kCTForegroundColorAttributeName range:currentValueRange];
-                [mutableAttributedString addAttribute:(NSString*)kCTForegroundColorAttributeName value:(id)[self.model.textColor CGColor] range:currentValueRange];
-                [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:currentValueRange];
-                CFRelease(font);
-            }
-            
-            
-            
-            return mutableAttributedString;
-        }];
-        [self.previewContainer addSubview:previewLabel];
+        [self.optionsContainers addOptionContainer:container];
+    } else{
+        [self.valuesContainer resetValues];
+        for (NSString *text in self.model.currentValues) {
+            [self.valuesContainer addItemWithText:text];
+        }
+
+        [self.valuesContainer show];
     }
 }
 
 - (void)startTimer{
-    if (![self.timer isValid]) {
+    if (![self.timer isValid] && [self.videoSource isRunning]) {
         float delay = self.model.delayTime;
         self.timer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(nextValue) userInfo:nil repeats:YES];
     }
@@ -138,7 +146,6 @@ enum AlertActionCode{
 - (void)stopDetect{
     [self.timer invalidate];
     [self.videoSource stopRunning];
-    self.charactersLabel.text = @"";
 }
 
 - (void)startDetect{
@@ -155,15 +162,19 @@ enum AlertActionCode{
     [self performSelector:@selector(startTimer) withObject:nil afterDelay:.5];
 }
 
+- (void)resetCurrentMenu{
+    if ([self.valuesContainer isVisible]) {
+        [self.valuesContainer resetSelectedValue];
+    } else{
+        [self.optionsContainers resetSelectedValue];
+    }
+}
+
 #pragma mark - ETViewModelDelegate
 
 -(void)viewModel:(ETMainViewModel*)model didSelectCharacter:(NSString *)message{
     self.okButton.selected = YES;
     self.messageTextView.text = message;
-}
-
--(void)viewModel:(ETMainViewModel*)model didChangeTitle:(NSString *)title{
-    self.titleLabel.text = title;
 }
 
 -(void)viewModelDidEnterInPause{
@@ -175,18 +186,59 @@ enum AlertActionCode{
 
 - (void)viewModelWillCancelEmail{
     self.okButton.selected = YES;
-    self.alert = [[ETAlertViewController alloc] initWithDelegate:self message:@"Would you like cancel the email?" actionCode:AlertActionCancelEmail];
+    self.alert = [[ETAlertViewController alloc] initWithDelegate:self message:@"Would you like cancel the email?" actionCode:AlertActionCancelEmail alertType:ETAlertViewTypeOKCancel];
+    
     [self presentViewController:self.alert animated:YES completion:nil];
 }
 
 -(void)viewModelDidDetectOKAction:(ETMainViewModel*)model{
     self.okButton.selected = YES;
     [self resetTimer];
+    
+    if ([self.valuesContainer isVisible]) {
+        [self.valuesContainer restartLoop];
+    }
+}
+
+-(void)viewModel:(ETMainViewModel *)model didFoundError:(NSString *)errorMessage{
+    self.alert = [[ETAlertViewController alloc] initWithDelegate:self message:errorMessage actionCode:AlertActionCancelEmail alertType:ETAlertViewTypeOK];
+    [self presentViewController:self.alert animated:YES completion:nil];
 }
 
 -(void)viewModelDidDetectCancelAction:(ETMainViewModel*)model{
     self.cancelButton.selected = YES;
     [self resetTimer];
+}
+
+-(void)ViewModelDidLoadNewMenu{
+    [self loadPreview];
+}
+
+-(void)ViewModelDidCloseMenu{
+    if ([self.valuesContainer isVisible]) {
+        if ([self.model isReturningOptions]) {
+            [self.valuesContainer hide];
+        }else{
+            [self loadPreview];
+        }
+    } else{
+        [self.optionsContainers moveToPreviousMenu];
+    }
+}
+
+- (NSString *)getCurrentValue{
+    NSString *selectedText = nil;
+    if ([self.valuesContainer isVisible]) {
+        selectedText = [self.valuesContainer selectedText];
+    } else{
+        selectedText = [self.optionsContainers selectedText];
+    }
+    
+    return selectedText;
+}
+
+- (NSString *)viewModelGetCurrentValue{
+    return [self getCurrentValue];
 }
 
 - (IBAction)cancelButtonAction:(id)sender {
@@ -197,7 +249,7 @@ enum AlertActionCode{
     [self.model executeOKAction];
 }
 
-- (void)AlertDidApper{
+- (void)AlertDidAppear{
     [self stopDetect];
 }
 
@@ -221,7 +273,14 @@ enum AlertActionCode{
     self.model.textColor = color;
     self.model.delayTime = delay;
     [self.model configureMovementDetector];
-    [self.model resetMenus];
+    
+    [self.settings dismissModalViewControllerAnimated:YES];
+    [self showLoading];
+}
+
+- (void)settingsWillClose{
+    [self.settings dismissModalViewControllerAnimated:YES];
+    [self showLoading];
 }
 
 @end

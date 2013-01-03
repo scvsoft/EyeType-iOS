@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2103601816650AFF00120E5F /* ETAreaDetectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2103601716650AFF00120E5F /* ETAreaDetectionView.mm */; };
+		212FED23168219D900BD24E1 /* ETValueContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 212FED22168219D900BD24E1 /* ETValueContainer.mm */; };
 		21551BF7165A73E000A47EA5 /* ETBlinkDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */; };
 		21570573165E744000A83585 /* ETMovementDetectorDualArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21570572165E744000A83585 /* ETMovementDetectorDualArea.mm */; };
 		21570577165E745E00A83585 /* ETMovementDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21570576165E745E00A83585 /* ETMovementDetector.mm */; };
@@ -15,9 +16,22 @@
 		2157059A165FB9E300A83585 /* ETMenuValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 21570599165FB9E300A83585 /* ETMenuValue.m */; };
 		2157059E165FF9C800A83585 /* OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 2157059D165FF9C800A83585 /* OrderedDictionary.m */; };
 		216A5E331659B88E0008E6A3 /* ETSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21BC9C951659A3AF008BB2CA /* ETSettingsViewController.xib */; };
+		217EF78B1694BB7900068C7E /* dashed-line.png in Resources */ = {isa = PBXBuildFile; fileRef = 217EF78A1694BB7900068C7E /* dashed-line.png */; };
+		217EF78F1694D31F00068C7E /* UIColor+EyeType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 217EF78E1694D31F00068C7E /* UIColor+EyeType.mm */; };
 		218E80A9165BDD3100F613CC /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 218E80A8165BDD3100F613CC /* CoreText.framework */; };
 		218E80AD165BDD7F00F613CC /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 218E80AC165BDD7F00F613CC /* TTTAttributedLabel.m */; };
 		218E80C3165D218E00F613CC /* ETRect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 218E80C2165D218E00F613CC /* ETRect.mm */; };
+		2198C6F61694E37C00AD6131 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 2198C6F41694E37C00AD6131 /* settings.png */; };
+		2198C6F71694E37C00AD6131 /* settingsSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2198C6F51694E37C00AD6131 /* settingsSelected.png */; };
+		2198C6FA16951D3D00AD6131 /* ETOptionsContainersList.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2198C6F916951D3D00AD6131 /* ETOptionsContainersList.mm */; };
+		2198C6FC1695258D00AD6131 /* Calibri Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2198C6FB1695258D00AD6131 /* Calibri Bold.ttf */; };
+		2198C71C1695EEBE00AD6131 /* arrowRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 2198C7181695EEBE00AD6131 /* arrowRed.png */; };
+		2198C71D1695EEBE00AD6131 /* arrowRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2198C7191695EEBE00AD6131 /* arrowRed@2x.png */; };
+		2198C71E1695EEBE00AD6131 /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2198C71A1695EEBE00AD6131 /* settings@2x.png */; };
+		2198C71F1695EEBE00AD6131 /* settingsSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2198C71B1695EEBE00AD6131 /* settingsSelected@2x.png */; };
+		219A99BB167B8046005658C1 /* ETOptionContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 219A99BA167B8046005658C1 /* ETOptionContainer.mm */; };
+		219A99BE167B85D4005658C1 /* ETItemView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 219A99BD167B85D4005658C1 /* ETItemView.mm */; };
+		219A99C0167B935B005658C1 /* Calibri.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 219A99BF167B935B005658C1 /* Calibri.ttf */; };
 		21BC9C991659A721008BB2CA /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21BC9C981659A721008BB2CA /* opencv2.framework */; };
 		21BC9C9B1659A747008BB2CA /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21BC9C9A1659A747008BB2CA /* CoreFoundation.framework */; };
 		21BC9C9F1659A76E008BB2CA /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21BC9C9C1659A76E008BB2CA /* AddressBook.framework */; };
@@ -63,6 +77,9 @@
 /* Begin PBXFileReference section */
 		2103601616650AFF00120E5F /* ETAreaDetectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETAreaDetectionView.h; sourceTree = "<group>"; };
 		2103601716650AFF00120E5F /* ETAreaDetectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETAreaDetectionView.mm; sourceTree = "<group>"; };
+		211BD64516827B1000DE0879 /* ETOptionsContainersList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETOptionsContainersList.h; sourceTree = "<group>"; };
+		212FED21168219D900BD24E1 /* ETValueContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETValueContainer.h; sourceTree = "<group>"; };
+		212FED22168219D900BD24E1 /* ETValueContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETValueContainer.mm; sourceTree = "<group>"; };
 		21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETBlinkDetector.mm; sourceTree = "<group>"; };
 		21570571165E744000A83585 /* ETMovementDetectorDualArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETMovementDetectorDualArea.h; sourceTree = "<group>"; };
 		21570572165E744000A83585 /* ETMovementDetectorDualArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETMovementDetectorDualArea.mm; sourceTree = "<group>"; };
@@ -74,11 +91,27 @@
 		21570599165FB9E300A83585 /* ETMenuValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETMenuValue.m; sourceTree = "<group>"; };
 		2157059C165FF9C800A83585 /* OrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderedDictionary.h; sourceTree = "<group>"; };
 		2157059D165FF9C800A83585 /* OrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderedDictionary.m; sourceTree = "<group>"; };
+		217EF78A1694BB7900068C7E /* dashed-line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dashed-line.png"; sourceTree = "<group>"; };
+		217EF78E1694D31F00068C7E /* UIColor+EyeType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+EyeType.mm"; sourceTree = "<group>"; };
+		217EF7901694D9A600068C7E /* UIColor+EyeType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+EyeType.h"; sourceTree = "<group>"; };
 		218E80A8165BDD3100F613CC /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		218E80AB165BDD7F00F613CC /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		218E80AC165BDD7F00F613CC /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		218E80C1165D218E00F613CC /* ETRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETRect.h; sourceTree = "<group>"; };
 		218E80C2165D218E00F613CC /* ETRect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETRect.mm; sourceTree = "<group>"; };
+		2198C6F41694E37C00AD6131 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		2198C6F51694E37C00AD6131 /* settingsSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settingsSelected.png; sourceTree = "<group>"; };
+		2198C6F916951D3D00AD6131 /* ETOptionsContainersList.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETOptionsContainersList.mm; sourceTree = "<group>"; };
+		2198C6FB1695258D00AD6131 /* Calibri Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Calibri Bold.ttf"; path = "resources/Calibri Bold.ttf"; sourceTree = "<group>"; };
+		2198C7181695EEBE00AD6131 /* arrowRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowRed.png; sourceTree = "<group>"; };
+		2198C7191695EEBE00AD6131 /* arrowRed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrowRed@2x.png"; sourceTree = "<group>"; };
+		2198C71A1695EEBE00AD6131 /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
+		2198C71B1695EEBE00AD6131 /* settingsSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settingsSelected@2x.png"; sourceTree = "<group>"; };
+		219A99B9167B8046005658C1 /* ETOptionContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETOptionContainer.h; sourceTree = "<group>"; };
+		219A99BA167B8046005658C1 /* ETOptionContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETOptionContainer.mm; sourceTree = "<group>"; };
+		219A99BC167B85D4005658C1 /* ETItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETItemView.h; sourceTree = "<group>"; };
+		219A99BD167B85D4005658C1 /* ETItemView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETItemView.mm; sourceTree = "<group>"; };
+		219A99BF167B935B005658C1 /* Calibri.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Calibri.ttf; path = resources/Calibri.ttf; sourceTree = "<group>"; };
 		21BC9C931659A3AF008BB2CA /* ETSettingsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ETSettingsViewController.h; sourceTree = "<group>"; };
 		21BC9C941659A3AF008BB2CA /* ETSettingsViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ETSettingsViewController.mm; sourceTree = "<group>"; };
 		21BC9C951659A3AF008BB2CA /* ETSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ETSettingsViewController.xib; sourceTree = "<group>"; };
@@ -164,6 +197,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		217EF7891694BB7900068C7E /* images */ = {
+			isa = PBXGroup;
+			children = (
+				2198C7181695EEBE00AD6131 /* arrowRed.png */,
+				2198C7191695EEBE00AD6131 /* arrowRed@2x.png */,
+				2198C71A1695EEBE00AD6131 /* settings@2x.png */,
+				2198C71B1695EEBE00AD6131 /* settingsSelected@2x.png */,
+				2198C6F41694E37C00AD6131 /* settings.png */,
+				2198C6F51694E37C00AD6131 /* settingsSelected.png */,
+				217EF78A1694BB7900068C7E /* dashed-line.png */,
+			);
+			name = images;
+			path = resources/images;
+			sourceTree = "<group>";
+		};
 		218E80AE165BDDAB00F613CC /* external */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +225,77 @@
 				21E6B86B1656EB170085A121 /* GLESImageView.mm */,
 			);
 			name = external;
+			sourceTree = "<group>";
+		};
+		2198C70516953EE800AD6131 /* alert view */ = {
+			isa = PBXGroup;
+			children = (
+				21E6B8761656EB2C0085A121 /* ETAlertViewController.xib */,
+				21E6B8821656EB890085A121 /* ETAlertViewController.h */,
+				21E6B8751656EB2C0085A121 /* ETAlertViewController.mm */,
+				21E6B8831656EB890085A121 /* ETAlertViewModel.h */,
+				21E6B8781656EB2C0085A121 /* ETAlertViewModel.mm */,
+			);
+			name = "alert view";
+			sourceTree = "<group>";
+		};
+		2198C70716953F0800AD6131 /* categories */ = {
+			isa = PBXGroup;
+			children = (
+				217EF7901694D9A600068C7E /* UIColor+EyeType.h */,
+				217EF78E1694D31F00068C7E /* UIColor+EyeType.mm */,
+			);
+			name = categories;
+			sourceTree = "<group>";
+		};
+		2198C70816953F3B00AD6131 /* email */ = {
+			isa = PBXGroup;
+			children = (
+				21E6B8791656EB2C0085A121 /* ETEmailViewController.h */,
+				21E6B87A1656EB2C0085A121 /* ETEmailViewController.mm */,
+			);
+			name = email;
+			sourceTree = "<group>";
+		};
+		2198C70916953F9F00AD6131 /* movement detector */ = {
+			isa = PBXGroup;
+			children = (
+				21570571165E744000A83585 /* ETMovementDetectorDualArea.h */,
+				21570572165E744000A83585 /* ETMovementDetectorDualArea.mm */,
+				21570575165E745E00A83585 /* ETMovementDetector.h */,
+				21570576165E745E00A83585 /* ETMovementDetector.mm */,
+				21570578165E747E00A83585 /* ETMovementDetectorSingleArea.h */,
+				21570579165E747E00A83585 /* ETMovementDetectorSingleArea.mm */,
+				21E6B86E1656EB2C0085A121 /* ETBlinkDetector.h */,
+				21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */,
+			);
+			name = "movement detector";
+			sourceTree = "<group>";
+		};
+		2198C70A16953FD700AD6131 /* video source */ = {
+			isa = PBXGroup;
+			children = (
+				21E6B8701656EB2C0085A121 /* ETVideoSourceViewController.h */,
+				21E6B8711656EB2C0085A121 /* ETVideoSourceViewController.mm */,
+				21E6B8721656EB2C0085A121 /* ETVideoSourceViewModel.h */,
+				21E6B8731656EB2C0085A121 /* ETVideoSourceViewModel.mm */,
+			);
+			name = "video source";
+			sourceTree = "<group>";
+		};
+		219A99B7167B787D005658C1 /* options container */ = {
+			isa = PBXGroup;
+			children = (
+				219A99B9167B8046005658C1 /* ETOptionContainer.h */,
+				219A99BA167B8046005658C1 /* ETOptionContainer.mm */,
+				219A99BC167B85D4005658C1 /* ETItemView.h */,
+				219A99BD167B85D4005658C1 /* ETItemView.mm */,
+				212FED21168219D900BD24E1 /* ETValueContainer.h */,
+				212FED22168219D900BD24E1 /* ETValueContainer.mm */,
+				211BD64516827B1000DE0879 /* ETOptionsContainersList.h */,
+				2198C6F916951D3D00AD6131 /* ETOptionsContainersList.mm */,
+			);
+			name = "options container";
 			sourceTree = "<group>";
 		};
 		21BC9C911659A38A008BB2CA /* Settings */ = {
@@ -263,28 +382,15 @@
 		21E6B8671656EACF0085A121 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				2198C70A16953FD700AD6131 /* video source */,
+				2198C70916953F9F00AD6131 /* movement detector */,
+				219A99B7167B787D005658C1 /* options container */,
+				2198C70816953F3B00AD6131 /* email */,
+				2198C70716953F0800AD6131 /* categories */,
+				2198C70516953EE800AD6131 /* alert view */,
 				218E80AE165BDDAB00F613CC /* external */,
-				21E6B8821656EB890085A121 /* ETAlertViewController.h */,
-				21E6B8831656EB890085A121 /* ETAlertViewModel.h */,
-				21E6B86E1656EB2C0085A121 /* ETBlinkDetector.h */,
-				21551BF6165A73E000A47EA5 /* ETBlinkDetector.mm */,
-				21E6B8701656EB2C0085A121 /* ETVideoSourceViewController.h */,
-				21E6B8711656EB2C0085A121 /* ETVideoSourceViewController.mm */,
-				21E6B8721656EB2C0085A121 /* ETVideoSourceViewModel.h */,
-				21E6B8731656EB2C0085A121 /* ETVideoSourceViewModel.mm */,
-				21E6B8751656EB2C0085A121 /* ETAlertViewController.mm */,
-				21E6B8761656EB2C0085A121 /* ETAlertViewController.xib */,
-				21E6B8781656EB2C0085A121 /* ETAlertViewModel.mm */,
-				21E6B8791656EB2C0085A121 /* ETEmailViewController.h */,
-				21E6B87A1656EB2C0085A121 /* ETEmailViewController.mm */,
 				218E80C1165D218E00F613CC /* ETRect.h */,
 				218E80C2165D218E00F613CC /* ETRect.mm */,
-				21570571165E744000A83585 /* ETMovementDetectorDualArea.h */,
-				21570572165E744000A83585 /* ETMovementDetectorDualArea.mm */,
-				21570575165E745E00A83585 /* ETMovementDetector.h */,
-				21570576165E745E00A83585 /* ETMovementDetector.mm */,
-				21570578165E747E00A83585 /* ETMovementDetectorSingleArea.h */,
-				21570579165E747E00A83585 /* ETMovementDetectorSingleArea.mm */,
 				21570598165FB9E300A83585 /* ETMenuValue.h */,
 				21570599165FB9E300A83585 /* ETMenuValue.m */,
 			);
@@ -294,6 +400,9 @@
 		21E6B8881656F14A0085A121 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2198C6FB1695258D00AD6131 /* Calibri Bold.ttf */,
+				217EF7891694BB7900068C7E /* images */,
+				219A99BF167B935B005658C1 /* Calibri.ttf */,
 				21E6B8891656F1B30085A121 /* Cancel.png */,
 				21E6B88A1656F1B30085A121 /* CancelPressed.png */,
 				21E6B88B1656F1B30085A121 /* haarcascade_lefteye_2splits.xml */,
@@ -383,6 +492,15 @@
 				21E6B8931656F1B30085A121 /* OK.png in Resources */,
 				21E6B8941656F1B30085A121 /* OKPressed.png in Resources */,
 				216A5E331659B88E0008E6A3 /* ETSettingsViewController.xib in Resources */,
+				219A99C0167B935B005658C1 /* Calibri.ttf in Resources */,
+				217EF78B1694BB7900068C7E /* dashed-line.png in Resources */,
+				2198C6F61694E37C00AD6131 /* settings.png in Resources */,
+				2198C6F71694E37C00AD6131 /* settingsSelected.png in Resources */,
+				2198C6FC1695258D00AD6131 /* Calibri Bold.ttf in Resources */,
+				2198C71C1695EEBE00AD6131 /* arrowRed.png in Resources */,
+				2198C71D1695EEBE00AD6131 /* arrowRed@2x.png in Resources */,
+				2198C71E1695EEBE00AD6131 /* settings@2x.png in Resources */,
+				2198C71F1695EEBE00AD6131 /* settingsSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +533,11 @@
 				2157059A165FB9E300A83585 /* ETMenuValue.m in Sources */,
 				2157059E165FF9C800A83585 /* OrderedDictionary.m in Sources */,
 				2103601816650AFF00120E5F /* ETAreaDetectionView.mm in Sources */,
+				219A99BB167B8046005658C1 /* ETOptionContainer.mm in Sources */,
+				219A99BE167B85D4005658C1 /* ETItemView.mm in Sources */,
+				212FED23168219D900BD24E1 /* ETValueContainer.mm in Sources */,
+				217EF78F1694D31F00068C7E /* UIColor+EyeType.mm in Sources */,
+				2198C6FA16951D3D00AD6131 /* ETOptionsContainersList.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,8 +623,8 @@
 				INFOPLIST_FILE = "EyeType/EyeType-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "58DB942D-F924-4B53-A9D9-51CFDBAE223D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "58DB942D-F924-4B53-A9D9-51CFDBAE223D";
+				PROVISIONING_PROFILE = "56AEB4E6-5E3F-4895-97B6-17C9FFFEE6B5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "56AEB4E6-5E3F-4895-97B6-17C9FFFEE6B5";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

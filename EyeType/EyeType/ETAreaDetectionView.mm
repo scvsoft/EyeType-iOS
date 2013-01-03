@@ -9,6 +9,8 @@
 #import "ETAreaDetectionView.h"
 #define HORIZ_SWIPE_DRAG_MIN  12
 #define VERT_SWIPE_DRAG_MAX    4
+#define VIDEO_WIDTH 192
+#define VIDEO_HEIGHT 144
 
 @interface ETAreaDetectionView(){
     void *cacheBitmap;
@@ -74,15 +76,18 @@
             if (point.y < minY && point.y >= 0) {
                 minY = point.y;
             }
-            if (point.x > maxX && point.x <= 384) {
+            if (point.x > maxX && point.x <= self.frame.size.width) {
                 maxX = point.x;
             }
-            if (point.y > maxY && point.y <= 288) {
+            if (point.y > maxY && point.y <= self.frame.size.height) {
                 maxY = point.y;
             }
         }
         
-        return cv::Rect(cv::Point(minX/2,minY/2),cv::Point(maxX/2,maxY/2));
+        CGFloat deltaX = self.frame.size.width / VIDEO_WIDTH;
+        CGFloat deltaY = self.frame.size.height / VIDEO_HEIGHT;
+        
+        return cv::Rect(cv::Point(minX/deltaX, minY/deltaY), cv::Point(maxX/deltaX, maxY/deltaY));
     }
     
     return cv::Rect(cv::Point(0,0),cv::Point(0,0));

@@ -16,18 +16,19 @@
 @property (nonatomic, strong) ETSettingsViewModel *model;
 @property (nonatomic, assign) bool detectedArea;
 @property (nonatomic, strong) ETAreaDetectionView *gesturesView;
+@property (nonatomic,strong) UIActivityIndicatorView *activityIndicator;
+
 @end
 
 @implementation ETSettingsViewController
-@synthesize delaySlider;@synthesize configurationView;
+@synthesize delaySlider;
+@synthesize configurationView;
 @synthesize imageView;
 @synthesize videoSource;
 @synthesize sensitivitySlider;
 @synthesize delegate;
 @synthesize colorPicker;
-@synthesize inputModelSelector;
 @synthesize gesturesView;
-@synthesize areaNameLabel;
 
 - (id)init{
     self = [super init];
@@ -53,6 +54,27 @@
     
     self.videoSource = [[VideoSource alloc] init];
     self.videoSource.delegate = self;
+    [self prepareUI];
+}
+
+- (void)prepareUI{
+    for (UIImageView *separator in self.separatorLines) {
+        [separator setBackgroundColor:[UIColor ETSeparatorPatern]];
+    }
+    
+    for (UILabel *label in self.labelsList) {
+        CGFloat size = label.font.pointSize;
+        [label setFont:[UIFont fontWithName:@"Calibri" size:size]];
+    }
+    
+    for (UIButton *button in self.buttonsList) {
+        CGFloat size = button.titleLabel.font.pointSize;
+        [button.titleLabel setFont:[UIFont fontWithName:@"Calibri" size:size]];
+    }
+    
+    self.subjectTextField.text = self.model.defaultSubject;
+    
+    [self showLoading];
 }
 
 - (void)updateDelayTime{
@@ -72,9 +94,43 @@
     }
     
     [self.colorPicker selectRow:[self.model selectedColorIndex] inComponent:0 animated:NO];
-    self.inputModelSelector.selectedSegmentIndex = [self.model inputType];
-    
-    self.areaNameLabel.text = [NSString stringWithFormat:@"Configuring Area %@",[self.model configuringAreaName]];
+    switch ([self.model inputType]) {
+        case 0:
+            [self inputModelSingleSelected:nil];
+            break;
+        case 1:
+            [self inputModelDualSelected:nil];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)setConfiguringArea{
+    int configuringArea = [self.model configuringArea];
+    UIColor *green = [UIColor ETGreen];
+    switch (configuringArea) {
+        case 0:
+            [self.selectedAreaOkLabel setTextColor:green];
+            [self.selectedAreaCancelLabel setTextColor:[UIColor whiteColor]];
+            
+            [self.selectedAreaOkLabel.layer setBorderColor:[green CGColor]];
+            [self.selectedAreaCancelLabel.layer setBorderColor:[[UIColor clearColor] CGColor]];
+            
+            [self.selectedAreaOkLabel.layer setBorderWidth:2.];
+            break;
+        case 1:
+            [self.selectedAreaOkLabel setTextColor:[UIColor whiteColor]];
+            [self.selectedAreaCancelLabel setTextColor:green];
+            
+            [self.selectedAreaOkLabel.layer setBorderColor:[[UIColor clearColor] CGColor]];
+            [self.selectedAreaCancelLabel.layer setBorderColor:[green CGColor]];
+            
+            [self.selectedAreaCancelLabel.layer setBorderWidth:2.];
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -98,10 +154,16 @@
     [self setConfigurationView:nil];
     [self setSensitivitySlider:nil];
     [self setColorPicker:nil];
-    [self setInputModelSelector:nil];
-    [self setAreaNameLabel:nil];
     [self setSensitivityCancelSlider:nil];
     [self setSubjectTextField:nil];
+    [self setSingleInputButton:nil];
+    [self setDualInputButton:nil];
+    [self setSelectedAreaOkLabel:nil];
+    [self setSelectedAreaCancelLabel:nil];
+    [self setSeparatorLines:nil];
+    [self setLabelsList:nil];
+    [self setButtonsList:nil];
+    [self setScroll:nil];
     [super viewDidUnload];
 }
 
@@ -112,7 +174,7 @@
 
 - (IBAction)saveButtonAction:(id)sender {
     if ([self.model isAbleToSave]) {
-        [self.model setInputModel:(ETInputModelType)self.inputModelSelector.selectedSegmentIndex];
+        [self.model setInputModel:self.singleInputButton.selected ? ETInputModelTypeOneSource:ETInputModelTypeTwoSources];
         [self.model save];
     } else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -122,7 +184,6 @@
 
 -(void)viewModelDidFinishSave{
     [self.delegate settings:self didSaveColor:[self.model selectedColor] delay:[self.model delayTime]];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)defaultSettingsAction:(id)sender {
@@ -142,17 +203,48 @@
 
 - (IBAction)exitButtonAction:(id)sender {
     if ([self.model isAbleToSave]) {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.delegate settingsWillClose];
     } else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
     }
 }
 
-- (IBAction)inputModelValueChange:(id)sender {
-    int index = ((UISegmentedControl *)sender).selectedSegmentIndex;
-    [self.model setInputModel:(ETInputModelType)index];
-    self.areaNameLabel.text = [NSString stringWithFormat:@"Configuring Area %@:",[self.model configuringAreaName]];
+- (IBAction)inputModelDualSelected:(id)sender{
+    [self.model setInputModel:ETInputModelTypeTwoSources];
+    self.dualInputButton.selected = YES;
+    self.singleInputButton.selected = NO;
+    [self.dualInputButton.layer setBorderColor:[[UIColor ETGreen] CGColor]];
+    [self.singleInputButton.layer setBorderColor:[[UIColor clearColor] CGColor]];
+    
+    [self.dualInputButton.layer setBorderWidth:2.];
+    
+    [self setConfiguringArea];
+}
+
+- (IBAction)inputModelSingleSelected:(id)sender{
+    [self.model setInputModel:ETInputModelTypeOneSource];
+    self.dualInputButton.selected = NO;
+    self.singleInputButton.selected = YES;
+    [self.singleInputButton.layer setBorderColor:[[UIColor ETGreen] CGColor]];
+    [self.dualInputButton.layer setBorderColor:[[UIColor clearColor] CGColor]];
+    
+    [self.singleInputButton.layer setBorderWidth:2.];
+    
+    [self setConfiguringArea];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    self.model.defaultSubject = textField.text;
+    [UIView animateWithDuration:.5 animations:^{
+        self.scroll.contentOffset = CGPointMake(0, 0);
+    }];
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    [UIView animateWithDuration:.5 animations:^{
+        self.scroll.contentOffset = CGPointMake(0, 330);
+    }];
 }
 
 #pragma mark - VideoSourceDelegate
@@ -162,17 +254,23 @@
         cv::Mat outputMat;
         frame.copyTo(outputMat);
         self.model.areaSelected = NO;
-        if ([[self.model configuredAreaName] isEqualToString:@"OK"] && [self.model areaOK].size().width > 0) {
-            cv::rectangle(outputMat, [self.model areaOK], cv::Scalar(0,255,0,255));
-        } else if ([[self.model configuredAreaName] isEqualToString:@"CANCEL"] && [self.model areaCancel].size().width > 0) {
-            cv::rectangle(outputMat, [self.model areaOK], cv::Scalar(0,255,0,255));
-            cv::rectangle(outputMat, [self.model areaCancel], cv::Scalar(0,0,255,255));
+        cv::Scalar okColor = [self.model.selectedColor scalarFromColor];
+        if ([self.model configuredArea] == 0 && [self.model areaOK].size().width > 0) {
+            cv::rectangle(outputMat, [self.model areaOK], okColor);
+        } else if ([self.model configuredArea] == 1 && [self.model areaCancel].size().width > 0) {
+            cv::rectangle(outputMat, [self.model areaOK], okColor);
+            cv::rectangle(outputMat, [self.model areaCancel], [[UIColor ETRed] scalarFromColor]);
+        }
+        
+        if ([self.activityIndicator isAnimating] && !outputMat.empty()){
+            [self stopLoading];
         }
         
         [self.imageView drawFrame:outputMat];
     } else {
         [self.videoSource stopRunning];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Action %@ configured", [self.model configuredAreaName]] message:@"Are you ready to continue?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+        NSString *area = [self.model configuredArea] == 0 ? @"OK" : @"CANCEL/BACK";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Action %@ configured", area] message:@"Are you ready to continue?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
         [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
     }
 }
@@ -188,7 +286,7 @@
     if (buttonIndex == 0) {//NO
         [self.model removeConfiguredArea];
     }else{//YES
-        self.areaNameLabel.text = [NSString stringWithFormat:@"Configuring Area %@",[self.model configuringAreaName]];
+        [self setConfiguringArea];
     }
 }
 
@@ -221,6 +319,20 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     [self.model selectColorAtIndex:row];
+}
+
+- (void)showLoading{
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    CGFloat x = self.configurationView.frame.size.width / 2;
+    CGFloat y = self.configurationView.frame.size.height / 2;
+    self.activityIndicator.center = CGPointMake(x, y);
+    
+    [self.configurationView addSubview:self.activityIndicator];
+    [self.activityIndicator startAnimating];
+}
+
+- (void)stopLoading{
+    [self.activityIndicator performSelectorOnMainThread:@selector(stopAnimating) withObject:nil waitUntilDone:NO];
 }
 
 @end

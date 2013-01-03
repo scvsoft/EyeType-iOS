@@ -15,6 +15,7 @@
 @property (nonatomic, assign) id<ETSettingsViewModelDelegate> delegate;
 @property (nonatomic, assign) ETInputModelType inputType;
 @property (nonatomic, assign) BOOL areaSelected;
+@property (nonatomic, strong) NSString *defaultSubject;
 
 - (void)configureDefaultValues;
 
@@ -36,8 +37,8 @@
 - (void)setInputModel:(ETInputModelType)inputType;
 - (cv::Rect)areaOK;
 - (cv::Rect)areaCancel;
-- (NSString *)configuredAreaName;
-- (NSString *)configuringAreaName;
+- (int)configuredArea;
+- (int)configuringArea;
 - (void)removeConfiguredArea;
 @end
 

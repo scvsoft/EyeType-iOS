@@ -12,6 +12,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/nonfree/nonfree.hpp>
 #import "ETBlinkDetector.h"
+#import "UIColor+EyeType.h"
 #endif
 
 #ifdef __OBJC__

@@ -12,16 +12,17 @@
 #import "ETMainViewModel.h"
 #import "ETSettingsViewController.h"
 #import "ETAlertViewController.h"
+#import "ETOptionsContainersList.h"
+#import "ETValueContainer.h"
 
 @interface ETMainViewController : ETVideoSourceViewController<ETMainViewModelDelegate, ETAlertDelegate, ETSettingsViewControllerDelegate>
 
-@property (strong, nonatomic) IBOutlet UILabel *charactersLabel;
 @property (strong, nonatomic) IBOutlet UIButton *okButton;
 @property (strong, nonatomic) IBOutlet UIButton *cancelButton;
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UITextView *messageTextView;
-@property (nonatomic, strong) ETMainViewModel *model;
-@property (strong, nonatomic) IBOutlet UIView *previewContainer;
+@property (strong, nonatomic) IBOutlet ETValueContainer *valuesContainer;
+@property (strong, nonatomic) IBOutlet ETOptionsContainersList *optionsContainers;
+@property (strong, nonatomic) ETMainViewModel *model;
 
 - (IBAction)configureButtonAction:(id)sender;
 - (IBAction)cancelButtonAction:(id)sender;

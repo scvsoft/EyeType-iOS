@@ -23,11 +23,9 @@
 @property (strong,nonatomic) NSMutableArray* selectedContacts;
 @property (assign,nonatomic) bool ableToDetect;
 @property (strong,nonatomic) UIColor *textColor;
-
-@property (strong,nonatomic) NSArray *currentValues;
+@property (assign, nonatomic) BOOL paused;
 
 - (id)initWithDelegate:(id<ETMainViewModelDelegate>)delegate;
-- (NSString *)nextValue;
 - (bool)isAbleToStart;
 - (void)executeOKAction;
 - (void)executeCancelAction;
@@ -35,19 +33,24 @@
 - (void)sendEmail;
 - (void)back;
 - (void)resetMenus;
-
+- (NSArray *)currentValues;
+- (BOOL)isReturningOptions;
+- (void)activateDetection;
+- (void)initializeMenus;
 @end
 
 @protocol ETMainViewModelDelegate <NSObject>
 
-
 -(void)viewModel:(ETMainViewModel*)model didSelectCharacter:(NSString *)message;
--(void)viewModel:(ETMainViewModel*)model didChangeTitle:(NSString *)title;
 
 -(void)viewModelDidDetectOKAction:(ETMainViewModel*)model;
 -(void)viewModelDidDetectCancelAction:(ETMainViewModel*)model;
 -(void)viewModelWillCancelEmail;
 -(void)viewModelDidEnterInPause;
 -(void)viewModelDidLeavePause;
+-(void)viewModel:(ETMainViewModel *)model didFoundError:(NSString *)errorMessage;
+-(void)ViewModelDidLoadNewMenu;
+-(void)ViewModelDidCloseMenu;
+-(NSString *)viewModelGetCurrentValue;
 
 @end
