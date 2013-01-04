@@ -32,6 +32,7 @@ enum videoQuality{
 
 - (void) startRunning;
 - (void) stopRunning;
+- (BOOL)isRunning;
 
 @end
 

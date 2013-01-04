@@ -14,11 +14,19 @@
 
 - (id)initWithDelegate:(id<ETAlertViewModelDelegate>)Delegate;
 
+@property (strong,nonatomic) UIColor *textColor;
+@property (strong,nonatomic) NSArray *currentValues;
+@property (assign,nonatomic) float delayTime;
+
+- (void)executeOKAction;
+- (void)executeCancelAction;
+
 @end
 
 @protocol ETAlertViewModelDelegate <NSObject>
 
 - (void)alertViewModelDidOKActionExecute;
 - (void)alertViewModelDidCancelActionExecute;
+- (NSString *)viewModelGetCurrentValue;
 
 @end

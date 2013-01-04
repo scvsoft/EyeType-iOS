@@ -15,12 +15,8 @@
 @property (nonatomic,assign) SEL menuActionSelector;
 
 - (void)selectCurrentOption;
-- (NSString *)selectedOption;
-- (NSString *)currentValue;
-- (NSString *)nextValue;
 - (void)reset;
 - (BOOL)returnOptions;
-- (NSArray *)availableValues;
-- (void)reStartValues;
+- (NSArray *)availableValues:(NSString *)optionSelected;
 
 @end
