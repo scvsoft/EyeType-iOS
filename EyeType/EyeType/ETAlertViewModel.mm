@@ -14,18 +14,40 @@
 
 @implementation ETAlertViewModel
 @synthesize delegate;
+@synthesize delayTime;
+@synthesize textColor;
+@synthesize currentValues;
 
 - (id)initWithDelegate:(id<ETAlertViewModelDelegate>)Delegate {
     self = [super init];
     if(self){
         self.delegate = Delegate;
+        
+        self.textColor = [UIColor redColor];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if([defaults objectForKey:@"textColor"]){
+            NSData *colorData = [defaults objectForKey:@"textColor"];
+            self.textColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+        }
     }
     
     return self;
 }
 
+- (float)delayTime{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    float delay = [defaults floatForKey:@"delay"];
+    
+    return MAX(delay, 1.);
+}
+
 - (void)executeOKAction {
-     [self.delegate alertViewModelDidOKActionExecute];
+    NSString* value = [self.delegate viewModelGetCurrentValue];
+    if ([value isEqualToString:@"OK"]) {
+        [self.delegate alertViewModelDidOKActionExecute];
+    }else if ([value isEqualToString:@"CANCEL"]){
+        [self.delegate alertViewModelDidCancelActionExecute];
+    }
 }
 
 - (void)executeCancelAction {
@@ -33,9 +55,9 @@
 }
 
 - (cv::Mat)movementDetector:(ETMovementDetector *)detector DidFinishWithMat:(cv::Mat)sourceMat {
-    cv::rectangle(sourceMat, [[ETBlinkDetector sharedInstance] areaOK], cv::Scalar(0,255,0,255));
+    cv::rectangle(sourceMat, [[ETBlinkDetector sharedInstance] areaOK], [self.textColor scalarFromColor]);
     if ([[ETBlinkDetector sharedInstance] inputType] == ETInputModelTypeTwoSources) {
-        cv::rectangle(sourceMat, [[ETBlinkDetector sharedInstance] areaCancel], cv::Scalar(0,0,255,255));
+        cv::rectangle(sourceMat, [[ETBlinkDetector sharedInstance] areaCancel], [[UIColor ETRed] scalarFromColor]);
     }
     
     return sourceMat;

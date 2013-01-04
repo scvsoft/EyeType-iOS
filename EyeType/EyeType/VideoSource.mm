@@ -134,6 +134,10 @@
     [session stopRunning];
 }
 
+- (BOOL)isRunning{
+    return [session isRunning];
+}
+
 #pragma mark -
 #pragma mark AVCaptureSession delegate
 - (void)captureOutput:(AVCaptureOutput *)captureOutput

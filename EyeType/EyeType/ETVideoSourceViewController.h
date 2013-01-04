@@ -16,4 +16,7 @@
 @property (nonatomic, strong) GLESImageView *imageView;
 @property (nonatomic, strong) VideoSource * videoSource;
 @property (nonatomic, strong) ETVideoSourceViewModel *model;
+
+- (void)showLoading;
+- (void)stopLoading;
 @end

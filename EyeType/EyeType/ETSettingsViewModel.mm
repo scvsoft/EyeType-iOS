@@ -21,7 +21,7 @@
     int sensitivitySectionOK, sensitivitySectionCancel;
     float delay;
     UIColor *selectedColor;
-    NSString *configuringAreaName, *lastConfiguredArea;
+    int configuringArea, lastConfiguredArea;
 }
 
 @property (nonatomic, strong) NSMutableDictionary *colors;
@@ -47,6 +47,10 @@
             selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
         }
         
+        if([defaults objectForKey:@"subject"]){
+            self.defaultSubject = [defaults objectForKey:@"subject"];
+        }
+        
         areaOK = [[ETBlinkDetector sharedInstance] areaOK];
         areaCancel = [[ETBlinkDetector sharedInstance] areaCancel];
         sensitivitySectionOK = [[ETBlinkDetector sharedInstance] sensitivitySectionOK];
@@ -54,17 +58,12 @@
         inputType = [[ETBlinkDetector sharedInstance] inputType];
         
         colors = [NSMutableDictionary dictionary];
-        [colors setObject:[UIColor whiteColor] forKey:@"White"];
-        [colors setObject:[UIColor blackColor] forKey:@"Black"];
-        [colors setObject:[UIColor redColor] forKey:@"Red"];
-        [colors setObject:[UIColor greenColor] forKey:@"Green"];
-        [colors setObject:[UIColor blueColor] forKey:@"Blue"];
-        [colors setObject:[UIColor grayColor] forKey:@"Gray"];
-        [colors setObject:[UIColor orangeColor] forKey:@"Orange"];
-        [colors setObject:[UIColor yellowColor] forKey:@"Yellow"];
-        [colors setObject:[UIColor purpleColor] forKey:@"Purple"];
-        configuringAreaName = @"OK";
-        lastConfiguredArea = @"";
+        [colors setObject:[UIColor ETGreen] forKey:@"Green"];
+        [colors setObject:[UIColor ETLightBlue] forKey:@"Light Blue"];
+        [colors setObject:[UIColor ETLightGreen] forKey:@"Light Green"];
+        [colors setObject:[UIColor ETPurple] forKey:@"Purple"];
+        configuringArea = 0;
+        lastConfiguredArea = NSNotFound;
     }
     
     return self;
@@ -73,14 +72,14 @@
 - (void)configureDefaultValues{
     inputType = ETInputModelTypeOneSource;
     areaOK = cv::Rect(56,20,100,36);
-    configuringAreaName = @"OK";
+    configuringArea = 0;
     
     areaCancel = cv::Rect(0,0,0,0);
     
     [self setDelayTime:DEFAULT_DELAY];
     sensitivitySectionOK = DEFAULT_SENSITIVITY;
     sensitivitySectionCancel = DEFAULT_SENSITIVITY;
-    selectedColor = [UIColor greenColor];
+    selectedColor = [UIColor ETGreen];
 }
 
 - (bool)verifySize:(cv::Size)size{
@@ -120,10 +119,10 @@
 }
 
 - (void)removeConfiguredArea{
-    configuringAreaName = lastConfiguredArea;
-    if ([configuringAreaName isEqualToString:@"CANCEL"] || self.inputType == ETInputModelTypeOneSource ) {
+    configuringArea = lastConfiguredArea;
+    if (configuringArea == 1 || self.inputType == ETInputModelTypeOneSource ) {
         areaCancel = cv::Rect(0,0,0,0);
-    } else if ([configuringAreaName isEqualToString:@"OK"]) {
+    } else if (configuringArea == 0) {
         areaOK = cv::Rect(0,0,0,0);
     }
 }
@@ -161,6 +160,9 @@
     [defaults setInteger:sensitivitySectionOK forKey:@"sensitivitySectionOK"];
     [defaults setInteger:sensitivitySectionCancel forKey:@"sensitivitySectionCancel"];
     [defaults setInteger:(int)inputType forKey:@"inputType"];
+    if ([self.defaultSubject length] > 0) {
+        [defaults setObject:self.defaultSubject forKey:@"subject"];
+    }
     
     NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:selectedColor];
     [defaults setObject:colorData forKey:@"textColor"];
@@ -211,27 +213,27 @@
 - (void)setInputModel:(ETInputModelType)inputModelType{
     inputType = inputModelType;
     if (inputType == ETInputModelTypeOneSource) {
-        configuringAreaName = @"OK";
+        configuringArea = 0;
     }
 }
 
-- (NSString *)configuringAreaName{
-    return configuringAreaName;
+- (int)configuringArea{
+    return configuringArea;
 }
 
-- (NSString *)configuredAreaName{
+- (int)configuredArea{
     return lastConfiguredArea;
 }
 
 - (void)areaDetectionView:(ETAreaDetectionView *)sender didDetectArea:(cv::Rect)area{
-    lastConfiguredArea = configuringAreaName;
-    if (self.inputType == ETInputModelTypeOneSource || [configuringAreaName isEqualToString:@"OK"]) {
+    lastConfiguredArea = configuringArea;
+    if (self.inputType == ETInputModelTypeOneSource || configuringArea == 0) {
         areaOK = area;
         if(self.inputType != ETInputModelTypeOneSource )
-            configuringAreaName = @"CANCEL";
-    } else if (self.inputType == ETInputModelTypeTwoSources && [configuringAreaName isEqualToString:@"CANCEL"]){
+            configuringArea = 1;
+    } else if (self.inputType == ETInputModelTypeTwoSources && configuringArea == 1){
         areaCancel = area;
-        configuringAreaName = @"OK";
+        configuringArea = 0;
     }
     
     self.areaSelected = YES;
