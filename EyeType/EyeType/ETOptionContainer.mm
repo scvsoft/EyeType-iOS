@@ -77,7 +77,7 @@
 - (void)menuOff{
     for (ETItemView* item in self.items) {
         if (item.tag == self.currentViewTag) {
-            [item hideBorder];
+            [item inactiveSelected];
         }else{
             [item inactive];
         }
@@ -96,19 +96,6 @@
     for (ETItemView *item in self.items) {
         item.frame = CGRectMake(item.frame.origin.x, item.frame.origin.y + SEPARATOR_HEIGHT, item.frame.size.width, item.frame.size.height);
     }
-}
-
-- (void)resetValues{
-    for (ETItemView *item in self.items) {
-        [item removeFromSuperview];
-    }
-    
-    [self.items removeAllObjects];
-    [self initialize];
-}
-
-- (void)resetSelectedValue{
-    self.currentViewTag = NSNotFound;
 }
 
 - (void)addItemWithText:(NSString *)text{
@@ -159,7 +146,7 @@
 }
 
 - (NSString *)selectedText{
-    return self.selectedItem.text;
+    return self.selectedItem.description;
 }
 
 @end

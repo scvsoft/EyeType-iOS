@@ -72,6 +72,7 @@
         [button.titleLabel setFont:[UIFont fontWithName:@"Calibri" size:size]];
     }
     
+    self.selectedAreaCancelButton.userInteractionEnabled = self.model.inputType == ETInputModelTypeTwoSources;
     self.subjectTextField.text = self.model.defaultSubject;
     
     [self showLoading];
@@ -111,22 +112,22 @@
     UIColor *green = [UIColor ETGreen];
     switch (configuringArea) {
         case 0:
-            [self.selectedAreaOkLabel setTextColor:green];
-            [self.selectedAreaCancelLabel setTextColor:[UIColor whiteColor]];
+            [self.selectedAreaOkButton setSelected:YES];
+            [self.selectedAreaCancelButton setSelected:NO];
             
-            [self.selectedAreaOkLabel.layer setBorderColor:[green CGColor]];
-            [self.selectedAreaCancelLabel.layer setBorderColor:[[UIColor clearColor] CGColor]];
+            [self.selectedAreaOkButton.layer setBorderColor:[green CGColor]];
+            [self.selectedAreaCancelButton.layer setBorderColor:[[UIColor clearColor] CGColor]];
             
-            [self.selectedAreaOkLabel.layer setBorderWidth:2.];
+            [self.selectedAreaOkButton.layer setBorderWidth:2.];
             break;
         case 1:
-            [self.selectedAreaOkLabel setTextColor:[UIColor whiteColor]];
-            [self.selectedAreaCancelLabel setTextColor:green];
+            [self.selectedAreaOkButton setSelected:NO];
+            [self.selectedAreaCancelButton setSelected:YES];
             
-            [self.selectedAreaOkLabel.layer setBorderColor:[[UIColor clearColor] CGColor]];
-            [self.selectedAreaCancelLabel.layer setBorderColor:[green CGColor]];
+            [self.selectedAreaOkButton.layer setBorderColor:[[UIColor clearColor] CGColor]];
+            [self.selectedAreaCancelButton.layer setBorderColor:[green CGColor]];
             
-            [self.selectedAreaCancelLabel.layer setBorderWidth:2.];
+            [self.selectedAreaCancelButton.layer setBorderWidth:2.];
             break;
         default:
             break;
@@ -158,12 +159,12 @@
     [self setSubjectTextField:nil];
     [self setSingleInputButton:nil];
     [self setDualInputButton:nil];
-    [self setSelectedAreaOkLabel:nil];
-    [self setSelectedAreaCancelLabel:nil];
     [self setSeparatorLines:nil];
     [self setLabelsList:nil];
     [self setButtonsList:nil];
     [self setScroll:nil];
+    [self setSelectedAreaOkButton:nil];
+    [self setSelectedAreaCancelButton:nil];
     [super viewDidUnload];
 }
 
@@ -218,8 +219,10 @@
     [self.singleInputButton.layer setBorderColor:[[UIColor clearColor] CGColor]];
     
     [self.dualInputButton.layer setBorderWidth:2.];
-    
+    [self.model changeConfiguringArea];
     [self setConfiguringArea];
+    
+    self.selectedAreaCancelButton.userInteractionEnabled = YES;
 }
 
 - (IBAction)inputModelSingleSelected:(id)sender{
@@ -232,6 +235,21 @@
     [self.singleInputButton.layer setBorderWidth:2.];
     
     [self setConfiguringArea];
+    self.selectedAreaCancelButton.userInteractionEnabled = NO;
+}
+
+- (IBAction)configureAreaOkAction:(id)sender {
+    if (!self.selectedAreaOkButton.selected) {
+        [self.model changeConfiguringArea];
+        [self setConfiguringArea];
+    }
+}
+
+- (IBAction)configureAreaCancelAction:(id)sender {
+    if (!self.selectedAreaCancelButton.selected) {
+        [self.model changeConfiguringArea];
+        [self setConfiguringArea];
+    }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
@@ -255,11 +273,15 @@
         frame.copyTo(outputMat);
         self.model.areaSelected = NO;
         cv::Scalar okColor = [self.model.selectedColor scalarFromColor];
-        if ([self.model configuredArea] == 0 && [self.model areaOK].size().width > 0) {
+        if (self.model.inputType == ETInputModelTypeOneSource && [self.model areaOK].size().width > 0) {
             cv::rectangle(outputMat, [self.model areaOK], okColor);
-        } else if ([self.model configuredArea] == 1 && [self.model areaCancel].size().width > 0) {
-            cv::rectangle(outputMat, [self.model areaOK], okColor);
-            cv::rectangle(outputMat, [self.model areaCancel], [[UIColor ETRed] scalarFromColor]);
+        } else if (self.model.inputType == ETInputModelTypeTwoSources) {
+            if ([self.model areaOK].size().width > 0) {
+                cv::rectangle(outputMat, [self.model areaOK], okColor);
+            }
+            if ([self.model areaCancel].size().width > 0) {
+                cv::rectangle(outputMat, [self.model areaCancel], [[UIColor ETRed] scalarFromColor]);
+            }
         }
         
         if ([self.activityIndicator isAnimating] && !outputMat.empty()){

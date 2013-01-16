@@ -11,6 +11,8 @@
 #define VISIBLE_WIDTH 309.f
 #define CONTAINER_TAG 9999
 #define MAXIMUM_LIST_HEIGHT 273
+#define FONT_NAME @"Calibri"
+#define FONT_SIZE_PREVIEW 90.
 
 @interface ETValueContainer()
 
@@ -112,10 +114,21 @@
         self.scroll.contentOffset = CGPointMake(0, 0);
     }
     
-    self.selectedLabel.text = item.text;
-    [self.selectedLabel setFont:[UIFont fontWithName:@"Calibri" size:45.]];
-    self.selectedLabel.textAlignment = NSTextAlignmentCenter;
-    [self.selectedLabel setTextColor:[item textColorSelected]];
+    CGSize maximumLabelSize = CGSizeMake(1000, self.selectedLabel.frame.size.height);
+    
+    CGSize estimatedSize = [item.description sizeWithFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_PREVIEW]
+                            constrainedToSize:maximumLabelSize
+                                lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    if (estimatedSize.width < self.selectedLabel.frame.size.width) {
+        self.selectedLabel.text = item.description;
+        [self.selectedLabel setFont:[UIFont fontWithName:FONT_NAME size:FONT_SIZE_PREVIEW]];
+        self.selectedLabel.textAlignment = NSTextAlignmentCenter;
+        [self.selectedLabel setTextColor:[item textColorSelected]];
+    } else {
+        self.selectedLabel.text = @"";
+    }
+
 }
 
 @end
