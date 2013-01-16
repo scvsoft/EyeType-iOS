@@ -40,6 +40,7 @@
 - (int)configuredArea;
 - (int)configuringArea;
 - (void)removeConfiguredArea;
+- (void)changeConfiguringArea;
 @end
 
 @protocol ETSettingsViewModelDelegate <NSObject>

@@ -86,7 +86,6 @@
         } completion:^(BOOL finished){
             [menu removeFromSuperview];
             [self.containers removeLastObject];
-            [menu resetValues];
         }];
     }
 }
@@ -94,11 +93,6 @@
 - (NSString *)selectedText{
     ETOptionContainer *option = [self.containers lastObject];
     return [option selectedText];
-}
-
-- (void)resetSelectedValue{
-    ETOptionContainer *option = [self.containers lastObject];
-    [option resetSelectedValue];
 }
 
 - (void)clear{    

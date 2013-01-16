@@ -15,16 +15,33 @@
 @property(nonatomic, assign) int currentRow;
 @property (nonatomic, strong) NSMutableArray *items;
 
-- (void)addItemWithText:(NSString *)text;
-- (void)selectNextItem;
-- (void)resetSelectedValue;
-- (void)resetValues;
-- (CGFloat)containerHeight;
+//initialize the container's values
 - (void)initialize;
+
+//add a new item to the container
+- (void)addItemWithText:(NSString *)text;
+
+//deselect the current item and select the next one
+- (void)selectNextItem;
+
+- (CGFloat)containerHeight;
+
+//return the text from the current item selected
 - (NSString *)selectedText;
+
+//turn on selected to the specified item
 - (void)selectItem:(ETItemView *)item;
+
+//change the UI of the menu to show it as inactive
 - (void)menuOff;
+
+//insert a separator line
 - (void)includeSeparator;
+
+//return the margin that the container should use
 - (int)margin;
+
+//turn on selected the first element from the current menu 
 - (void)restartLoop;
+
 @end

@@ -162,14 +162,6 @@ enum AlertActionCode{
     [self performSelector:@selector(startTimer) withObject:nil afterDelay:.5];
 }
 
-- (void)resetCurrentMenu{
-    if ([self.valuesContainer isVisible]) {
-        [self.valuesContainer resetSelectedValue];
-    } else{
-        [self.optionsContainers resetSelectedValue];
-    }
-}
-
 #pragma mark - ETViewModelDelegate
 
 -(void)viewModel:(ETMainViewModel*)model didSelectCharacter:(NSString *)message{

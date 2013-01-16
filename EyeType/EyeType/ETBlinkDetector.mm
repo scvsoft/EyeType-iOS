@@ -146,7 +146,7 @@
     return detectedMovement;
 }
 
-//Prepare the neccesary data to start the movement analysis
+//Prepare the necessary data to start the movement analysis applying frame differencing
 - (void)prepareMatrixForAnalysis:(const cv::Mat&)inputImage {
     cv::Mat inputCopy;
     inputImage.copyTo(inputCopy);
