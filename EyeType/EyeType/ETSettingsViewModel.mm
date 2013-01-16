@@ -41,7 +41,7 @@
             delay = [defaults floatForKey:@"delay"];
         }
         
-        selectedColor = [UIColor redColor];
+        selectedColor = [UIColor ETGreen];
         if([defaults objectForKey:@"textColor"]){
             NSData *colorData = [defaults objectForKey:@"textColor"];
             selectedColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
@@ -120,10 +120,13 @@
 
 - (void)removeConfiguredArea{
     configuringArea = lastConfiguredArea;
-    if (configuringArea == 1 || self.inputType == ETInputModelTypeOneSource ) {
+    if (configuringArea == 1) {
         areaCancel = cv::Rect(0,0,0,0);
     } else if (configuringArea == 0) {
         areaOK = cv::Rect(0,0,0,0);
+        if (self.inputType == ETInputModelTypeOneSource ) {
+            areaCancel = cv::Rect(0,0,0,0);
+        }
     }
 }
 
@@ -214,6 +217,14 @@
     inputType = inputModelType;
     if (inputType == ETInputModelTypeOneSource) {
         configuringArea = 0;
+    }
+}
+
+- (void)changeConfiguringArea{
+    if (self.inputType == ETInputModelTypeOneSource){
+        configuringArea = 0;
+    } else if (self.inputType == ETInputModelTypeTwoSources && self.areaOK.size().width > 0 && self.areaOK.size().height > 0) {
+        configuringArea = configuringArea == 0 ? 1:0;
     }
 }
 

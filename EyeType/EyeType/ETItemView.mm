@@ -15,11 +15,14 @@
     UIColor *_textColorSelected;
     int originX, originY;
 }
+
 @property (nonatomic, strong) UILabel* textLabel;
 @property (nonatomic, assign) BOOL bold;
+
 @end
 
 #define FONT_FAMILY @"Calibri"
+#define FONT_FAMILY_BOLD @"Calibri-Bold"
 #define FONT_SIZE 32.
 
 @implementation ETItemView
@@ -79,18 +82,7 @@
 }
 
 - (NSString *)description{
-    return [self text];
-}
-
-+ (CGSize)estimatedSizeForText:(NSString *)text {
-    CGSize maximumLabelSize = CGSizeMake(300, VIEW_HEIGHT);
-    
-    CGSize estimatedSize = [text sizeWithFont:[UIFont fontWithName:FONT_FAMILY size:FONT_SIZE]
-                                  constrainedToSize:maximumLabelSize
-                                      lineBreakMode:NSLineBreakByTruncatingTail];
-    
-    CGSize customSize = CGSizeMake(estimatedSize.width + 20, estimatedSize.height);
-    return customSize;
+    return self.textLabel.text;
 }
 
 - (void)select{
@@ -99,7 +91,7 @@
     self.textLabel.textColor = _textColorSelected;
     
     if (self.bold) {
-        [self.textLabel setFont:[UIFont fontWithName:@"Calibri-Bold" size:FONT_SIZE]];
+        [self.textLabel setFont:[UIFont fontWithName:FONT_FAMILY_BOLD size:FONT_SIZE]];
         CGRect frame = self.textLabel.frame;
         self.textLabel.frame = CGRectMake(self.textLabel.frame.origin.x, 5, frame.size.width, frame.size.height);
     }
@@ -108,11 +100,24 @@
 - (void)deselect{
     self.layer.borderColor = [[UIColor clearColor] CGColor];
     self.layer.borderWidth = 3.0f;
-    [self.textLabel setFont:[UIFont fontWithName:@"Calibri" size:FONT_SIZE]];
+    [self.textLabel setFont:[UIFont fontWithName:FONT_FAMILY size:FONT_SIZE]];
     self.textLabel.textColor = [self textColorNormal];
     CGRect frame = self.textLabel.frame;
     frame.origin.y = 0;
     self.textLabel.frame = frame;
+}
+
+- (void)inactiveSelected{
+    self.layer.borderColor = [[UIColor clearColor] CGColor];
+    [self.textLabel setTextColor:[UIColor ETYellow]];
+}
+
+- (void)inactive{
+    if ([[self.textLabel.text lowercaseString] isEqualToString:@"back"]) {
+        [self.textLabel setTextColor:[UIColor ETRed]];
+    } else{
+        [self.textLabel setTextColor:[UIColor ETGrey]];
+    }
 }
 
 - (UIColor *)textColorNormal{
@@ -139,21 +144,15 @@
     return color;
 }
 
-- (NSString *)text{
-    return self.textLabel.text;
-}
-
-- (void)hideBorder{
-    self.layer.borderColor = [[UIColor clearColor] CGColor];
-    [self.textLabel setTextColor:[UIColor ETYellow]];
-}
-
-- (void)inactive{
-    if ([[self.textLabel.text lowercaseString] isEqualToString:@"back"]) {
-        [self.textLabel setTextColor:[UIColor ETRed]];
-    } else{
-        [self.textLabel setTextColor:[UIColor ETGrey]];
-    }
++ (CGSize)estimatedSizeForText:(NSString *)text {
+    CGSize maximumLabelSize = CGSizeMake(300, VIEW_HEIGHT);
+    
+    CGSize estimatedSize = [text sizeWithFont:[UIFont fontWithName:FONT_FAMILY size:FONT_SIZE]
+                            constrainedToSize:maximumLabelSize
+                                lineBreakMode:NSLineBreakByTruncatingTail];
+    
+    CGSize customSize = CGSizeMake(estimatedSize.width + 20, estimatedSize.height);
+    return customSize;
 }
 
 @end

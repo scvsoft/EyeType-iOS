@@ -21,8 +21,8 @@
 @property (strong, nonatomic) IBOutlet UITextField *subjectTextField;
 @property (strong, nonatomic) IBOutlet UIButton *singleInputButton;
 @property (strong, nonatomic) IBOutlet UIButton *dualInputButton;
-@property (strong, nonatomic) IBOutlet UILabel *selectedAreaOkLabel;
-@property (strong, nonatomic) IBOutlet UILabel *selectedAreaCancelLabel;
+@property (strong, nonatomic) IBOutlet UIButton *selectedAreaOkButton;
+@property (strong, nonatomic) IBOutlet UIButton *selectedAreaCancelButton;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *separatorLines;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labelsList;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttonsList;
@@ -35,6 +35,8 @@
 - (IBAction)exitButtonAction:(id)sender;
 - (IBAction)inputModelDualSelected:(id)sender;
 - (IBAction)inputModelSingleSelected:(id)sender;
+- (IBAction)configureAreaOkAction:(id)sender;
+- (IBAction)configureAreaCancelAction:(id)sender;
 
 @end
 
