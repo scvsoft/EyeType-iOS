@@ -11,11 +11,12 @@
 #import "GLESImageView.h"
 #import "ETMainViewModel.h"
 #import "ETSettingsViewController.h"
+#import "ETHelpViewController.h"
 #import "ETAlertViewController.h"
 #import "ETOptionsContainersList.h"
 #import "ETValueContainer.h"
 
-@interface ETMainViewController : ETVideoSourceViewController<ETMainViewModelDelegate, ETAlertDelegate, ETSettingsViewControllerDelegate>
+@interface ETMainViewController : ETVideoSourceViewController<ETMainViewModelDelegate, ETAlertDelegate, ETSettingsViewControllerDelegate, ETHelpViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIButton *okButton;
 @property (strong, nonatomic) IBOutlet UIButton *cancelButton;
@@ -25,6 +26,7 @@
 @property (strong, nonatomic) ETMainViewModel *model;
 
 - (IBAction)configureButtonAction:(id)sender;
+- (IBAction)helpButtonAction:(id)sender;
 - (IBAction)cancelButtonAction:(id)sender;
 - (IBAction)okButtonAction:(id)sender;
 

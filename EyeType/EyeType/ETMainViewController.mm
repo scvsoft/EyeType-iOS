@@ -13,6 +13,7 @@
 
 @property (strong,nonatomic) NSTimer* timer;
 @property (strong,nonatomic) ETSettingsViewController* settings;
+@property (strong,nonatomic) ETHelpViewController *help;
 @property (strong,nonatomic) ETAlertViewController* alert;
 @end
 
@@ -143,6 +144,14 @@ enum AlertActionCode{
     [self presentViewController:self.settings animated:YES completion:nil];
 }
 
+- (IBAction)helpButtonAction:(id)sender {
+    if (!self.help) {
+        self.help = [[ETHelpViewController alloc] initWithDelegate: self];
+    }
+    
+    [self presentViewController:self.help animated:YES completion:nil];
+}
+
 - (void)stopDetect{
     [self.timer invalidate];
     [self.videoSource stopRunning];
@@ -153,7 +162,13 @@ enum AlertActionCode{
         [self.videoSource startRunning];
         [self startTimer];
     } else {
-        [self presentViewController:self.settings animated:YES completion:nil];
+        if (self.help == nil) {
+            self.help = [[ETHelpViewController alloc] initWithDelegate: self];
+            [self presentViewController: self.help animated: YES completion: nil];
+        }
+        else {
+            [self presentViewController: self.settings animated: YES completion: nil];
+        }
     }
 }
 
@@ -273,6 +288,12 @@ enum AlertActionCode{
 - (void)settingsWillClose{
     [self.settings dismissModalViewControllerAnimated:YES];
     [self showLoading];
+}
+
+#pragma mark - Help view controller delegate
+
+- (void) helpViewControllerIsDone: (ETHelpViewController *) helpViewController {
+    [helpViewController dismissViewControllerAnimated: YES completion: nil];
 }
 
 @end
