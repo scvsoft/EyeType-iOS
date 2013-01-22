@@ -41,6 +41,9 @@
 //return the margin that the container should use
 - (int)margin;
 
+//return the margin left that the container should use
+- (int)marginLeft;
+
 //turn on selected the first element from the current menu 
 - (void)restartLoop;
 
