@@ -144,9 +144,7 @@
     NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
     NSTimeInterval interval = now - self.lastActionTime;
     if (interval < INTERVAL_FOR_PAUSE) {
-        self.paused = NO;
-        [self.delegate viewModelDidLeavePause];
-        self.lastActionTime = 0;
+        [self resume];
     }
     
     self.lastActionTime = now;
@@ -474,6 +472,12 @@
 
 - (ETMenuValue *)currentMenu{
     return [self.menuNavigation lastObject];
+}
+
+- (void) resume {
+    self.paused = NO;
+    [self.delegate viewModelDidLeavePause];
+    self.lastActionTime = 0;
 }
 
 @end

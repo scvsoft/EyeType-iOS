@@ -65,6 +65,7 @@ enum AlertActionCode{
     [self startDetect];
     [self disableApplicationAutoLock:YES];
     [self.messageTextView setFont:[UIFont fontWithName:@"Calibri" size:20.]];
+    [self.model resume];
 }
 
 - (void) viewDidDisappear:(BOOL)animated{
