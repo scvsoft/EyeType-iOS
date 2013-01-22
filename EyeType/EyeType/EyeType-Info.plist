@@ -37,6 +37,8 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>Access to contacts information is required in order to send emails to your acquaintances.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Calibri.ttf</string>

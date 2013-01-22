@@ -395,66 +395,77 @@
 
 - (void)loadContacts{
     ABAddressBookRef addressBook = ABAddressBookCreate();
+    ABAuthorizationStatus authorizationStatus = ABAddressBookGetAuthorizationStatus();
+    if (authorizationStatus == kABAuthorizationStatusNotDetermined) {
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+            [self loadContacts];
+        });
+        return;
+    }
 
-    CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
-    CFMutableArrayRef peopleMutable = CFArrayCreateMutableCopy(kCFAllocatorDefault, CFArrayGetCount(allPeople), allPeople);
-    CFRelease(allPeople);
-    CFArraySortValues(peopleMutable,
-                      CFRangeMake(0, CFArrayGetCount(peopleMutable)),
-                      (CFComparatorFunction) ABPersonComparePeopleByName,
-                      (void *)kABPersonSortByFirstName);
-    
     ETMenuValue *contactsMenu = [[ETMenuValue alloc] init];
     contactsMenu.title = @"Choose contacts";
     contactsMenu.menuActionSelector = @selector(contactsMenuAction);
     [contactsMenu.menu setValue:@"BACK" forKey:@"BACK"];
-    [contactsMenu.menu setValue:@"REMOVE" forKey:@"REMOVE"];
     
     self.contactsEmailList = [[NSMutableDictionary alloc] init];
-	for (int x = 0; x < CFArrayGetCount(peopleMutable); x++) {
-		@try {
-			ABRecordRef person = CFArrayGetValueAtIndex(peopleMutable, x);
-            
-            // person's name
-			CFStringRef cfName = ABRecordCopyCompositeName(person);
-            
-            // get the email addresses and add to list
-			ABMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
-			NSArray *emails = (__bridge id)ABMultiValueCopyArrayOfAllValues(multi);
-            
-            NSString *personName = nil;
-            if (cfName==NULL || CFStringGetLength(cfName)==0) {
-                if ([emails count] > 0) {
-                    personName = [emails objectAtIndex:0];
-                }
-            } else{
-                personName = [NSString stringWithString:(__bridge NSString *) cfName];
-            }
-
-            NSString *firstLetter = [[personName substringToIndex:1] uppercaseString];
-            NSMutableArray *names = [contactsMenu.menu objectForKey:firstLetter];
-            NSMutableArray *emailsList = [self.contactsEmailList objectForKey:firstLetter];
-            
-            if ([emails count] > 0) {
-                NSString *email = [emails objectAtIndex:0];
-                if (names == nil) {
-                    names = [NSMutableArray arrayWithObjects:@"BACK",personName,nil];
-                    emailsList = [NSMutableArray arrayWithObjects:@"BACK",email,nil];
-                } else{
-                    [names addObject:personName];
-                    [emailsList addObject:email];
-                }
-                
-                [contactsMenu.menu setValue:names forKey:firstLetter];
-                [self.contactsEmailList setValue:emailsList forKey:firstLetter];
-            }
-		} @catch (id e) {
-            
-		}
-	}
     
-    CFRelease(peopleMutable);
-    CFRelease(addressBook);
+    CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBook);
+    if (allPeople) {
+        CFMutableArrayRef peopleMutable = CFArrayCreateMutableCopy(kCFAllocatorDefault, CFArrayGetCount(allPeople), allPeople);
+        CFRelease(allPeople);
+        CFArraySortValues(peopleMutable,
+                          CFRangeMake(0, CFArrayGetCount(peopleMutable)),
+                          (CFComparatorFunction) ABPersonComparePeopleByName,
+                          (void *)kABPersonSortByFirstName);
+        
+        [contactsMenu.menu setValue:@"REMOVE" forKey:@"REMOVE"];
+        
+        for (int x = 0; x < CFArrayGetCount(peopleMutable); x++) {
+            @try {
+                ABRecordRef person = CFArrayGetValueAtIndex(peopleMutable, x);
+                
+                // person's name
+                CFStringRef cfName = ABRecordCopyCompositeName(person);
+                
+                // get the email addresses and add to list
+                ABMultiValueRef multi = ABRecordCopyValue(person, kABPersonEmailProperty);
+                NSArray *emails = (__bridge id)ABMultiValueCopyArrayOfAllValues(multi);
+                
+                NSString *personName = nil;
+                if (cfName==NULL || CFStringGetLength(cfName)==0) {
+                    if ([emails count] > 0) {
+                        personName = [emails objectAtIndex:0];
+                    }
+                } else{
+                    personName = [NSString stringWithString:(__bridge NSString *) cfName];
+                }
+
+                NSString *firstLetter = [[personName substringToIndex:1] uppercaseString];
+                NSMutableArray *names = [contactsMenu.menu objectForKey:firstLetter];
+                NSMutableArray *emailsList = [self.contactsEmailList objectForKey:firstLetter];
+                
+                if ([emails count] > 0) {
+                    NSString *email = [emails objectAtIndex:0];
+                    if (names == nil) {
+                        names = [NSMutableArray arrayWithObjects:@"BACK",personName,nil];
+                        emailsList = [NSMutableArray arrayWithObjects:@"BACK",email,nil];
+                    } else{
+                        [names addObject:personName];
+                        [emailsList addObject:email];
+                    }
+                    
+                    [contactsMenu.menu setValue:names forKey:firstLetter];
+                    [self.contactsEmailList setValue:emailsList forKey:firstLetter];
+                }
+            } @catch (id e) {
+                
+            }
+        }
+        
+        CFRelease(peopleMutable);
+        CFRelease(addressBook);
+    }
     
     [self.menus setValue:contactsMenu forKey:@"CONTACTS"];
 }
