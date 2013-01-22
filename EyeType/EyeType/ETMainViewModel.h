@@ -37,6 +37,7 @@
 - (BOOL)isReturningOptions;
 - (void)activateDetection;
 - (void)initializeMenus;
+- (void)resume;
 @end
 
 @protocol ETMainViewModelDelegate <NSObject>

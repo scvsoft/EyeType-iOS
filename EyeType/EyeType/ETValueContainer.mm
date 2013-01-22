@@ -13,11 +13,18 @@
 #define MAXIMUM_LIST_HEIGHT 273
 #define FONT_NAME @"Calibri"
 #define FONT_SIZE_PREVIEW 90.
+#define CONTAINER_MARGIN_TOP 30
+#define CONTAINER_MARGIN_SIDE 15
+#define SINGLE_VALUE_ITEM_WIDTH 44
 
 @interface ETValueContainer()
 
 @property (nonatomic, strong) UIScrollView *scroll;
 @property (nonatomic, strong) UILabel *selectedLabel;
+@property (nonatomic, assign) BOOL firstValueFound;
+
+- (BOOL) isFirstValue: (NSString *) text;
+
 @end
 
 @implementation ETValueContainer
@@ -44,6 +51,7 @@
     [super initialize];
     
     self.tag = CONTAINER_TAG;
+    self.firstValueFound = NO;
 }
 
 - (void)addItemWithText:(NSString *)text{
@@ -54,18 +62,24 @@
     }
     
     CGSize estimatedSize = [ETItemView estimatedSizeForText:text];
-    if (estimatedSize.width + self.currentX > VISIBLE_WIDTH) {
+    if ([self isFirstValue: text] || estimatedSize.width + self.currentX > (VISIBLE_WIDTH - 2 * CONTAINER_MARGIN_SIDE)) {
+        self.firstValueFound = YES;
         self.currentX = 0;
         self.currentRow++;
         self.currentY = self.currentRow * estimatedSize.height;
     }
     
-    ETItemView *itemView = [[ETItemView alloc] initWithOptionText:text inX:self.currentX Y:self.currentY useBold:YES];
+    ETItemView *itemView = [[ETItemView alloc] initWithOptionText:text inX:(self.currentX + CONTAINER_MARGIN_SIDE) Y:(self.currentY + CONTAINER_MARGIN_TOP) useBold:YES];
     itemView.tag = self.currentViewTag;
     [self.scroll addSubview:itemView];
     [self.items addObject:itemView];
-    
-    self.currentX += itemView.frame.size.width;
+
+    if (text.length == 1) {
+        self.currentX += SINGLE_VALUE_ITEM_WIDTH;
+    }
+    else {
+        self.currentX += itemView.frame.size.width;
+    }
 }
 
 - (void)resetValues{
@@ -129,6 +143,15 @@
         self.selectedLabel.text = @"";
     }
 
+}
+
+#pragma mark - Utility functions
+
+- (BOOL) isFirstValue:(NSString *)text {
+    return !self.firstValueFound
+        && ![text isEqualToString: @"DELETE"]
+        && ![text isEqualToString: @"BACK"]
+        && ![text isEqualToString: @"REMOVE"];
 }
 
 @end

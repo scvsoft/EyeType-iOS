@@ -11,6 +11,7 @@
 @interface ETOptionsContainersList()
 
 #define FIRST_CONTAINER_TAG 999
+#define CONTAINER_MARGIN_TOP 30.0
 
 @property (strong,nonatomic) UIScrollView* scroll;
 @property (strong,nonatomic) NSMutableArray *containers;
@@ -35,15 +36,15 @@
 - (void)addOptionContainer:(ETOptionContainer *)container{
     ETOptionContainer* currentContainer = [self.containers lastObject];
     [currentContainer menuOff];
-    
-    CGFloat currentHeigth = 0;
+
+    CGFloat currentHeigth = CONTAINER_MARGIN_TOP;
     int lastTag = FIRST_CONTAINER_TAG;
     for (ETOptionContainer* optionContainer in self.containers) {
         currentHeigth += [optionContainer containerHeight];
         lastTag = optionContainer.tag;
     }
     container.tag = lastTag + 1;
-    container.frame = CGRectMake([container margin], currentHeigth, self.frame.size.width - [container margin], [container containerHeight]);
+    container.frame = CGRectMake([container marginLeft], currentHeigth, self.frame.size.width - [container margin], [container containerHeight]);
     if (currentContainer != nil) {
         [container includeSeparator];
     }
