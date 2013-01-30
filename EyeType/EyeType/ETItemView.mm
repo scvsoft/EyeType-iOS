@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define VIEW_HEIGHT 90
+#define MIN_TEXT_WIDTH 44
 
 @interface ETItemView(){
     UIColor *_textColorSelected;
@@ -151,7 +152,7 @@
                             constrainedToSize:maximumLabelSize
                                 lineBreakMode:NSLineBreakByTruncatingTail];
     
-    CGSize customSize = CGSizeMake(estimatedSize.width + 20, estimatedSize.height);
+    CGSize customSize = CGSizeMake(MAX(estimatedSize.width + 20, MIN_TEXT_WIDTH), estimatedSize.height);
     return customSize;
 }
 

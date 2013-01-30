@@ -7,8 +7,9 @@
 //
 
 #import "ETOptionContainer.h"
-#define SEPARATOR_HEIGHT 30
+#define SEPARATOR_HEIGHT 15
 #define CONTAINER_MARGIN 30
+#define CONTAINER_MARGIN_LEFT (CONTAINER_MARGIN + 10)
 
 @interface ETOptionContainer()
 @property (nonatomic,assign) CGFloat rowHeight;
@@ -46,6 +47,10 @@
 
 - (int)margin{
     return CONTAINER_MARGIN;
+}
+
+- (int)marginLeft {
+    return CONTAINER_MARGIN_LEFT;
 }
 
 - (id)copyWithZone:(NSZone *)zone{
@@ -86,7 +91,7 @@
 
 - (void)includeSeparator{
     self.hasSeparator = YES;
-    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(-[self margin], 0, self.frame.size.width + [self margin], SEPARATOR_HEIGHT)];
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(-[self marginLeft], 0, self.frame.size.width + [self margin], SEPARATOR_HEIGHT)];
     UIImageView *image  = [[UIImageView alloc] initWithFrame:CGRectMake(0, 5, separator.frame.size.width, 2)];
     image.backgroundColor = [UIColor ETSeparatorPatern];
     
