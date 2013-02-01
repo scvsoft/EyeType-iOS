@@ -115,7 +115,6 @@
 		5FFBEF7F16A9AF0A00CDD0D9 /* done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF7D16A9AF0A00CDD0D9 /* done@2x.png */; };
 		5FFBEF8216A9B11200CDD0D9 /* done-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF8016A9B11200CDD0D9 /* done-pressed.png */; };
 		5FFBEF8316A9B11200CDD0D9 /* done-pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF8116A9B11200CDD0D9 /* done-pressed@2x.png */; };
-		841486D416B978190044D2EF /* AWSiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841486D316B978180044D2EF /* AWSiOSSDK.framework */; };
 		841486D816B97EB70044D2EF /* ETEmailSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 841486D716B97EB70044D2EF /* ETEmailSender.m */; };
 		841486DB16B980050044D2EF /* AmazonClientManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 841486DA16B980040044D2EF /* AmazonClientManager.m */; };
 		84A7AD1F16BC3D7D004BA811 /* btn-green-b.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1716BC3D7D004BA811 /* btn-green-b.png */; };
@@ -134,6 +133,7 @@
 		84A7AD3516BC4C4D004BA811 /* btn-light-green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2D16BC4C4C004BA811 /* btn-light-green@2x.png */; };
 		84A7AD3616BC4C4D004BA811 /* btn-purple-b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2E16BC4C4C004BA811 /* btn-purple-b@2x.png */; };
 		84A7AD3716BC4C4D004BA811 /* btn-purple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2F16BC4C4C004BA811 /* btn-purple@2x.png */; };
+		84AB6B7016BC799400D6981F /* AWSiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AB6B6F16BC799400D6981F /* AWSiOSSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -277,7 +277,6 @@
 		5FFBEF7D16A9AF0A00CDD0D9 /* done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "done@2x.png"; path = "resources/help/done@2x.png"; sourceTree = "<group>"; };
 		5FFBEF8016A9B11200CDD0D9 /* done-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "done-pressed.png"; path = "resources/help/done-pressed.png"; sourceTree = "<group>"; };
 		5FFBEF8116A9B11200CDD0D9 /* done-pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "done-pressed@2x.png"; path = "resources/help/done-pressed@2x.png"; sourceTree = "<group>"; };
-		841486D316B978180044D2EF /* AWSiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSiOSSDK.framework; path = "../../../../scv/aws-ios-sdk-1.4.4/AWSiOSSDK.framework"; sourceTree = "<group>"; };
 		841486D616B97EB70044D2EF /* ETEmailSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETEmailSender.h; sourceTree = "<group>"; };
 		841486D716B97EB70044D2EF /* ETEmailSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETEmailSender.m; sourceTree = "<group>"; };
 		841486D916B980040044D2EF /* AmazonClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmazonClientManager.h; sourceTree = "<group>"; };
@@ -298,6 +297,7 @@
 		84A7AD2D16BC4C4C004BA811 /* btn-light-green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-green@2x.png"; sourceTree = "<group>"; };
 		84A7AD2E16BC4C4C004BA811 /* btn-purple-b@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-purple-b@2x.png"; sourceTree = "<group>"; };
 		84A7AD2F16BC4C4C004BA811 /* btn-purple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-purple@2x.png"; sourceTree = "<group>"; };
+		84AB6B6F16BC799400D6981F /* AWSiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSiOSSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -305,7 +305,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				841486D416B978190044D2EF /* AWSiOSSDK.framework in Frameworks */,
 				218E80A9165BDD3100F613CC /* CoreText.framework in Frameworks */,
 				21BC9CA81659A7BA008BB2CA /* AVFoundation.framework in Frameworks */,
 				21BC9CA91659A7BA008BB2CA /* CoreMedia.framework in Frameworks */,
@@ -321,6 +320,7 @@
 				21E6B8421656E9110085A121 /* UIKit.framework in Frameworks */,
 				21E6B8441656E9110085A121 /* Foundation.framework in Frameworks */,
 				21E6B8461656E9110085A121 /* CoreGraphics.framework in Frameworks */,
+				84AB6B7016BC799400D6981F /* AWSiOSSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +486,7 @@
 		21E6B8401656E9110085A121 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				841486D316B978180044D2EF /* AWSiOSSDK.framework */,
+				84AB6B6F16BC799400D6981F /* AWSiOSSDK.framework */,
 				218E80A8165BDD3100F613CC /* CoreText.framework */,
 				21BC9CA21659A7BA008BB2CA /* AVFoundation.framework */,
 				21BC9CA31659A7BA008BB2CA /* CoreMedia.framework */,
