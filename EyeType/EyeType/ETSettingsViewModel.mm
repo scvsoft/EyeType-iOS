@@ -51,6 +51,10 @@
             self.defaultSubject = [defaults objectForKey:@"subject"];
         }
         
+        if([defaults objectForKey:@"email"]){
+            self.email = [defaults objectForKey:@"email"];
+        }        
+        
         areaOK = [[ETBlinkDetector sharedInstance] areaOK];
         areaCancel = [[ETBlinkDetector sharedInstance] areaCancel];
         sensitivitySectionOK = [[ETBlinkDetector sharedInstance] sensitivitySectionOK];
@@ -59,8 +63,8 @@
         
         colors = [NSMutableDictionary dictionary];
         [colors setObject:[UIColor ETGreen] forKey:@"Green"];
-        [colors setObject:[UIColor ETLightBlue] forKey:@"Light Blue"];
         [colors setObject:[UIColor ETLightGreen] forKey:@"Light Green"];
+        [colors setObject:[UIColor ETLightBlue] forKey:@"Light Blue"];
         [colors setObject:[UIColor ETPurple] forKey:@"Purple"];
         configuringArea = 0;
         lastConfiguredArea = NSNotFound;
@@ -130,11 +134,15 @@
     }
 }
 
-- (bool)isAbleToSave{
+- (bool)isActionAreaSet {
     int WOK = areaOK.width;
     int WCA = areaCancel.width;
     bool result = (WOK > 0 &&  WCA > 0) || (WOK > 0 && inputType == ETInputModelTypeOneSource);
-    return  result;
+    return result;
+}
+
+- (bool)isEmailSet {
+    return self.email.length > 0;
 }
 
 - (void)save{
@@ -166,6 +174,7 @@
     if ([self.defaultSubject length] > 0) {
         [defaults setObject:self.defaultSubject forKey:@"subject"];
     }
+    [defaults setObject:self.email forKey:@"email"];
     
     NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:selectedColor];
     [defaults setObject:colorData forKey:@"textColor"];

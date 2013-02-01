@@ -14,11 +14,15 @@
 @interface ETSettingsViewController : UIViewController<VideoSourceDelegate, ETSettingsViewModelDelegate, UIAlertViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UISlider *delaySlider;
 @property (strong, nonatomic) IBOutlet UIView *configurationView;
-@property (strong, nonatomic) IBOutlet UIPickerView *colorPicker;
 @property (strong, nonatomic) IBOutlet UISlider *sensitivitySlider;
 @property (strong, nonatomic) IBOutlet UISlider *sensitivityCancelSlider;
 @property (assign, nonatomic) id<ETSettingsViewControllerDelegate> delegate;
 @property (strong, nonatomic) IBOutlet UITextField *subjectTextField;
+@property (strong, nonatomic) IBOutlet UITextField *emailTextField;
+@property (strong, nonatomic) IBOutlet UIButton *greenButton;
+@property (strong, nonatomic) IBOutlet UIButton *lightGreenButton;
+@property (strong, nonatomic) IBOutlet UIButton *lightBlueButton;
+@property (strong, nonatomic) IBOutlet UIButton *purpleButton;
 @property (strong, nonatomic) IBOutlet UIButton *singleInputButton;
 @property (strong, nonatomic) IBOutlet UIButton *dualInputButton;
 @property (strong, nonatomic) IBOutlet UIButton *selectedAreaOkButton;
@@ -37,6 +41,7 @@
 - (IBAction)inputModelSingleSelected:(id)sender;
 - (IBAction)configureAreaOkAction:(id)sender;
 - (IBAction)configureAreaCancelAction:(id)sender;
+- (IBAction) didSelectColor: (id) sender;
 
 @end
 

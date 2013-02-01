@@ -12,11 +12,12 @@
 
 @interface ETSettingsViewController()
 @property (nonatomic, strong) GLESImageView *imageView;
-@property (nonatomic, strong) VideoSource * videoSource;
+@property (nonatomic, strong) VideoSource *videoSource;
 @property (nonatomic, strong) ETSettingsViewModel *model;
 @property (nonatomic, assign) bool detectedArea;
 @property (nonatomic, strong) ETAreaDetectionView *gesturesView;
-@property (nonatomic,strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) NSArray *colorsButtons;
 
 @end
 
@@ -27,8 +28,12 @@
 @synthesize videoSource;
 @synthesize sensitivitySlider;
 @synthesize delegate;
-@synthesize colorPicker;
+@synthesize greenButton;
+@synthesize lightGreenButton;
+@synthesize lightBlueButton;
+@synthesize purpleButton;
 @synthesize gesturesView;
+@synthesize colorsButtons;
 
 - (id)init{
     self = [super init];
@@ -36,7 +41,7 @@
         self.model = [[ETSettingsViewModel alloc] init];
         self.model.delegate = self;
     }
-    
+        
     return self;
 }
 
@@ -55,6 +60,10 @@
     self.videoSource = [[VideoSource alloc] init];
     self.videoSource.delegate = self;
     [self prepareUI];
+
+    colorsButtons = [NSArray arrayWithObjects:self.greenButton, self.lightGreenButton, self.lightBlueButton, self.purpleButton, nil];
+
+
 }
 
 - (void)prepareUI{
@@ -74,6 +83,7 @@
     
     self.selectedAreaCancelButton.userInteractionEnabled = self.model.inputType == ETInputModelTypeTwoSources;
     self.subjectTextField.text = self.model.defaultSubject;
+    self.emailTextField.text = self.model.email;
     
     [self showLoading];
 }
@@ -94,7 +104,16 @@
         self.sensitivityCancelSlider.value = [self.model sensitivitySectionCancel];
     }
     
-    [self.colorPicker selectRow:[self.model selectedColorIndex] inComponent:0 animated:NO];
+    //[self.colorPicker selectRow:[self.model selectedColorIndex] inComponent:0 animated:NO];
+    
+    for (UIButton *colorButton in self.colorsButtons) {
+        if (colorButton.tag == [self.model selectedColorIndex]) {
+            [colorButton setSelected:YES];
+        } else {
+            [colorButton setSelected:NO];
+        }
+    }
+    
     switch ([self.model inputType]) {
         case 0:
             [self inputModelSingleSelected:nil];
@@ -154,9 +173,9 @@
     [self setDelaySlider:nil];
     [self setConfigurationView:nil];
     [self setSensitivitySlider:nil];
-    [self setColorPicker:nil];
     [self setSensitivityCancelSlider:nil];
     [self setSubjectTextField:nil];
+    [self setEmailTextField:nil];
     [self setSingleInputButton:nil];
     [self setDualInputButton:nil];
     [self setSeparatorLines:nil];
@@ -174,12 +193,29 @@
 }
 
 - (IBAction)saveButtonAction:(id)sender {
-    if ([self.model isAbleToSave]) {
-        [self.model setInputModel:self.singleInputButton.selected ? ETInputModelTypeOneSource:ETInputModelTypeTwoSources];
+    if ([self actionAreaIsSet] && [self emailIsSet]) {
         [self.model save];
+    }
+}
+
+- (BOOL) actionAreaIsSet {
+    if ([self.model isActionAreaSet]) {
+        [self.model setInputModel:self.singleInputButton.selected ? ETInputModelTypeOneSource:ETInputModelTypeTwoSources];
+        return YES;
     } else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+        return NO;
+    }
+}
+
+- (BOOL) emailIsSet {
+    if (![self.model isEmailSet]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set an email" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+        return NO;
+    } else {
+        return YES;
     }
 }
 
@@ -203,7 +239,7 @@
 }
 
 - (IBAction)exitButtonAction:(id)sender {
-    if ([self.model isAbleToSave]) {
+    if ([self.model isActionAreaSet]) {
         [self.delegate settingsWillClose];
     } else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -253,7 +289,12 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    self.model.defaultSubject = textField.text;
+    if (textField == self.subjectTextField) {
+        self.model.defaultSubject = textField.text;
+    } else if (textField == self.emailTextField) {
+        self.model.email = textField.text;
+    }
+
     [UIView animateWithDuration:.5 animations:^{
         self.scroll.contentOffset = CGPointMake(0, 0);
     }];
@@ -339,8 +380,12 @@
     return [self.model colorNameAtIndex:row];
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    [self.model selectColorAtIndex:row];
+- (IBAction) didSelectColor: (id) sender {
+    for (UIButton *colorButton in colorsButtons) {
+        [colorButton setSelected:NO];
+    }
+    [sender setSelected:YES];
+    [self.model selectColorAtIndex:[sender tag]];
 }
 
 - (void)showLoading{

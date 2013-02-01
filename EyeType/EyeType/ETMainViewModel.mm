@@ -9,6 +9,7 @@
 #import "ETMainViewModel.h"
 #import "ETMenuValue.h"
 #import "OrderedDictionary.h"
+#import "ETEmailSender.h"
 
 #define INTERVAL_FOR_PAUSE 1.5
 
@@ -20,6 +21,7 @@
 @property (assign, nonatomic) NSTimeInterval lastActionTime;
 @property (strong, nonatomic) NSMutableDictionary *contactsEmailList;
 @property (strong, nonatomic) NSString *selectedOption;
+@property (copy, nonatomic) NSString *email;
 
 @end
 
@@ -52,6 +54,11 @@
         self.subject = @"";
         if ([defaults objectForKey:@"subject"] > 0) {
             self.subject = [defaults objectForKey:@"subject"];
+        }
+        
+        self.email = @"";
+        if ([defaults objectForKey:@"email"] > 0) {
+            self.email = [defaults objectForKey:@"email"];
         }
         
         if([defaults objectForKey:@"textColor"]){
@@ -188,19 +195,13 @@
 }
 
 - (void)sendEmail{
-    ETEmailViewController *mailComposeViewController = [[ETEmailViewController alloc] init];
-    mailComposeViewController.mailComposeDelegate = self;
     NSArray *recipients = [self getContactsEmail];
     if ([recipients count] <= 0) {
         [self.delegate viewModel:self didFoundError:@"There aren't any recipient selected, please choose at least one"];
     } else if ([subject length] <= 0){
         [self.delegate viewModel:self didFoundError:@"The subject can't be blank"];
     } else{
-        [mailComposeViewController setToRecipients:recipients];
-        [mailComposeViewController setSubject:self.subject];
-        [mailComposeViewController setMessageBody:self.message isHTML:NO];
-        
-        [mailComposeViewController send];
+        [ETEmailSender sendEmailTo:recipients replyTo:self.email subject:self.subject body:self.message];
     }
 }
 

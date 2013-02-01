@@ -115,6 +115,25 @@
 		5FFBEF7F16A9AF0A00CDD0D9 /* done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF7D16A9AF0A00CDD0D9 /* done@2x.png */; };
 		5FFBEF8216A9B11200CDD0D9 /* done-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF8016A9B11200CDD0D9 /* done-pressed.png */; };
 		5FFBEF8316A9B11200CDD0D9 /* done-pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF8116A9B11200CDD0D9 /* done-pressed@2x.png */; };
+		841486D416B978190044D2EF /* AWSiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841486D316B978180044D2EF /* AWSiOSSDK.framework */; };
+		841486D816B97EB70044D2EF /* ETEmailSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 841486D716B97EB70044D2EF /* ETEmailSender.m */; };
+		841486DB16B980050044D2EF /* AmazonClientManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 841486DA16B980040044D2EF /* AmazonClientManager.m */; };
+		84A7AD1F16BC3D7D004BA811 /* btn-green-b.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1716BC3D7D004BA811 /* btn-green-b.png */; };
+		84A7AD2016BC3D7D004BA811 /* btn-green.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1816BC3D7D004BA811 /* btn-green.png */; };
+		84A7AD2116BC3D7D004BA811 /* btn-light-blue-b.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1916BC3D7D004BA811 /* btn-light-blue-b.png */; };
+		84A7AD2216BC3D7D004BA811 /* btn-light-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1A16BC3D7D004BA811 /* btn-light-blue.png */; };
+		84A7AD2316BC3D7D004BA811 /* btn-light-green-b.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1B16BC3D7D004BA811 /* btn-light-green-b.png */; };
+		84A7AD2416BC3D7D004BA811 /* btn-light-green.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1C16BC3D7D004BA811 /* btn-light-green.png */; };
+		84A7AD2516BC3D7D004BA811 /* btn-purple-b.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1D16BC3D7D004BA811 /* btn-purple-b.png */; };
+		84A7AD2616BC3D7D004BA811 /* btn-purple.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1E16BC3D7D004BA811 /* btn-purple.png */; };
+		84A7AD3016BC4C4D004BA811 /* btn-green-b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2816BC4C4C004BA811 /* btn-green-b@2x.png */; };
+		84A7AD3116BC4C4D004BA811 /* btn-green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2916BC4C4C004BA811 /* btn-green@2x.png */; };
+		84A7AD3216BC4C4D004BA811 /* btn-light-blue-b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2A16BC4C4C004BA811 /* btn-light-blue-b@2x.png */; };
+		84A7AD3316BC4C4D004BA811 /* btn-light-blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2B16BC4C4C004BA811 /* btn-light-blue@2x.png */; };
+		84A7AD3416BC4C4D004BA811 /* btn-light-green-b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2C16BC4C4C004BA811 /* btn-light-green-b@2x.png */; };
+		84A7AD3516BC4C4D004BA811 /* btn-light-green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2D16BC4C4C004BA811 /* btn-light-green@2x.png */; };
+		84A7AD3616BC4C4D004BA811 /* btn-purple-b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2E16BC4C4C004BA811 /* btn-purple-b@2x.png */; };
+		84A7AD3716BC4C4D004BA811 /* btn-purple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2F16BC4C4C004BA811 /* btn-purple@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -258,6 +277,27 @@
 		5FFBEF7D16A9AF0A00CDD0D9 /* done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "done@2x.png"; path = "resources/help/done@2x.png"; sourceTree = "<group>"; };
 		5FFBEF8016A9B11200CDD0D9 /* done-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "done-pressed.png"; path = "resources/help/done-pressed.png"; sourceTree = "<group>"; };
 		5FFBEF8116A9B11200CDD0D9 /* done-pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "done-pressed@2x.png"; path = "resources/help/done-pressed@2x.png"; sourceTree = "<group>"; };
+		841486D316B978180044D2EF /* AWSiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSiOSSDK.framework; path = "../../../../scv/aws-ios-sdk-1.4.4/AWSiOSSDK.framework"; sourceTree = "<group>"; };
+		841486D616B97EB70044D2EF /* ETEmailSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETEmailSender.h; sourceTree = "<group>"; };
+		841486D716B97EB70044D2EF /* ETEmailSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETEmailSender.m; sourceTree = "<group>"; };
+		841486D916B980040044D2EF /* AmazonClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmazonClientManager.h; sourceTree = "<group>"; };
+		841486DA16B980040044D2EF /* AmazonClientManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AmazonClientManager.m; sourceTree = "<group>"; };
+		84A7AD1716BC3D7D004BA811 /* btn-green-b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-green-b.png"; sourceTree = "<group>"; };
+		84A7AD1816BC3D7D004BA811 /* btn-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-green.png"; sourceTree = "<group>"; };
+		84A7AD1916BC3D7D004BA811 /* btn-light-blue-b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-blue-b.png"; sourceTree = "<group>"; };
+		84A7AD1A16BC3D7D004BA811 /* btn-light-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-blue.png"; sourceTree = "<group>"; };
+		84A7AD1B16BC3D7D004BA811 /* btn-light-green-b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-green-b.png"; sourceTree = "<group>"; };
+		84A7AD1C16BC3D7D004BA811 /* btn-light-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-green.png"; sourceTree = "<group>"; };
+		84A7AD1D16BC3D7D004BA811 /* btn-purple-b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-purple-b.png"; sourceTree = "<group>"; };
+		84A7AD1E16BC3D7D004BA811 /* btn-purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-purple.png"; sourceTree = "<group>"; };
+		84A7AD2816BC4C4C004BA811 /* btn-green-b@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-green-b@2x.png"; sourceTree = "<group>"; };
+		84A7AD2916BC4C4C004BA811 /* btn-green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-green@2x.png"; sourceTree = "<group>"; };
+		84A7AD2A16BC4C4C004BA811 /* btn-light-blue-b@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-blue-b@2x.png"; sourceTree = "<group>"; };
+		84A7AD2B16BC4C4C004BA811 /* btn-light-blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-blue@2x.png"; sourceTree = "<group>"; };
+		84A7AD2C16BC4C4C004BA811 /* btn-light-green-b@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-green-b@2x.png"; sourceTree = "<group>"; };
+		84A7AD2D16BC4C4C004BA811 /* btn-light-green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-green@2x.png"; sourceTree = "<group>"; };
+		84A7AD2E16BC4C4C004BA811 /* btn-purple-b@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-purple-b@2x.png"; sourceTree = "<group>"; };
+		84A7AD2F16BC4C4C004BA811 /* btn-purple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-purple@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,6 +305,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				841486D416B978190044D2EF /* AWSiOSSDK.framework in Frameworks */,
 				218E80A9165BDD3100F613CC /* CoreText.framework in Frameworks */,
 				21BC9CA81659A7BA008BB2CA /* AVFoundation.framework in Frameworks */,
 				21BC9CA91659A7BA008BB2CA /* CoreMedia.framework in Frameworks */,
@@ -289,6 +330,22 @@
 		217EF7891694BB7900068C7E /* images */ = {
 			isa = PBXGroup;
 			children = (
+				84A7AD2816BC4C4C004BA811 /* btn-green-b@2x.png */,
+				84A7AD2916BC4C4C004BA811 /* btn-green@2x.png */,
+				84A7AD2A16BC4C4C004BA811 /* btn-light-blue-b@2x.png */,
+				84A7AD2B16BC4C4C004BA811 /* btn-light-blue@2x.png */,
+				84A7AD2C16BC4C4C004BA811 /* btn-light-green-b@2x.png */,
+				84A7AD2D16BC4C4C004BA811 /* btn-light-green@2x.png */,
+				84A7AD2E16BC4C4C004BA811 /* btn-purple-b@2x.png */,
+				84A7AD2F16BC4C4C004BA811 /* btn-purple@2x.png */,
+				84A7AD1716BC3D7D004BA811 /* btn-green-b.png */,
+				84A7AD1816BC3D7D004BA811 /* btn-green.png */,
+				84A7AD1916BC3D7D004BA811 /* btn-light-blue-b.png */,
+				84A7AD1A16BC3D7D004BA811 /* btn-light-blue.png */,
+				84A7AD1B16BC3D7D004BA811 /* btn-light-green-b.png */,
+				84A7AD1C16BC3D7D004BA811 /* btn-light-green.png */,
+				84A7AD1D16BC3D7D004BA811 /* btn-purple-b.png */,
+				84A7AD1E16BC3D7D004BA811 /* btn-purple.png */,
 				5F7603B516A9CFA30025A56A /* Help.png */,
 				5F7603B616A9CFA30025A56A /* Help@2x.png */,
 				5F7603B716A9CFA30025A56A /* HelpPressed.png */,
@@ -344,6 +401,10 @@
 		2198C70816953F3B00AD6131 /* email */ = {
 			isa = PBXGroup;
 			children = (
+				841486D916B980040044D2EF /* AmazonClientManager.h */,
+				841486DA16B980040044D2EF /* AmazonClientManager.m */,
+				841486D616B97EB70044D2EF /* ETEmailSender.h */,
+				841486D716B97EB70044D2EF /* ETEmailSender.m */,
 				21E6B8791656EB2C0085A121 /* ETEmailViewController.h */,
 				21E6B87A1656EB2C0085A121 /* ETEmailViewController.mm */,
 			);
@@ -425,6 +486,7 @@
 		21E6B8401656E9110085A121 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				841486D316B978180044D2EF /* AWSiOSSDK.framework */,
 				218E80A8165BDD3100F613CC /* CoreText.framework */,
 				21BC9CA21659A7BA008BB2CA /* AVFoundation.framework */,
 				21BC9CA31659A7BA008BB2CA /* CoreMedia.framework */,
@@ -692,6 +754,22 @@
 				5F7603BA16A9CFA30025A56A /* Help@2x.png in Resources */,
 				5F7603BB16A9CFA30025A56A /* HelpPressed.png in Resources */,
 				5F7603BC16A9CFA30025A56A /* HelpPressed@2x.png in Resources */,
+				84A7AD1F16BC3D7D004BA811 /* btn-green-b.png in Resources */,
+				84A7AD2016BC3D7D004BA811 /* btn-green.png in Resources */,
+				84A7AD2116BC3D7D004BA811 /* btn-light-blue-b.png in Resources */,
+				84A7AD2216BC3D7D004BA811 /* btn-light-blue.png in Resources */,
+				84A7AD2316BC3D7D004BA811 /* btn-light-green-b.png in Resources */,
+				84A7AD2416BC3D7D004BA811 /* btn-light-green.png in Resources */,
+				84A7AD2516BC3D7D004BA811 /* btn-purple-b.png in Resources */,
+				84A7AD2616BC3D7D004BA811 /* btn-purple.png in Resources */,
+				84A7AD3016BC4C4D004BA811 /* btn-green-b@2x.png in Resources */,
+				84A7AD3116BC4C4D004BA811 /* btn-green@2x.png in Resources */,
+				84A7AD3216BC4C4D004BA811 /* btn-light-blue-b@2x.png in Resources */,
+				84A7AD3316BC4C4D004BA811 /* btn-light-blue@2x.png in Resources */,
+				84A7AD3416BC4C4D004BA811 /* btn-light-green-b@2x.png in Resources */,
+				84A7AD3516BC4C4D004BA811 /* btn-light-green@2x.png in Resources */,
+				84A7AD3616BC4C4D004BA811 /* btn-purple-b@2x.png in Resources */,
+				84A7AD3716BC4C4D004BA811 /* btn-purple@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,6 +810,8 @@
 				5F05FB6F16A72EFE003AAEE8 /* ETHelpViewController.m in Sources */,
 				5F05FB7216A730B1003AAEE8 /* ETImageScrollView.m in Sources */,
 				5F05FB9216A747BE003AAEE8 /* ETHelpInnerViewController.m in Sources */,
+				841486D816B97EB70044D2EF /* ETEmailSender.m in Sources */,
+				841486DB16B980050044D2EF /* AmazonClientManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -811,6 +891,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../../../scv/aws-ios-sdk-1.4.4\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EyeType/EyeType-Prefix.pch";
@@ -834,6 +915,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../../../scv/aws-ios-sdk-1.4.4\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EyeType/EyeType-Prefix.pch";

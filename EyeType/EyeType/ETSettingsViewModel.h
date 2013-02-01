@@ -16,6 +16,7 @@
 @property (nonatomic, assign) ETInputModelType inputType;
 @property (nonatomic, assign) BOOL areaSelected;
 @property (nonatomic, strong) NSString *defaultSubject;
+@property (nonatomic, strong) NSString *email;
 
 - (void)configureDefaultValues;
 
@@ -28,7 +29,8 @@
 - (void)setSensitivitySectionCancel:(float)value;
 
 - (void)save;
-- (bool)isAbleToSave;
+- (bool)isActionAreaSet;
+- (bool)isEmailSet;
 - (NSString *)colorNameAtIndex:(int)index;
 - (void)selectColorAtIndex:(int)index;
 - (int)selectedColorIndex;
