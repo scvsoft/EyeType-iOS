@@ -17,7 +17,7 @@
 @property (nonatomic, assign) bool detectedArea;
 @property (nonatomic, strong) ETAreaDetectionView *gesturesView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, strong) NSArray *colorsButtons;
+@property (nonatomic, strong) NSArray *colorButtons;
 
 @end
 
@@ -33,7 +33,7 @@
 @synthesize lightBlueButton;
 @synthesize purpleButton;
 @synthesize gesturesView;
-@synthesize colorsButtons;
+@synthesize colorButtons;
 
 - (id)init{
     self = [super init];
@@ -61,9 +61,9 @@
     self.videoSource.delegate = self;
     [self prepareUI];
 
-    colorsButtons = [NSArray arrayWithObjects:self.greenButton, self.lightBlueButton, self.lightGreenButton, self.purpleButton, nil];
-
-
+    colorButtons = [NSArray arrayWithObjects:self.greenButton, self.lightBlueButton, self.lightGreenButton, self.purpleButton, nil];
+ 
+    [[colorButtons objectAtIndex: [self.model selectedColorIndex]] setSelected:YES];
 }
 
 - (void)prepareUI{
@@ -104,7 +104,7 @@
         self.sensitivityCancelSlider.value = [self.model sensitivitySectionCancel];
     }
     
-    for (UIButton *colorButton in self.colorsButtons) {
+    for (UIButton *colorButton in self.colorButtons) {
         if (colorButton.tag == [self.model selectedColorIndex]) {
             [colorButton setSelected:YES];
         } else {
@@ -375,7 +375,7 @@
 }
 
 - (IBAction) didSelectColor: (id) sender {
-    for (UIButton *colorButton in colorsButtons) {
+    for (UIButton *colorButton in colorButtons) {
         [colorButton setSelected:NO];
     }
     [sender setSelected:YES];
