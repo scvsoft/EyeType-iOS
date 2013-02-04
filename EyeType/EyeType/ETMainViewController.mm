@@ -209,6 +209,10 @@ enum AlertActionCode{
     [self.notificationView showWithMessage: @"Your email was sent successfully"];
 }
 
+- (void) viewModelSendEmailFailedWithText: (NSString *) text {
+    [self.notificationView showWithMessage: text];
+}
+
 -(void)viewModelDidDetectOKAction:(ETMainViewModel*)model{
     self.okButton.selected = YES;
     [self resetTimer];
