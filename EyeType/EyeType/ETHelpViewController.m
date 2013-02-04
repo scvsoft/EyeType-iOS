@@ -42,6 +42,7 @@
                        [UIImage imageNamed: @"11"],
                        [UIImage imageNamed: @"12"],
                        [UIImage imageNamed: @"13"],
+                       [UIImage imageNamed: @"14"],
                        nil];
         
         ETHelpInnerViewController *vc = [ETHelpInnerViewController instanceWithImage: [self.images objectAtIndex: 0]];
