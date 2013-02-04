@@ -22,7 +22,7 @@
  * Uses Amazon SES http://aws.amazon.com/ses/
  * API: SendEmail http://docs.amazonwebservices.com/ses/latest/APIReference/API_SendEmail.html
  */
-+(void)sendEmailTo:(NSArray *)recipients replyTo:(NSString *)replyTo subject:(NSString *)subject body:(NSString *)body {
++(BOOL)sendEmailTo:(NSArray *)recipients replyTo:(NSString *)replyTo subject:(NSString *)subject body:(NSString *)body {
 
     SESContent *subjectText = [[SESContent alloc] init];
     subjectText.data = subject;
@@ -53,9 +53,11 @@
     SESSendEmailResponse *response = [[AmazonClientManager ses] sendEmail:ser];
     if(response.error != nil) {
         NSLog(@"Error: %@", response.error);
-    } else {
-        NSLog(@"Message sent, id %@", response.messageId);
+        return NO;
     }
+    
+    NSLog(@"Message sent, id %@", response.messageId);
+    return YES;
 }
 
 
