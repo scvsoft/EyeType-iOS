@@ -45,32 +45,36 @@
     if (self) {
         self.delegate = Delegate;
         
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        self.delayTime = 0;
-        if([defaults floatForKey:@"delay"]){
-            self.delayTime = [defaults floatForKey:@"delay"];
-        }
-        
-        self.subject = @"";
-        if ([defaults objectForKey:@"subject"] > 0) {
-            self.subject = [defaults objectForKey:@"subject"];
-        }
-        
-        self.email = @"";
-        if ([defaults objectForKey:@"email"] > 0) {
-            self.email = [defaults objectForKey:@"email"];
-        }
-        
-        if([defaults objectForKey:@"textColor"]){
-            NSData *colorData = [defaults objectForKey:@"textColor"];
-            self.textColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-        }
+        [self reload];
         
         self.message = @"";
         self.lastActionTime = 0;
     }
     
     return self;
+}
+
+- (void) reload {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.delayTime = 0;
+    if([defaults floatForKey:@"delay"]){
+        self.delayTime = [defaults floatForKey:@"delay"];
+    }
+    
+    self.subject = @"";
+    if ([defaults objectForKey:@"subject"] > 0) {
+        self.subject = [defaults objectForKey:@"subject"];
+    }
+    
+    self.email = @"";
+    if ([defaults objectForKey:@"email"] > 0) {
+        self.email = [defaults objectForKey:@"email"];
+    }
+    
+    if([defaults objectForKey:@"textColor"]){
+        NSData *colorData = [defaults objectForKey:@"textColor"];
+        self.textColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+    }
 }
 
 - (void)initializeMenus{

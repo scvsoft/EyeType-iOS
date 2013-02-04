@@ -218,7 +218,7 @@
 }
 
 -(void)viewModelDidFinishSave{
-    [self.delegate settings:self didSaveColor:[self.model selectedColor] delay:[self.model delayTime]];
+    [self.delegate settingsDidSave: self];
 }
 
 - (IBAction)defaultSettingsAction:(id)sender {

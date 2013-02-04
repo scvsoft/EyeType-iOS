@@ -291,9 +291,8 @@ enum AlertActionCode{
     [self.alert dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)settings:(ETSettingsViewController *)control didSaveColor:(UIColor *)color delay:(float)delay{
-    self.model.textColor = color;
-    self.model.delayTime = delay;
+- (void)settingsDidSave:(ETSettingsViewController *) control {
+    [self.model reload];
     [self.model configureMovementDetector];
     
     [self.settings dismissModalViewControllerAnimated:YES];
