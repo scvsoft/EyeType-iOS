@@ -203,6 +203,8 @@
     } else{
         [ETEmailSender sendEmailTo:recipients replyTo:self.email subject:self.subject body:self.message];
     }
+    
+    [self.delegate viewModelDidSendEmail];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
