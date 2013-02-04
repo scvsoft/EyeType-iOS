@@ -93,6 +93,7 @@
 		5F7603BA16A9CFA30025A56A /* Help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F7603B616A9CFA30025A56A /* Help@2x.png */; };
 		5F7603BB16A9CFA30025A56A /* HelpPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F7603B716A9CFA30025A56A /* HelpPressed.png */; };
 		5F7603BC16A9CFA30025A56A /* HelpPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F7603B816A9CFA30025A56A /* HelpPressed@2x.png */; };
+		5FF9564716BFFEAC00F6A13D /* ETNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9564616BFFEAC00F6A13D /* ETNotificationView.m */; };
 		5FFBEF6516A9A40400CDD0D9 /* 0@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF5716A9A40400CDD0D9 /* 0@2x.png */; };
 		5FFBEF6616A9A40400CDD0D9 /* 1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF5816A9A40400CDD0D9 /* 1@2x.png */; };
 		5FFBEF6716A9A40400CDD0D9 /* 2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF5916A9A40400CDD0D9 /* 2@2x.png */; };
@@ -255,6 +256,8 @@
 		5F7603B616A9CFA30025A56A /* Help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Help@2x.png"; sourceTree = "<group>"; };
 		5F7603B716A9CFA30025A56A /* HelpPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HelpPressed.png; sourceTree = "<group>"; };
 		5F7603B816A9CFA30025A56A /* HelpPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpPressed@2x.png"; sourceTree = "<group>"; };
+		5FF9564516BFFEAC00F6A13D /* ETNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETNotificationView.h; sourceTree = "<group>"; };
+		5FF9564616BFFEAC00F6A13D /* ETNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETNotificationView.m; sourceTree = "<group>"; };
 		5FFBEF5716A9A40400CDD0D9 /* 0@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "0@2x.png"; path = "resources/help/0@2x.png"; sourceTree = "<group>"; };
 		5FFBEF5816A9A40400CDD0D9 /* 1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "1@2x.png"; path = "resources/help/1@2x.png"; sourceTree = "<group>"; };
 		5FFBEF5916A9A40400CDD0D9 /* 2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "2@2x.png"; path = "resources/help/2@2x.png"; sourceTree = "<group>"; };
@@ -538,6 +541,7 @@
 		21E6B8671656EACF0085A121 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5FF9564416BFFE3D00F6A13D /* Notifications */,
 				2198C70A16953FD700AD6131 /* video source */,
 				2198C70916953F9F00AD6131 /* movement detector */,
 				219A99B7167B787D005658C1 /* options container */,
@@ -637,6 +641,15 @@
 				5F05FB8116A732AB003AAEE8 /* 13.png */,
 			);
 			name = help;
+			sourceTree = "<group>";
+		};
+		5FF9564416BFFE3D00F6A13D /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				5FF9564516BFFEAC00F6A13D /* ETNotificationView.h */,
+				5FF9564616BFFEAC00F6A13D /* ETNotificationView.m */,
+			);
+			name = Notifications;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -812,6 +825,7 @@
 				5F05FB9216A747BE003AAEE8 /* ETHelpInnerViewController.m in Sources */,
 				841486D816B97EB70044D2EF /* ETEmailSender.m in Sources */,
 				841486DB16B980050044D2EF /* AmazonClientManager.m in Sources */,
+				5FF9564716BFFEAC00F6A13D /* ETNotificationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

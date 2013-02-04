@@ -8,6 +8,7 @@
 
 #import "ETMainViewController.h"
 #import "ETOptionContainer.h"
+#import "ETNotificationView.h"
 
 @interface ETMainViewController ()
 
@@ -15,6 +16,7 @@
 @property (strong,nonatomic) ETSettingsViewController* settings;
 @property (strong,nonatomic) ETHelpViewController *help;
 @property (strong,nonatomic) ETAlertViewController* alert;
+@property (strong,nonatomic) ETNotificationView *notificationView;
 @end
 
 enum AlertActionCode{
@@ -48,6 +50,10 @@ enum AlertActionCode{
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    self.notificationView = [[ETNotificationView alloc] initWithFrame: CGRectMake(self.view.bounds.size.width / 2 - 200, self.view.bounds.size.height - 100, 400, 50)];
+    [self.view addSubview: self.notificationView];
+    
 #ifdef DEBUG
     self.okButton.hidden = NO;
     self.cancelButton.hidden = NO;
@@ -197,6 +203,14 @@ enum AlertActionCode{
     self.alert = [[ETAlertViewController alloc] initWithDelegate:self message:@"Would you like cancel the email?" actionCode:AlertActionCancelEmail alertType:ETAlertViewTypeOKCancel];
     
     [self presentViewController:self.alert animated:YES completion:nil];
+}
+
+- (void) viewModelDidSendEmail {
+    [self.notificationView showWithMessage: @"Your email was sent successfully"];
+}
+
+- (void) viewModelSendEmailFailedWithText: (NSString *) text {
+    [self.notificationView showWithMessage: text];
 }
 
 -(void)viewModelDidDetectOKAction:(ETMainViewModel*)model{

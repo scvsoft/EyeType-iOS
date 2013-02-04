@@ -201,7 +201,13 @@
     } else if ([subject length] <= 0){
         [self.delegate viewModel:self didFoundError:@"The subject can't be blank"];
     } else{
-        [ETEmailSender sendEmailTo:recipients replyTo:self.email subject:self.subject body:self.message];
+        if ([ETEmailSender sendEmailTo:recipients replyTo:self.email subject:self.subject body:self.message]) {
+            [self.delegate viewModelDidSendEmail];
+        }
+        else {
+            
+            [self.delegate viewModelSendEmailFailedWithText: @"Cannot send email. Please try again later"];
+        }
     }
 }
 

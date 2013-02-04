@@ -47,6 +47,8 @@
 -(void)viewModelDidDetectOKAction:(ETMainViewModel*)model;
 -(void)viewModelDidDetectCancelAction:(ETMainViewModel*)model;
 -(void)viewModelWillCancelEmail;
+-(void)viewModelDidSendEmail;
+-(void)viewModelSendEmailFailedWithText: (NSString *) text;
 -(void)viewModelDidEnterInPause;
 -(void)viewModelDidLeavePause;
 -(void)viewModel:(ETMainViewModel *)model didFoundError:(NSString *)errorMessage;

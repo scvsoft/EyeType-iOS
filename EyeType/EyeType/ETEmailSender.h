@@ -16,6 +16,6 @@
 
 @interface ETEmailSender : NSObject
 
-+(void)sendEmailTo:(NSArray *)recipients replyTo:(NSString *)replyTo subject:(NSString *)subject body:(NSString *)body;
++(BOOL)sendEmailTo:(NSArray *)recipients replyTo:(NSString *)replyTo subject:(NSString *)subject body:(NSString *)body;
 
 @end
