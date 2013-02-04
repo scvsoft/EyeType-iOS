@@ -61,7 +61,7 @@
     self.videoSource.delegate = self;
     [self prepareUI];
 
-    colorsButtons = [NSArray arrayWithObjects:self.greenButton, self.lightGreenButton, self.lightBlueButton, self.purpleButton, nil];
+    colorsButtons = [NSArray arrayWithObjects:self.greenButton, self.lightBlueButton, self.lightGreenButton, self.purpleButton, nil];
 
 
 }
@@ -103,8 +103,6 @@
     if ([self.model sensitivitySectionCancel] != NSNotFound) {
         self.sensitivityCancelSlider.value = [self.model sensitivitySectionCancel];
     }
-    
-    //[self.colorPicker selectRow:[self.model selectedColorIndex] inComponent:0 animated:NO];
     
     for (UIButton *colorButton in self.colorsButtons) {
         if (colorButton.tag == [self.model selectedColorIndex]) {
@@ -374,10 +372,6 @@
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
     return [self.model colorsCount];
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
-    return [self.model colorNameAtIndex:row];
 }
 
 - (IBAction) didSelectColor: (id) sender {

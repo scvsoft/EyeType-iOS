@@ -31,7 +31,6 @@
 - (void)save;
 - (bool)isActionAreaSet;
 - (bool)isEmailSet;
-- (NSString *)colorNameAtIndex:(int)index;
 - (void)selectColorAtIndex:(int)index;
 - (int)selectedColorIndex;
 - (int)colorsCount;

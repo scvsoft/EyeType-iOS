@@ -24,7 +24,7 @@
     int configuringArea, lastConfiguredArea;
 }
 
-@property (nonatomic, strong) NSMutableDictionary *colors;
+@property (nonatomic, strong) NSArray *colors;
 @end
 
 @implementation ETSettingsViewModel
@@ -61,11 +61,8 @@
         sensitivitySectionCancel = [[ETBlinkDetector sharedInstance] sensitivitySectionCancel];
         inputType = [[ETBlinkDetector sharedInstance] inputType];
         
-        colors = [NSMutableDictionary dictionary];
-        [colors setObject:[UIColor ETGreen] forKey:@"Green"];
-        [colors setObject:[UIColor ETLightGreen] forKey:@"Light Green"];
-        [colors setObject:[UIColor ETLightBlue] forKey:@"Light Blue"];
-        [colors setObject:[UIColor ETPurple] forKey:@"Purple"];
+        colors = [NSArray arrayWithObjects:[UIColor ETGreen], [UIColor ETLightBlue], [UIColor ETLightGreen], [UIColor ETPurple], nil];
+        
         configuringArea = 0;
         lastConfiguredArea = NSNotFound;
     }
@@ -192,26 +189,12 @@
     [self.delegate viewModelDidFinishSave];
 }
 
-- (NSString *)colorNameAtIndex:(int)index{
-    NSString *key = [[colors allKeys] objectAtIndex:index];
-    return key;
-}
-
 - (void)selectColorAtIndex:(int)index{
-    NSString *key = [[colors allKeys] objectAtIndex:index];
-    UIColor *color = [colors objectForKey:key];
-    selectedColor = color;
+    selectedColor = [colors objectAtIndex:index];
 }
 
-- (int)selectedColorIndex{
-    for (int i = 0; i < [colors count]; i++) {
-        NSString *key = [[colors allKeys] objectAtIndex:i];
-        if ([selectedColor isEqual:[colors objectForKey:key]]) {
-            return i;
-        }
-    }
-    
-    return 0;
+- (int)selectedColorIndex{    
+    return [colors indexOfObject:selectedColor];
 }
 
 - (int)colorsCount{
