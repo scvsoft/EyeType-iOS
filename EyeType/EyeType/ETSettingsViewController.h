@@ -47,7 +47,7 @@
 
 @protocol ETSettingsViewControllerDelegate <NSObject>
 
-- (void)settings:(ETSettingsViewController *)control didSaveColor:(UIColor *)color delay:(float)delay;
+- (void)settingsDidSave:(ETSettingsViewController *) control;
 - (void)settingsWillClose;
 
 @end

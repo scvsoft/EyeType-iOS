@@ -38,6 +38,7 @@
 - (void)activateDetection;
 - (void)initializeMenus;
 - (void)resume;
+- (void)reload;
 @end
 
 @protocol ETMainViewModelDelegate <NSObject>
