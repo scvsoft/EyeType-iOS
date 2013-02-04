@@ -133,7 +133,7 @@
 		84A7AD3516BC4C4D004BA811 /* btn-light-green@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2D16BC4C4C004BA811 /* btn-light-green@2x.png */; };
 		84A7AD3616BC4C4D004BA811 /* btn-purple-b@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2E16BC4C4C004BA811 /* btn-purple-b@2x.png */; };
 		84A7AD3716BC4C4D004BA811 /* btn-purple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD2F16BC4C4C004BA811 /* btn-purple@2x.png */; };
-		84AB6B7016BC799400D6981F /* AWSiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AB6B6F16BC799400D6981F /* AWSiOSSDK.framework */; };
+		84AB6B7216BFF41B00D6981F /* AWSiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AB6B7116BFF41B00D6981F /* AWSiOSSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -297,7 +297,7 @@
 		84A7AD2D16BC4C4C004BA811 /* btn-light-green@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-green@2x.png"; sourceTree = "<group>"; };
 		84A7AD2E16BC4C4C004BA811 /* btn-purple-b@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-purple-b@2x.png"; sourceTree = "<group>"; };
 		84A7AD2F16BC4C4C004BA811 /* btn-purple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-purple@2x.png"; sourceTree = "<group>"; };
-		84AB6B6F16BC799400D6981F /* AWSiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSiOSSDK.framework; sourceTree = "<group>"; };
+		84AB6B7116BFF41B00D6981F /* AWSiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSiOSSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,7 +320,7 @@
 				21E6B8421656E9110085A121 /* UIKit.framework in Frameworks */,
 				21E6B8441656E9110085A121 /* Foundation.framework in Frameworks */,
 				21E6B8461656E9110085A121 /* CoreGraphics.framework in Frameworks */,
-				84AB6B7016BC799400D6981F /* AWSiOSSDK.framework in Frameworks */,
+				84AB6B7216BFF41B00D6981F /* AWSiOSSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +486,7 @@
 		21E6B8401656E9110085A121 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				84AB6B6F16BC799400D6981F /* AWSiOSSDK.framework */,
+				84AB6B7116BFF41B00D6981F /* AWSiOSSDK.framework */,
 				218E80A8165BDD3100F613CC /* CoreText.framework */,
 				21BC9CA21659A7BA008BB2CA /* AVFoundation.framework */,
 				21BC9CA31659A7BA008BB2CA /* CoreMedia.framework */,
