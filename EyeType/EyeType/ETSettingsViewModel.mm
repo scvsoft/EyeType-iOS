@@ -189,6 +189,8 @@
     NSData *myEncodedObject2 = [NSKeyedArchiver archivedDataWithRootObject:rectCancel];
     [defaults setObject:myEncodedObject2 forKey:@"areaCancel"];
     
+    [defaults setBool: YES forKey: @"ableToStart"];
+    
     [defaults synchronize];
     
     [self.delegate viewModelDidFinishSave];
