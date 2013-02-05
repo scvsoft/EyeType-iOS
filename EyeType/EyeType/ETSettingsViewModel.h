@@ -31,6 +31,7 @@
 - (void)save;
 - (bool)isActionAreaSet;
 - (bool)isEmailSet;
+- (bool)isValidEmail;
 - (void)selectColorAtIndex:(int)index;
 - (int)selectedColorIndex;
 - (int)colorsCount;

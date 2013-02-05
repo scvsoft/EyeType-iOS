@@ -63,7 +63,6 @@
 		21E6B87E1656EB2C0085A121 /* ETAlertViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B8751656EB2C0085A121 /* ETAlertViewController.mm */; };
 		21E6B87F1656EB2C0085A121 /* ETAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21E6B8761656EB2C0085A121 /* ETAlertViewController.xib */; };
 		21E6B8801656EB2C0085A121 /* ETAlertViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B8781656EB2C0085A121 /* ETAlertViewModel.mm */; };
-		21E6B8811656EB2C0085A121 /* ETEmailViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 21E6B87A1656EB2C0085A121 /* ETEmailViewController.mm */; };
 		21E6B8861656F1180085A121 /* ETMainViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21E6B8841656F1170085A121 /* ETMainViewController_iPhone.xib */; };
 		21E6B8871656F1180085A121 /* ETMainViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21E6B8851656F1180085A121 /* ETMainViewController_iPad.xib */; };
 		21E6B88F1656F1B30085A121 /* Cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 21E6B8891656F1B30085A121 /* Cancel.png */; };
@@ -120,6 +119,8 @@
 		5FFBEF8316A9B11200CDD0D9 /* done-pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFBEF8116A9B11200CDD0D9 /* done-pressed@2x.png */; };
 		841486D816B97EB70044D2EF /* ETEmailSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 841486D716B97EB70044D2EF /* ETEmailSender.m */; };
 		841486DB16B980050044D2EF /* AmazonClientManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 841486DA16B980040044D2EF /* AmazonClientManager.m */; };
+		84A3557616C04AAA001B4A33 /* ETAlertViewUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A3557516C04AAA001B4A33 /* ETAlertViewUtil.m */; };
+		84A3557916C13C37001B4A33 /* ETEmailViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84A3557816C13C37001B4A33 /* ETEmailViewController.mm */; };
 		84A7AD1F16BC3D7D004BA811 /* btn-green-b.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1716BC3D7D004BA811 /* btn-green-b.png */; };
 		84A7AD2016BC3D7D004BA811 /* btn-green.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1816BC3D7D004BA811 /* btn-green.png */; };
 		84A7AD2116BC3D7D004BA811 /* btn-light-blue-b.png in Resources */ = {isa = PBXBuildFile; fileRef = 84A7AD1916BC3D7D004BA811 /* btn-light-blue-b.png */; };
@@ -222,8 +223,6 @@
 		21E6B8751656EB2C0085A121 /* ETAlertViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETAlertViewController.mm; sourceTree = "<group>"; };
 		21E6B8761656EB2C0085A121 /* ETAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ETAlertViewController.xib; sourceTree = "<group>"; };
 		21E6B8781656EB2C0085A121 /* ETAlertViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETAlertViewModel.mm; sourceTree = "<group>"; };
-		21E6B8791656EB2C0085A121 /* ETEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETEmailViewController.h; sourceTree = "<group>"; };
-		21E6B87A1656EB2C0085A121 /* ETEmailViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETEmailViewController.mm; sourceTree = "<group>"; };
 		21E6B8821656EB890085A121 /* ETAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETAlertViewController.h; sourceTree = "<group>"; };
 		21E6B8831656EB890085A121 /* ETAlertViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETAlertViewModel.h; sourceTree = "<group>"; };
 		21E6B8841656F1170085A121 /* ETMainViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ETMainViewController_iPhone.xib; sourceTree = "<group>"; };
@@ -288,6 +287,10 @@
 		841486D716B97EB70044D2EF /* ETEmailSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETEmailSender.m; sourceTree = "<group>"; };
 		841486D916B980040044D2EF /* AmazonClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmazonClientManager.h; sourceTree = "<group>"; };
 		841486DA16B980040044D2EF /* AmazonClientManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AmazonClientManager.m; sourceTree = "<group>"; };
+		84A3557416C04AAA001B4A33 /* ETAlertViewUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETAlertViewUtil.h; sourceTree = "<group>"; };
+		84A3557516C04AAA001B4A33 /* ETAlertViewUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ETAlertViewUtil.m; sourceTree = "<group>"; };
+		84A3557716C13C36001B4A33 /* ETEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ETEmailViewController.h; sourceTree = "<group>"; };
+		84A3557816C13C37001B4A33 /* ETEmailViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ETEmailViewController.mm; sourceTree = "<group>"; };
 		84A7AD1716BC3D7D004BA811 /* btn-green-b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-green-b.png"; sourceTree = "<group>"; };
 		84A7AD1816BC3D7D004BA811 /* btn-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-green.png"; sourceTree = "<group>"; };
 		84A7AD1916BC3D7D004BA811 /* btn-light-blue-b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-light-blue-b.png"; sourceTree = "<group>"; };
@@ -408,12 +411,12 @@
 		2198C70816953F3B00AD6131 /* email */ = {
 			isa = PBXGroup;
 			children = (
+				84A3557716C13C36001B4A33 /* ETEmailViewController.h */,
+				84A3557816C13C37001B4A33 /* ETEmailViewController.mm */,
 				841486D916B980040044D2EF /* AmazonClientManager.h */,
 				841486DA16B980040044D2EF /* AmazonClientManager.m */,
 				841486D616B97EB70044D2EF /* ETEmailSender.h */,
 				841486D716B97EB70044D2EF /* ETEmailSender.m */,
-				21E6B8791656EB2C0085A121 /* ETEmailViewController.h */,
-				21E6B87A1656EB2C0085A121 /* ETEmailViewController.mm */,
 			);
 			name = email;
 			sourceTree = "<group>";
@@ -545,6 +548,7 @@
 		21E6B8671656EACF0085A121 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				84A3557316C049DE001B4A33 /* Misc */,
 				5FF9564416BFFE3D00F6A13D /* Notifications */,
 				2198C70A16953FD700AD6131 /* video source */,
 				2198C70916953F9F00AD6131 /* movement detector */,
@@ -656,6 +660,15 @@
 				5FF9564616BFFEAC00F6A13D /* ETNotificationView.m */,
 			);
 			name = Notifications;
+			sourceTree = "<group>";
+		};
+		84A3557316C049DE001B4A33 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				84A3557416C04AAA001B4A33 /* ETAlertViewUtil.h */,
+				84A3557516C04AAA001B4A33 /* ETAlertViewUtil.m */,
+			);
+			name = Misc;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -810,7 +823,6 @@
 				21E6B87D1656EB2C0085A121 /* ETVideoSourceViewModel.mm in Sources */,
 				21E6B87E1656EB2C0085A121 /* ETAlertViewController.mm in Sources */,
 				21E6B8801656EB2C0085A121 /* ETAlertViewModel.mm in Sources */,
-				21E6B8811656EB2C0085A121 /* ETEmailViewController.mm in Sources */,
 				21BC9CB51659B1A8008BB2CA /* ETSettingsViewModel.mm in Sources */,
 				21BC9CB61659B1B0008BB2CA /* ETSettingsViewController.mm in Sources */,
 				21BC9CB71659B1B6008BB2CA /* ETMainViewModel.mm in Sources */,
@@ -834,6 +846,8 @@
 				841486D816B97EB70044D2EF /* ETEmailSender.m in Sources */,
 				841486DB16B980050044D2EF /* AmazonClientManager.m in Sources */,
 				5FF9564716BFFEAC00F6A13D /* ETNotificationView.m in Sources */,
+				84A3557616C04AAA001B4A33 /* ETAlertViewUtil.m in Sources */,
+				84A3557916C13C37001B4A33 /* ETEmailViewController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
