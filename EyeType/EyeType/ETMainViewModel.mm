@@ -273,7 +273,7 @@
     [mainMenu.menu setObject:@"SPELL" forKey:@"SPELL"];
     [mainMenu.menu setObject:@"EMAIL" forKey:@"SEND EMAIL"];
     [mainMenu.menu setObject:@"CLEAR" forKey:@"CLEAR"];
-    [mainMenu.menu setObject:@"PAUSE" forKey:@"PAUSE"];
+    // [mainMenu.menu setObject:@"PAUSE" forKey:@"PAUSE"];
     
     [self.menus setObject:mainMenu forKey:@"MAIN"];
     [self.menus setObject:spellMenu forKey:@"SPELL"];
