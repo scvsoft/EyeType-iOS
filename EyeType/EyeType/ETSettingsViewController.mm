@@ -9,6 +9,7 @@
 #import "ETSettingsViewController.h"
 #import "GLESImageView.h"
 #import "ETAreaDetectionView.h"
+#import "ETAlertViewUtil.h"
 
 @interface ETSettingsViewController()
 @property (nonatomic, strong) GLESImageView *imageView;
@@ -191,6 +192,7 @@
 }
 
 - (IBAction)saveButtonAction:(id)sender {
+    [self.emailTextField resignFirstResponder];
     if ([self actionAreaIsSet] && [self emailIsSet]) {
         [self.model save];
     }
@@ -200,19 +202,23 @@
     if ([self.model isActionAreaSet]) {
         [self.model setInputModel:self.singleInputButton.selected ? ETInputModelTypeOneSource:ETInputModelTypeTwoSources];
         return YES;
-    } else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+    }
+    else {
+        [ETAlertViewUtil alertViewWithTitle: @"We found a problem" message:@"To continue set the action area"];
         return NO;
     }
 }
 
 - (BOOL) emailIsSet {
     if (![self.model isEmailSet]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set an email" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+        [ETAlertViewUtil alertViewWithTitle: @"We found a problem" message: @"To continue set an email"];
         return NO;
-    } else {
+    }
+    else if (![self.model isValidEmail]) {
+        [ETAlertViewUtil alertViewWithTitle: @"We found a problem" message: @"Please provide a valid email."];
+        return NO;
+    }
+    else {
         return YES;
     }
 }
@@ -239,9 +245,9 @@
 - (IBAction)exitButtonAction:(id)sender {
     if ([self.model isActionAreaSet]) {
         [self.delegate settingsWillClose];
-    } else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Settings incomplete" message:@"To continue set the action area" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+    }
+    else {
+        [ETAlertViewUtil alertViewWithTitle: @"Settings incomplete" message: @"To continue set the action area"];        
     }
 }
 
@@ -331,8 +337,7 @@
     } else {
         [self.videoSource stopRunning];
         NSString *area = [self.model configuredArea] == 0 ? @"OK" : @"CANCEL/BACK";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Action %@ configured", area] message:@"Are you ready to continue?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
-        [alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+        [ETAlertViewUtil alertViewWithTitle:[NSString stringWithFormat:@"Action %@ configured", area] message:@"Are you ready to continue?" withDelegate:self cancelButtonTitle:@"NO" otherButtonTitle:@"YES"];        
     }
 }
 
