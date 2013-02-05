@@ -142,6 +142,11 @@
     return self.email.length > 0;
 }
 
+- (bool) isValidEmail {
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern: @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}" options:NSRegularExpressionCaseInsensitive error:NULL];
+    return [regex numberOfMatchesInString: self.email options: 0 range: NSMakeRange(0, self.email.length)] > 0;
+}
+
 - (void)save{
     if (delay == NSNotFound) {
         [self setDelayTime:DEFAULT_DELAY];
