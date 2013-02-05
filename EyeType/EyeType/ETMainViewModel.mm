@@ -22,6 +22,7 @@
 @property (strong, nonatomic) NSMutableDictionary *contactsEmailList;
 @property (strong, nonatomic) NSString *selectedOption;
 @property (copy, nonatomic) NSString *email;
+@property (assign, nonatomic) BOOL ableToStart;
 
 @end
 
@@ -75,6 +76,11 @@
         NSData *colorData = [defaults objectForKey:@"textColor"];
         self.textColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
     }
+    
+    self.ableToStart = NO;
+    if ([defaults objectForKey: @"ableToStart"]) {
+        self.ableToStart = [defaults boolForKey: @"ableToStart"];
+    }
 }
 
 - (void)initializeMenus{
@@ -115,10 +121,7 @@
 }
 
 - (bool)isAbleToStart{
-    int WOK = [[ETBlinkDetector sharedInstance] areaOK].width;
-    int WCA = [[ETBlinkDetector sharedInstance] areaCancel].width;
-    bool result = ((WOK > 0 &&  WCA > 0) || (WOK > 0 && [[ETBlinkDetector sharedInstance] inputType] == ETInputModelTypeOneSource)) && (self.delayTime > 0  && self.delayTime != NSNotFound);
-    return  result;
+    return self.ableToStart;
 }
 
 - (void)executeCancelAction{

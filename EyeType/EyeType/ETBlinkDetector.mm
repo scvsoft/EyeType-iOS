@@ -12,6 +12,9 @@
 #define OPTIMUS_SIZE cv::Size(36,36)
 #define MAXIMUM_MOVEMENT 200
 #define DEFAULT_SENSITIVITY 2
+#define DEFAULT_AREA_OK cv::Rect(95,45,35,25)
+#define DEFAULT_AREA_CANCEL cv::Rect(135,45,35,25)
+#define DEFAULT_INPUT_MODEL_TYPE ETInputModelTypeTwoSources
 
 @interface ETBlinkDetector() {
     cv::Rect areaOK;
@@ -29,14 +32,14 @@
     self = [super init];
     if(self){
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        areaOK = cv::Rect(0,0,0,0);
+        areaOK = DEFAULT_AREA_OK;
         if([defaults objectForKey:@"areaOK"]){
             NSData *areaOKData = [defaults objectForKey:@"areaOK"];
             ETRect *aux = [NSKeyedUnarchiver unarchiveObjectWithData:areaOKData];
             areaOK = [aux rect];
         }
         
-        areaCancel = cv::Rect(0,0,0,0);
+        areaCancel = DEFAULT_AREA_CANCEL;
         if([defaults objectForKey:@"areaCancel"]){
             NSData *areaCancelData = [defaults objectForKey:@"areaCancel"];
             ETRect *aux = [NSKeyedUnarchiver unarchiveObjectWithData:areaCancelData];
@@ -53,7 +56,7 @@
             [self setSensitivitySectionCancel:[defaults integerForKey:@"sensitivitySectionCancel"]];
         }
         
-        self.inputType = (ETInputModelType)0;
+        self.inputType = DEFAULT_INPUT_MODEL_TYPE;
         if([defaults integerForKey:@"inputType"]){
             self.inputType = (ETInputModelType)[defaults integerForKey:@"inputType"];
         }
