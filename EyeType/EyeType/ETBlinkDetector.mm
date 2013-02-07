@@ -11,7 +11,7 @@
 
 #define OPTIMUS_SIZE cv::Size(36,36)
 #define MAXIMUM_MOVEMENT 200
-#define DEFAULT_SENSITIVITY 2
+#define DEFAULT_SENSITIVITY 3
 #define DEFAULT_AREA_OK cv::Rect(95,45,35,25)
 #define DEFAULT_AREA_CANCEL cv::Rect(135,45,35,25)
 #define DEFAULT_INPUT_MODEL_TYPE ETInputModelTypeTwoSources
