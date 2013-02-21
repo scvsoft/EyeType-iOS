@@ -106,7 +106,8 @@ enum AlertActionCode{
 - (void)nextValue{
     self.okButton.selected = NO;
     self.cancelButton.selected = NO;
-    [self.model performSelector:@selector(activateDetection) withObject:nil afterDelay:.3];
+
+    
     NSString *value = @"";
     if (!self.model.paused) {
         [self selectNextItem];
@@ -143,6 +144,7 @@ enum AlertActionCode{
 - (void)startTimer{
     if (![self.timer isValid] && [self.videoSource isRunning]) {
         float delay = self.model.delayTime;
+        [self.model performSelector:@selector(activateDetection) withObject:nil afterDelay: delay + .5];
         self.timer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(nextValue) userInfo:nil repeats:YES];
     }
 }
