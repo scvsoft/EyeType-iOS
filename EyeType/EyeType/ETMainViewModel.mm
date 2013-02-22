@@ -125,9 +125,11 @@
 }
 
 - (void)executeCancelAction{
-    self.ableToDetect = NO;
-    [self back];
-    [self.delegate viewModelDidDetectCancelAction:self];
+    if (self.ableToDetect) {
+        self.ableToDetect = NO;
+        [self back];
+        [self.delegate viewModelDidDetectCancelAction:self];
+    }
 }
 
 - (void)executeOKAction{
