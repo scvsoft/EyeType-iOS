@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>numbers</key>
+	<array>
+		<string>DELETE</string>
+		<string>SPC</string>
+		<string>1</string>
+		<string>2</string>
+		<string>3</string>
+		<string>4</string>
+		<string>5</string>
+		<string>6</string>
+		<string>7</string>
+		<string>8</string>
+		<string>9</string>
+		<string>0</string>
+	</array>
+	<key>letters</key>
+	<array>
+		<string>DELETE</string>
+		<string>SPC</string>
+		<string>E</string>
+		<string>T</string>
+		<string>A</string>
+		<string>O</string>
+		<string>I</string>
+		<string>N</string>
+		<string>S</string>
+		<string>R</string>
+		<string>H</string>
+		<string>L</string>
+		<string>D</string>
+		<string>C</string>
+		<string>U</string>
+		<string>M</string>
+		<string>F</string>
+		<string>P</string>
+		<string>G</string>
+		<string>W</string>
+		<string>Y</string>
+		<string>B</string>
+		<string>V</string>
+		<string>K</string>
+		<string>X</string>
+		<string>J</string>
+		<string>Q</string>
+		<string>Z</string>
+	</array>
+	<key>emailMenuKeys</key>
+	<array>
+		<string>SUBJECT</string>
+		<string>SELECT ADDRESS</string>
+		<string>SEND</string>
+		<string>CANCEL</string>
+	</array>
+	<key>emailMenuObjects</key>
+	<array>
+		<string>SPELL</string>
+		<string>CONTACTS</string>
+		<string>SEND</string>
+		<string>CANCEL</string>
+	</array>
+	<key>mainMenuKeys</key>
+	<array>
+		<string>SPELL</string>
+		<string>SEND EMAIL</string>
+		<string>CLEAR</string>
+	</array>
+	<key>mainMenuObjects</key>
+	<array>
+		<string>SPELL</string>
+		<string>EMAIL</string>
+		<string>CLEAR</string>
+	</array>
+</dict>
+</plist>

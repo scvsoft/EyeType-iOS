@@ -12,6 +12,15 @@
 #import "ETEmailSender.h"
 
 #define INTERVAL_FOR_PAUSE 1.5
+#define VALUES_FILENAME @"values.plist"
+#define NUMBERS_LIST @"numbers"
+#define LETTERS_LIST @"letters"
+#define EMAIL_MENU_KEYS @"emailMenuKeys"
+#define EMAIL_MENU_OBJECTS @"emailMenuObjects"
+#define MAIN_MENU_KEYS @"mainMenuKeys"
+#define MAIN_MENU_OBJECTS @"mainMenuObjects"
+#define BACK @"BACK"
+#define SPACE @"SPC"
 
 @interface ETMainViewModel()
 
@@ -238,9 +247,14 @@
 }
 
 - (void)loadMenus{
-    NSString *back = [[ETBlinkDetector sharedInstance] inputType] == ETInputModelTypeOneSource ? @"BACK":nil;
-    NSMutableArray *numbersList = [[NSMutableArray alloc] initWithObjects:@"DELETE",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"0", nil];
-    NSMutableArray *lettersList = [[NSMutableArray alloc] initWithObjects:@"DELETE",@"E",@"T",@"A",@"O",@"I",@"N",@"S",@"R",@"H",@"L",@"D",@"C",@"U",@"M",@"F",@"P",@"G",@"W",@"Y",@"B",@"V",@"K",@"X",@"J",@"Q",@"Z", nil];
+    NSString *back = [[ETBlinkDetector sharedInstance] inputType] == ETInputModelTypeOneSource ? BACK : nil;
+    
+    NSString *bundle = [[NSBundle mainBundle] bundlePath];
+    NSString *path = [bundle stringByAppendingPathComponent:VALUES_FILENAME];
+    NSDictionary *plistData = [NSDictionary dictionaryWithContentsOfFile:path];
+    
+    NSMutableArray *numbersList = [[NSMutableArray alloc] initWithArray:[plistData objectForKey:NUMBERS_LIST]];
+    NSMutableArray *lettersList = [[NSMutableArray alloc] initWithArray:[plistData objectForKey:LETTERS_LIST]];
     
     if (back != nil) {
         [numbersList insertObject:back atIndex:1];
@@ -253,7 +267,6 @@
     spellMenu.menuActionSelector = @selector(spellMenuAction);
     [spellMenu.menu setObject:lettersList forKey:@"LETTERS"];
     [spellMenu.menu setObject:numbersList forKey:@"NUMBERS"];
-    [spellMenu.menu setObject:@"SPACE" forKey:@"SPACE"];
     [spellMenu.menu setObject:@"DELETE" forKey:@"DELETE"];
     [spellMenu.menu setObject:back forKey:back];
     
@@ -263,19 +276,13 @@
     ETMenuValue *emailMenu = [[ETMenuValue alloc] init];
     emailMenu.title = @"Write a email";
     emailMenu.menuActionSelector = @selector(emailMenuAction);
-    [emailMenu.menu setObject:@"SPELL" forKey:@"SUBJECT"];
-    [emailMenu.menu setObject:@"CONTACTS" forKey:@"SELECT ADDRESS"];
-    [emailMenu.menu setObject:@"SEND" forKey:@"SEND"];
-    [emailMenu.menu setObject:@"CANCEL" forKey:@"CANCEL"];
+    emailMenu.menu = [OrderedDictionary dictionaryWithObjects:[plistData objectForKey:EMAIL_MENU_OBJECTS] forKeys:[plistData objectForKey:EMAIL_MENU_KEYS]];
     [emailMenu.menu setObject:back forKey:back];
     
     ETMenuValue *mainMenu = [[ETMenuValue alloc] init];
     mainMenu.title = @"Main Menu";
     mainMenu.menuActionSelector = @selector(mainMenuAction);
-    [mainMenu.menu setObject:@"SPELL" forKey:@"SPELL"];
-    [mainMenu.menu setObject:@"EMAIL" forKey:@"SEND EMAIL"];
-    [mainMenu.menu setObject:@"CLEAR" forKey:@"CLEAR"];
-    // [mainMenu.menu setObject:@"PAUSE" forKey:@"PAUSE"];
+    mainMenu.menu = [OrderedDictionary dictionaryWithObjects:[plistData objectForKey:MAIN_MENU_OBJECTS] forKeys:[plistData objectForKey:MAIN_MENU_KEYS]];
     
     [self.menus setObject:mainMenu forKey:@"MAIN"];
     [self.menus setObject:spellMenu forKey:@"SPELL"];
@@ -304,7 +311,7 @@
         [self.delegate ViewModelDidLoadNewMenu];
     } else if ([[self selectedOption] isEqualToString:@"CLEAR"]) {
         [self writeMessageAction:[self selectedOption]];
-    }else if([[self selectedOption] isEqualToString:@"BACK"]){
+    }else if([[self selectedOption] isEqualToString: BACK]){
         [self back];
     } else if ([[self selectedOption] isEqualToString:@"SEND EMAIL"]) {
         NSString *value = [menu.menu objectForKey:[self selectedOption]];
@@ -318,7 +325,7 @@
 
 - (void)emailMenuAction{
     ETMenuValue *menu = [self currentMenu];
-    if([[self selectedOption] isEqualToString:@"BACK"]){
+    if([[self selectedOption] isEqualToString: BACK]){
         [self back];
     } else if ([[self selectedOption] isEqualToString:@"SEND"]) {
         [self sendEmail];
@@ -343,12 +350,12 @@
     NSString *value = [self.delegate viewModelGetCurrentValue];
     if ([[self selectedOption] isEqualToString:@"LETTERS"] || [[self selectedOption] isEqualToString:@"NUMBERS"]) {
         [self writeMessageAction:value];
-    } else if([[self selectedOption] isEqualToString:@"BACK"]){
+    } else if([[self selectedOption] isEqualToString: BACK]){
         if (self.writingSubject) {
             [self setWritingSubject:NO];
         }
         [self back];
-    } else if ([[self selectedOption] isEqualToString:@"SPACE"]) {
+    } else if ([[self selectedOption] isEqualToString: SPACE]) {
         [self writeMessageAction:value];
     } else if ([[self selectedOption] isEqualToString:@"DELETE"]){
         [self writeMessageAction:value];
@@ -357,7 +364,7 @@
 
 - (void)contactsMenuAction{
     NSString *value = [self.delegate viewModelGetCurrentValue];
-    if([[self selectedOption] isEqualToString:@"BACK"]){
+    if([[self selectedOption] isEqualToString: BACK]){
         [self.delegate viewModel:self didSelectCharacter:@""];
         [self back];
     } else  if([value length] > 0){
@@ -365,7 +372,7 @@
             [self.selectedContacts removeLastObject];
             NSString *text = [self.selectedContacts componentsJoinedByString:@", "];
             [self.delegate viewModel:self didSelectCharacter:text];
-        } else if([value isEqualToString:@"BACK"]){
+        } else if([value isEqualToString: BACK]){
             [self back];
         } else if (![self.selectedContacts containsObject:value]) {
             [self.selectedContacts addObject:value];
@@ -385,9 +392,9 @@
     } else{
         text = self.message;
     }
-    if([value isEqualToString:@"SPACE"]){
+    if([value isEqualToString: SPACE]){
         text = [text stringByAppendingString:@" "];
-    }else if([value isEqualToString:@"BACK"]){
+    }else if([value isEqualToString: BACK]){
         [self back];
         return;
     }else if ([value isEqualToString:@"DELETE"]) {
@@ -422,7 +429,7 @@
     ETMenuValue *contactsMenu = [[ETMenuValue alloc] init];
     contactsMenu.title = @"Choose contacts";
     contactsMenu.menuActionSelector = @selector(contactsMenuAction);
-    [contactsMenu.menu setValue:@"BACK" forKey:@"BACK"];
+    [contactsMenu.menu setValue: BACK forKey: BACK];
     
     self.contactsEmailList = [[NSMutableDictionary alloc] init];
     
@@ -464,8 +471,8 @@
                 if ([emails count] > 0) {
                     NSString *email = [emails objectAtIndex:0];
                     if (names == nil) {
-                        names = [NSMutableArray arrayWithObjects:@"BACK",personName,nil];
-                        emailsList = [NSMutableArray arrayWithObjects:@"BACK",email,nil];
+                        names = [NSMutableArray arrayWithObjects: BACK,personName,nil];
+                        emailsList = [NSMutableArray arrayWithObjects: BACK,email,nil];
                     } else{
                         [names addObject:personName];
                         [emailsList addObject:email];
