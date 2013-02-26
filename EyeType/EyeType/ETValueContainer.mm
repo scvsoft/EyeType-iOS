@@ -16,6 +16,8 @@
 #define CONTAINER_MARGIN_TOP 30
 #define CONTAINER_MARGIN_SIDE 15
 #define SINGLE_VALUE_ITEM_WIDTH 44
+#define TEXT_SPACE @"SPACE"
+#define SPACE_OFFSET 30
 
 @interface ETValueContainer()
 
@@ -78,7 +80,7 @@
         self.currentX += SINGLE_VALUE_ITEM_WIDTH;
     }
     else {
-        self.currentX += itemView.frame.size.width;
+        self.currentX += itemView.frame.size.width + ([text isEqualToString: TEXT_SPACE] ? SPACE_OFFSET : 0);
     }
 }
 

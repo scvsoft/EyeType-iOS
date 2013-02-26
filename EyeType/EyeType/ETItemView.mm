@@ -76,7 +76,7 @@
     self.textLabel.frame = CGRectMake(12, 0, self.frame.size.width, self.frame.size.height);
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrowRed.png"]];
-    imageView.frame = CGRectMake(6, (estimatedSize.height / 2) - 10, imageView.frame.size.width, imageView.frame.size.height);
+    imageView.frame = CGRectMake(15, (estimatedSize.height / 2) - 8, imageView.frame.size.width, imageView.frame.size.height);
     
     [self addSubview:self.textLabel];
     [self addSubview:imageView];
