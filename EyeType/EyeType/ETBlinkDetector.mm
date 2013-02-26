@@ -32,6 +32,7 @@
     self = [super init];
     if(self){
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                
         areaOK = DEFAULT_AREA_OK;
         if([defaults objectForKey:@"areaOK"]){
             NSData *areaOKData = [defaults objectForKey:@"areaOK"];
@@ -57,9 +58,10 @@
         }
         
         self.inputType = DEFAULT_INPUT_MODEL_TYPE;
-        if([defaults integerForKey:@"inputType"]){
+        if([defaults objectForKey:@"inputType"]){
             self.inputType = (ETInputModelType)[defaults integerForKey:@"inputType"];
         }
+
     }
     
     return self;
