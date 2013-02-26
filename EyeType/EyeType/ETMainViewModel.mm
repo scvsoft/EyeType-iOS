@@ -12,6 +12,13 @@
 #import "ETEmailSender.h"
 
 #define INTERVAL_FOR_PAUSE 1.5
+#define VALUES_FILENAME @"values.plist"
+#define NUMBERS_LIST @"numbers"
+#define LETTERS_LIST @"letters"
+#define EMAIL_MENU_KEYS @"emailMenuKeys"
+#define EMAIL_MENU_OBJECTS @"emailMenuObjects"
+#define MAIN_MENU_KEYS @"mainMenuKeys"
+#define MAIN_MENU_OBJECTS @"mainMenuObjects"
 
 @interface ETMainViewModel()
 
@@ -239,8 +246,13 @@
 
 - (void)loadMenus{
     NSString *back = [[ETBlinkDetector sharedInstance] inputType] == ETInputModelTypeOneSource ? @"BACK":nil;
-    NSMutableArray *numbersList = [[NSMutableArray alloc] initWithObjects:@"DELETE",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"0", nil];
-    NSMutableArray *lettersList = [[NSMutableArray alloc] initWithObjects:@"DELETE",@"E",@"T",@"A",@"O",@"I",@"N",@"S",@"R",@"H",@"L",@"D",@"C",@"U",@"M",@"F",@"P",@"G",@"W",@"Y",@"B",@"V",@"K",@"X",@"J",@"Q",@"Z", nil];
+    
+    NSString *bundle = [[NSBundle mainBundle] bundlePath];
+    NSString *path = [bundle stringByAppendingPathComponent:VALUES_FILENAME];
+    NSDictionary *plistData = [NSDictionary dictionaryWithContentsOfFile:path];
+    
+    NSMutableArray *numbersList = [[NSMutableArray alloc] initWithArray:[plistData objectForKey:NUMBERS_LIST]];
+    NSMutableArray *lettersList = [[NSMutableArray alloc] initWithArray:[plistData objectForKey:LETTERS_LIST]];
     
     if (back != nil) {
         [numbersList insertObject:back atIndex:1];
@@ -253,7 +265,6 @@
     spellMenu.menuActionSelector = @selector(spellMenuAction);
     [spellMenu.menu setObject:lettersList forKey:@"LETTERS"];
     [spellMenu.menu setObject:numbersList forKey:@"NUMBERS"];
-    [spellMenu.menu setObject:@"SPACE" forKey:@"SPACE"];
     [spellMenu.menu setObject:@"DELETE" forKey:@"DELETE"];
     [spellMenu.menu setObject:back forKey:back];
     
@@ -263,19 +274,13 @@
     ETMenuValue *emailMenu = [[ETMenuValue alloc] init];
     emailMenu.title = @"Write a email";
     emailMenu.menuActionSelector = @selector(emailMenuAction);
-    [emailMenu.menu setObject:@"SPELL" forKey:@"SUBJECT"];
-    [emailMenu.menu setObject:@"CONTACTS" forKey:@"SELECT ADDRESS"];
-    [emailMenu.menu setObject:@"SEND" forKey:@"SEND"];
-    [emailMenu.menu setObject:@"CANCEL" forKey:@"CANCEL"];
+    emailMenu.menu = [OrderedDictionary dictionaryWithObjects:[plistData objectForKey:EMAIL_MENU_OBJECTS] forKeys:[plistData objectForKey:EMAIL_MENU_KEYS]];
     [emailMenu.menu setObject:back forKey:back];
     
     ETMenuValue *mainMenu = [[ETMenuValue alloc] init];
     mainMenu.title = @"Main Menu";
     mainMenu.menuActionSelector = @selector(mainMenuAction);
-    [mainMenu.menu setObject:@"SPELL" forKey:@"SPELL"];
-    [mainMenu.menu setObject:@"EMAIL" forKey:@"SEND EMAIL"];
-    [mainMenu.menu setObject:@"CLEAR" forKey:@"CLEAR"];
-    // [mainMenu.menu setObject:@"PAUSE" forKey:@"PAUSE"];
+    mainMenu.menu = [OrderedDictionary dictionaryWithObjects:[plistData objectForKey:MAIN_MENU_OBJECTS] forKeys:[plistData objectForKey:MAIN_MENU_KEYS]];
     
     [self.menus setObject:mainMenu forKey:@"MAIN"];
     [self.menus setObject:spellMenu forKey:@"SPELL"];
