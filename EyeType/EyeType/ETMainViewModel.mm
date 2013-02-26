@@ -20,7 +20,7 @@
 #define MAIN_MENU_KEYS @"mainMenuKeys"
 #define MAIN_MENU_OBJECTS @"mainMenuObjects"
 #define BACK @"BACK"
-#define SPACE @"SPC"
+#define SPACE @"SPACE"
 
 @interface ETMainViewModel()
 
