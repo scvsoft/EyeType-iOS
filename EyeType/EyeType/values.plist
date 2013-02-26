@@ -5,7 +5,7 @@
 	<key>numbers</key>
 	<array>
 		<string>DELETE</string>
-		<string>SPC</string>
+		<string>SPACE</string>
 		<string>1</string>
 		<string>2</string>
 		<string>3</string>
@@ -20,7 +20,7 @@
 	<key>letters</key>
 	<array>
 		<string>DELETE</string>
-		<string>SPC</string>
+		<string>SPACE</string>
 		<string>E</string>
 		<string>T</string>
 		<string>A</string>

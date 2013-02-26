@@ -810,8 +810,11 @@
 				84A7AD3716BC4C4D004BA811 /* btn-purple@2x.png in Resources */,
 				5FF9564A16C0212F00F6A13D /* 14.png in Resources */,
 				5FF9564B16C0212F00F6A13D /* 14@2x.png in Resources */,
+<<<<<<< HEAD
 				5F1BFF2116D6EA0B00538C88 /* iTunesArtwork in Resources */,
+=======
 				84EEA53416D7F19300E60D81 /* values.plist in Resources */,
+>>>>>>> 7bae5262cabe7a51b44ef6b76db401d5672ea66f
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
