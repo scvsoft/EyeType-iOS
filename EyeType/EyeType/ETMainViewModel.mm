@@ -19,6 +19,8 @@
 #define EMAIL_MENU_OBJECTS @"emailMenuObjects"
 #define MAIN_MENU_KEYS @"mainMenuKeys"
 #define MAIN_MENU_OBJECTS @"mainMenuObjects"
+#define BACK @"BACK"
+#define SPACE @"SPC"
 
 @interface ETMainViewModel()
 
@@ -245,7 +247,7 @@
 }
 
 - (void)loadMenus{
-    NSString *back = [[ETBlinkDetector sharedInstance] inputType] == ETInputModelTypeOneSource ? @"BACK":nil;
+    NSString *back = [[ETBlinkDetector sharedInstance] inputType] == ETInputModelTypeOneSource ? BACK : nil;
     
     NSString *bundle = [[NSBundle mainBundle] bundlePath];
     NSString *path = [bundle stringByAppendingPathComponent:VALUES_FILENAME];
@@ -309,7 +311,7 @@
         [self.delegate ViewModelDidLoadNewMenu];
     } else if ([[self selectedOption] isEqualToString:@"CLEAR"]) {
         [self writeMessageAction:[self selectedOption]];
-    }else if([[self selectedOption] isEqualToString:@"BACK"]){
+    }else if([[self selectedOption] isEqualToString: BACK]){
         [self back];
     } else if ([[self selectedOption] isEqualToString:@"SEND EMAIL"]) {
         NSString *value = [menu.menu objectForKey:[self selectedOption]];
@@ -323,7 +325,7 @@
 
 - (void)emailMenuAction{
     ETMenuValue *menu = [self currentMenu];
-    if([[self selectedOption] isEqualToString:@"BACK"]){
+    if([[self selectedOption] isEqualToString: BACK]){
         [self back];
     } else if ([[self selectedOption] isEqualToString:@"SEND"]) {
         [self sendEmail];
@@ -348,12 +350,12 @@
     NSString *value = [self.delegate viewModelGetCurrentValue];
     if ([[self selectedOption] isEqualToString:@"LETTERS"] || [[self selectedOption] isEqualToString:@"NUMBERS"]) {
         [self writeMessageAction:value];
-    } else if([[self selectedOption] isEqualToString:@"BACK"]){
+    } else if([[self selectedOption] isEqualToString: BACK]){
         if (self.writingSubject) {
             [self setWritingSubject:NO];
         }
         [self back];
-    } else if ([[self selectedOption] isEqualToString:@"SPACE"]) {
+    } else if ([[self selectedOption] isEqualToString: SPACE]) {
         [self writeMessageAction:value];
     } else if ([[self selectedOption] isEqualToString:@"DELETE"]){
         [self writeMessageAction:value];
@@ -362,7 +364,7 @@
 
 - (void)contactsMenuAction{
     NSString *value = [self.delegate viewModelGetCurrentValue];
-    if([[self selectedOption] isEqualToString:@"BACK"]){
+    if([[self selectedOption] isEqualToString: BACK]){
         [self.delegate viewModel:self didSelectCharacter:@""];
         [self back];
     } else  if([value length] > 0){
@@ -370,7 +372,7 @@
             [self.selectedContacts removeLastObject];
             NSString *text = [self.selectedContacts componentsJoinedByString:@", "];
             [self.delegate viewModel:self didSelectCharacter:text];
-        } else if([value isEqualToString:@"BACK"]){
+        } else if([value isEqualToString: BACK]){
             [self back];
         } else if (![self.selectedContacts containsObject:value]) {
             [self.selectedContacts addObject:value];
@@ -390,9 +392,9 @@
     } else{
         text = self.message;
     }
-    if([value isEqualToString:@"SPACE"]){
+    if([value isEqualToString: SPACE]){
         text = [text stringByAppendingString:@" "];
-    }else if([value isEqualToString:@"BACK"]){
+    }else if([value isEqualToString: BACK]){
         [self back];
         return;
     }else if ([value isEqualToString:@"DELETE"]) {
@@ -427,7 +429,7 @@
     ETMenuValue *contactsMenu = [[ETMenuValue alloc] init];
     contactsMenu.title = @"Choose contacts";
     contactsMenu.menuActionSelector = @selector(contactsMenuAction);
-    [contactsMenu.menu setValue:@"BACK" forKey:@"BACK"];
+    [contactsMenu.menu setValue: BACK forKey: BACK];
     
     self.contactsEmailList = [[NSMutableDictionary alloc] init];
     
@@ -469,8 +471,8 @@
                 if ([emails count] > 0) {
                     NSString *email = [emails objectAtIndex:0];
                     if (names == nil) {
-                        names = [NSMutableArray arrayWithObjects:@"BACK",personName,nil];
-                        emailsList = [NSMutableArray arrayWithObjects:@"BACK",email,nil];
+                        names = [NSMutableArray arrayWithObjects: BACK,personName,nil];
+                        emailsList = [NSMutableArray arrayWithObjects: BACK,email,nil];
                     } else{
                         [names addObject:personName];
                         [emailsList addObject:email];
