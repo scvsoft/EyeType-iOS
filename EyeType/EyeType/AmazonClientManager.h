@@ -17,9 +17,9 @@
 
 #import <AWSiOSSDK/SES/AmazonSESClient.h>
 
-#define ACCESS_KEY_ID                @"AKIAJ2PLQJWQCVBPQBPA"
-#define SECRET_KEY                   @"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"
-#define VERIFIED_EMAIL               @"eyetype@scvsoft.com"
+#define ACCESS_KEY_ID                @"AMAZON_KEY_ID"
+#define SECRET_KEY                   @"AMAZON_SECRET_KEY"
+#define VERIFIED_EMAIL               @"AMAZON_VERIFIED_EMAIL"
 
 @interface AmazonClientManager:NSObject {
 }
