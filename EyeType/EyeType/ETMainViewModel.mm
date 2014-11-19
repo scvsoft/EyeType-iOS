@@ -203,7 +203,7 @@
     for (NSString *name in self.selectedContacts) {
          NSString *firstLetter = [name substringToIndex:1];
          ETMenuValue *contactsMenu = [self.menus objectForKey:@"CONTACTS"];
-        int emailIndex = [[contactsMenu.menu objectForKey:firstLetter] indexOfObject:name];
+        NSUInteger emailIndex = [[contactsMenu.menu objectForKey:firstLetter] indexOfObject:name];
         NSMutableArray *emails = [self.contactsEmailList objectForKey:firstLetter];
         NSString *email = [emails objectAtIndex:emailIndex];
         [selected addObject:email];

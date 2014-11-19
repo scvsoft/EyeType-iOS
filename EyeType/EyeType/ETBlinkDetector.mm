@@ -20,7 +20,7 @@
     cv::Rect areaOK;
     cv::Rect areaCancel;
     cv::Mat previousImageOK, previousImageCancel, outputMat, processedImageOK, processedImageCancel;
-    int sensitivitySectionOK, sensitivitySectionCancel;
+    NSInteger sensitivitySectionOK, sensitivitySectionCancel;
 }
 
 @end
@@ -67,27 +67,27 @@
     return self;
 }
 
-- (void)setSensitivitySectionOK:(int)value{
+- (void)setSensitivitySectionOK:(NSInteger)value{
     //modified value to adapt to movement quantity
     sensitivitySectionOK = (5 - value) * 25;
 }
 
-- (int)sensitivitySectionOK{
+- (NSInteger)sensitivitySectionOK{
     //return the original value of sensitivity
     return 5 - (sensitivitySectionOK / 25);
 }
 
-- (void)setSensitivitySectionCancel:(int)value{
+- (void)setSensitivitySectionCancel:(NSInteger)value{
     //modified value to adapt to movement quantity
     sensitivitySectionCancel = (5 - value) * 25;
 }
 
-- (int)sensitivitySectionCancel{
+- (NSInteger)sensitivitySectionCancel{
     //return the original value of sensitivity
     return 5 - (sensitivitySectionCancel / 25);
 }
 
-+ (id)sharedInstance {
++ (instancetype)sharedInstance {
     static dispatch_once_t pred = 0;
     __strong static id _sharedObject = nil;
     dispatch_once(&pred, ^{
@@ -129,9 +129,9 @@
 }
 
 //This method is the responsible of detect the movement
-- (bool)detectActionInMat:(cv::Mat)matROI withSensitivity:(int)sensitivity{
+- (bool)detectActionInMat:(cv::Mat)matROI withSensitivity:(NSInteger)sensitivity{
     bool detectedMovement = NO;
-    int movementQuantity = 0;
+    NSInteger movementQuantity = 0;
 
     int cols = matROI.cols;
     int channels = matROI.channels();

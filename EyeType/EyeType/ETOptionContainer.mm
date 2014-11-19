@@ -18,6 +18,7 @@
 @end
 
 @implementation ETOptionContainer
+
 @synthesize currentX, currentY, currentViewTag, rowHeight, selectedItem, hasSeparator;
 
 - (id)init{

@@ -49,18 +49,24 @@ NSString *DescriptionForObject(NSObject *object, id locale, NSUInteger indent)
 
 - (id)init
 {
-	return [self initWithCapacity:0];
+    if ((self = [super init])) {
+        [self initializeWithCapacity:0];
+    }
+	return self;
 }
 
 - (id)initWithCapacity:(NSUInteger)capacity
 {
-	self = [super init];
-	if (self != nil)
-	{
-		dictionary = [[NSMutableDictionary alloc] initWithCapacity:capacity];
-		array = [[NSMutableArray alloc] initWithCapacity:capacity];
-	}
-	return self;
+    if ((self = [super init])) {
+        [self initializeWithCapacity:capacity];
+    }
+    return self;
+}
+
+- (void)initializeWithCapacity:(NSUInteger)capacity
+{
+    dictionary = [[NSMutableDictionary alloc] initWithCapacity:capacity];
+    array = [[NSMutableArray alloc] initWithCapacity:capacity];
 }
 
 - (id)copy

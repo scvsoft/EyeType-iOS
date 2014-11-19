@@ -98,7 +98,7 @@
 - (void) toggleCamera
 {
     currentCameraIndex++;
-    int camerasCount = [captureDevices count];
+    NSUInteger camerasCount = [captureDevices count];
     currentCameraIndex = currentCameraIndex % camerasCount;
     
     AVCaptureDevice *videoDevice = [captureDevices objectAtIndex:currentCameraIndex];
@@ -154,8 +154,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
     /*Get information about the image*/
     uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(imageBuffer);
-    size_t width = CVPixelBufferGetWidth(imageBuffer);
-    size_t height = CVPixelBufferGetHeight(imageBuffer);
+    int width = (int) CVPixelBufferGetWidth(imageBuffer);
+    int height = (int) CVPixelBufferGetHeight(imageBuffer);
     size_t stride = CVPixelBufferGetBytesPerRow(imageBuffer);
     
     cv::Mat frame(height, width, CV_8UC4, (void*)baseAddress, stride);

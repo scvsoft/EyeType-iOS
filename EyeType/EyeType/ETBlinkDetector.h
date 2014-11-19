@@ -15,7 +15,7 @@ enum ETInputModelType{
 
 @interface ETBlinkDetector : NSObject
 @property (nonatomic,assign) ETInputModelType inputType;
-+ (id)sharedInstance;
++ (instancetype)sharedInstance;
 
 - (bool)detectActionInAreaOK;
 - (bool)detectActionInAreaCancel;
@@ -27,9 +27,9 @@ enum ETInputModelType{
 - (cv::Mat)matOK;
 - (cv::Mat)matCancel;
 - (void)resetData;
-- (void)setSensitivitySectionOK:(int)value;
-- (int)sensitivitySectionOK;
-- (void)setSensitivitySectionCancel:(int)value;
-- (int)sensitivitySectionCancel;
+- (void)setSensitivitySectionOK:(NSInteger)value;
+- (NSInteger)sensitivitySectionOK;
+- (void)setSensitivitySectionCancel:(NSInteger)value;
+- (NSInteger)sensitivitySectionCancel;
 
 @end

@@ -18,7 +18,7 @@
 @interface ETSettingsViewModel(){
     cv::Mat outputMat;
     cv::Rect areaOK, areaCancel;
-    int sensitivitySectionOK, sensitivitySectionCancel;
+    NSInteger sensitivitySectionOK, sensitivitySectionCancel;
     float delay;
     UIColor *selectedColor;
     int configuringArea, lastConfiguredArea;
@@ -99,15 +99,15 @@
 }
 
 - (void)setDelayTime:(float)value{
-    int aux = (NSUInteger)(value + .5);
+    int aux = (int)(value + .5);
     delay = aux * .25;
 }
 
-- (int)sensitivitySectionOK{
+- (NSInteger)sensitivitySectionOK{
     return sensitivitySectionOK;
 }
 
-- (int)sensitivitySectionCancel{
+- (NSInteger)sensitivitySectionCancel{
     return sensitivitySectionCancel;
 }
 
@@ -196,15 +196,15 @@
     [self.delegate viewModelDidFinishSave];
 }
 
-- (void)selectColorAtIndex:(int)index{
+- (void)selectColorAtIndex:(NSUInteger)index{
     selectedColor = [colors objectAtIndex:index];
 }
 
-- (int)selectedColorIndex{    
+- (NSUInteger)selectedColorIndex{
     return [colors indexOfObject:selectedColor];
 }
 
-- (int)colorsCount{
+- (NSUInteger)colorsCount{
     return [colors count];
 }
 

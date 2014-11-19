@@ -8,10 +8,11 @@
 
 #import "ETItemView.h"
 
-@interface ETOptionContainer : UIView<NSCopying> 
+@interface ETOptionContainer : UIView<NSCopying>
+
 @property(nonatomic, assign) int currentX;
 @property(nonatomic, assign) int currentY;
-@property(nonatomic, assign) int currentViewTag;
+@property(nonatomic, assign) NSInteger currentViewTag;
 @property(nonatomic, assign) int currentRow;
 @property (nonatomic, strong) NSMutableArray *items;
 

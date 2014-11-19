@@ -38,7 +38,7 @@
     [currentContainer menuOff];
 
     CGFloat currentHeigth = CONTAINER_MARGIN_TOP;
-    int lastTag = FIRST_CONTAINER_TAG;
+    NSInteger lastTag = FIRST_CONTAINER_TAG;
     for (ETOptionContainer* optionContainer in self.containers) {
         currentHeigth += [optionContainer containerHeight];
         lastTag = optionContainer.tag;

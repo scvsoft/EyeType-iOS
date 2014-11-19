@@ -28,10 +28,10 @@
 -(id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if (self) {
-        int x = [aDecoder decodeInt64ForKey:@"x"];
-        int y = [aDecoder decodeInt64ForKey:@"y"];
-        int w = [aDecoder decodeInt64ForKey:@"w"];
-        int h = [aDecoder decodeInt64ForKey:@"h"];
+        int x = (int) [aDecoder decodeInt64ForKey:@"x"];
+        int y = (int) [aDecoder decodeInt64ForKey:@"y"];
+        int w = (int) [aDecoder decodeInt64ForKey:@"w"];
+        int h = (int) [aDecoder decodeInt64ForKey:@"h"];
         area = cv::Rect(cv::Point(x,y),cv::Size(w,h));
     }
     return self;

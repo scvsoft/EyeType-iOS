@@ -21,8 +21,8 @@
 - (void)configureDefaultValues;
 
 - (float)delayTime;
-- (int)sensitivitySectionOK;
-- (int)sensitivitySectionCancel;
+- (NSInteger)sensitivitySectionOK;
+- (NSInteger)sensitivitySectionCancel;
 
 - (void)setDelayTime:(float)delay;
 - (void)setSensitivitySectionOK:(float)value;
@@ -32,9 +32,9 @@
 - (bool)isActionAreaSet;
 - (bool)isEmailSet;
 - (bool)isValidEmail;
-- (void)selectColorAtIndex:(int)index;
-- (int)selectedColorIndex;
-- (int)colorsCount;
+- (void)selectColorAtIndex:(NSUInteger)index;
+- (NSUInteger)selectedColorIndex;
+- (NSUInteger)colorsCount;
 - (UIColor *)selectedColor;
 - (void)setInputModel:(ETInputModelType)inputType;
 - (cv::Rect)areaOK;
