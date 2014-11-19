@@ -15,7 +15,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <AWSiOSSDK/SES/AmazonSESClient.h>
+#import <AWSiOSSDKv2/AWSSES.h>
 
 #define ACCESS_KEY_ID                @"AMAZON_KEY_ID"
 #define SECRET_KEY                   @"AMAZON_SECRET_KEY"
@@ -24,7 +24,7 @@
 @interface AmazonClientManager:NSObject {
 }
 
-+(AmazonSESClient *)ses;
++(AWSSES *)ses;
 
 +(bool)hasCredentials;
 +(void)validateCredentials;

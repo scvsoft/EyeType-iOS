@@ -14,14 +14,15 @@
  */
 
 #import "AmazonClientManager.h"
-#import <AWSiOSSDK/AmazonLogger.h>
+#import <AWSService.h>
+#import <AWSLogging.h>
 
-static AmazonSESClient *ses  = nil;
+static AWSSES *ses  = nil;
 
 @implementation AmazonClientManager
 
 
-+(AmazonSESClient *)ses {
++(AWSSES *)ses {
     [AmazonClientManager validateCredentials];
     return ses;
 }
@@ -34,7 +35,9 @@ static AmazonSESClient *ses  = nil;
     if (ses == nil) {
         [AmazonClientManager clearCredentials];
 
-        ses = [[AmazonSESClient alloc] initWithAccessKey:ACCESS_KEY_ID withSecretKey:SECRET_KEY];
+        AWSStaticCredentialsProvider *credentialsProvider = [AWSStaticCredentialsProvider credentialsWithAccessKey:ACCESS_KEY_ID secretKey:SECRET_KEY];
+        AWSServiceConfiguration *config = [AWSServiceConfiguration configurationWithRegion:AWSRegionUnknown credentialsProvider:credentialsProvider];
+        ses = [[AWSSES alloc] initWithConfiguration:config];
     }
 }
 

@@ -15,6 +15,7 @@
 
 #import "ETEmailSender.h"
 #import "AmazonClientManager.h"
+#import <BFTask.h>
 
 @implementation ETEmailSender
 
@@ -24,42 +25,44 @@
  */
 +(BOOL)sendEmailTo:(NSArray *)recipients replyTo:(NSString *)replyTo subject:(NSString *)subject body:(NSString *)body {
 
-    SESContent *subjectText = [[SESContent alloc] init];
+    AWSSESContent *subjectText = [[AWSSESContent alloc] init];
     subjectText.data = subject;
 
-    SESContent *messageBody = [[SESContent alloc] init];
+    AWSSESContent *messageBody = [[AWSSESContent alloc] init];
     messageBody.data = body;
     
-    SESBody *bodyText = [[SESBody alloc] init];
+    AWSSESBody *bodyText = [[AWSSESBody alloc] init];
     bodyText.text = messageBody;
     
-    SESMessage *message = [[SESMessage alloc] init];
+    AWSSESMessage *message = [[AWSSESMessage alloc] init];
     message.subject = subjectText;
     message.body = bodyText;
     
-    SESDestination *destination = [[SESDestination alloc] init];
+    AWSSESDestination *destination = [[AWSSESDestination alloc] init];
+    NSMutableArray *toAddresses = [NSMutableArray array];
     for (NSString *recipient in recipients) {
-        [destination.toAddresses addObject:recipient];
+        [toAddresses addObject:recipient];
     }
+    destination.toAddresses = toAddresses;
 
     NSMutableArray *replyToAdresses = [NSMutableArray arrayWithObjects: (replyTo.length > 0) ? replyTo : VERIFIED_EMAIL, nil];
     
-    SESSendEmailRequest *ser = [[SESSendEmailRequest alloc] init];
+    AWSSESSendEmailRequest *ser = [[AWSSESSendEmailRequest alloc] init];
     ser.source = VERIFIED_EMAIL;
     ser.destination = destination;
     ser.replyToAddresses = replyToAdresses;
     ser.message = message;
     
-    SESSendEmailResponse *response = [[AmazonClientManager ses] sendEmail:ser];
-    if(response.error != nil) {
-        NSLog(@"Error: %@", response.error);
+    BFTask *task = [[AmazonClientManager ses] sendEmail:ser];
+    [task waitUntilFinished];
+    AWSSESSendEmailResponse *response = task.result;
+    if (task.error != nil) {
+        NSLog(@"Error: %@", task.error);
         return NO;
     }
     
     NSLog(@"Message sent, id %@", response.messageId);
     return YES;
 }
-
-
 
 @end
