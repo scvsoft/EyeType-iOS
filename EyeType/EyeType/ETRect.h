@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <opencv2/opencv.hpp>
 
 @interface ETRect : NSObject
 

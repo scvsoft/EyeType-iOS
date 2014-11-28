@@ -7,6 +7,7 @@
 //
 
 #import "ETMovementDetectorDualArea.h"
+#import "ETBlinkDetector.h"
 
 @implementation ETMovementDetectorDualArea
 

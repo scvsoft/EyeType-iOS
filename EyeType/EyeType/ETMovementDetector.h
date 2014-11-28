@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 scvsoft. All rights reserved.
 //
 
+#import "ETBlinkDetector.h"
+
 @protocol ETMovementDetectorDelegate;
 
 enum ETMovementSection{

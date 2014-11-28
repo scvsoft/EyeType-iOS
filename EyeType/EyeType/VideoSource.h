@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreMedia/CoreMedia.h>
 #import <AVFoundation/AVFoundation.h>
+#import <opencv2/opencv.hpp>
 
 @protocol VideoSourceDelegate <NSObject>
 

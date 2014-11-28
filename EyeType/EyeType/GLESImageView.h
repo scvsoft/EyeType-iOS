@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <opencv2/opencv.hpp>
 
 @interface GLESImageView : UIView
 
