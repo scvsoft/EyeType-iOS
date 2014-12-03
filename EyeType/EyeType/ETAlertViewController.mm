@@ -17,12 +17,12 @@
 @end
 
 @implementation ETAlertViewController
+@dynamic model;
 @synthesize delegate,
             messageLabel,
             OKButton,
             CancelButton,
             message,
-            model,
             actionCode;
 
 

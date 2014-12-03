@@ -28,7 +28,7 @@ enum AlertActionCode{
 @synthesize timer;
 @synthesize settings;
 @synthesize alert;
-@synthesize model;
+@dynamic model;
 @synthesize optionsContainers;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{

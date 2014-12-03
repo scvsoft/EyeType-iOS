@@ -9,24 +9,29 @@
 #import <Foundation/Foundation.h>
 #import <CoreMedia/CoreMedia.h>
 #import <AVFoundation/AVFoundation.h>
+
+#ifdef __cplusplus
 #import <opencv2/opencv.hpp>
+#endif
 
 @protocol VideoSourceDelegate <NSObject>
 
+#ifdef __cplusplus
 - (void)frameCaptured:(cv::Mat) frame;
+#endif
 
 @end
 
 @interface VideoSource : NSObject<AVCaptureVideoDataOutputSampleBufferDelegate>
 
-enum videoQuality{
-    videoQualityLow,
-    videoQualityMedium,
-    videoQualityHigh
+typedef NS_ENUM(NSInteger, VideoQuality) {
+    VideoQualityLow,
+    VideoQualityMedium,
+    VideoQualityHigh
 };
 
 @property id<VideoSourceDelegate> delegate;
-@property (nonatomic,assign) videoQuality quality;
+@property (nonatomic,assign) VideoQuality quality;
 - (AVCaptureVideoOrientation) videoOrientation;
 - (bool) hasMultipleCameras;
 - (void) toggleCamera;

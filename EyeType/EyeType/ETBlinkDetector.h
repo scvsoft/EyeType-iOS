@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <opencv2/opencv.hpp>
 
-enum ETInputModelType{
+#ifdef __cplusplus
+#import <opencv2/opencv.hpp>
+#endif
+
+typedef NS_ENUM(NSInteger, ETInputModelType) {
     ETInputModelTypeOneSource,
     ETInputModelTypeTwoSources
 };
@@ -20,6 +23,8 @@ enum ETInputModelType{
 
 - (bool)detectActionInAreaOK;
 - (bool)detectActionInAreaCancel;
+
+#ifdef __cplusplus
 - (void)prepareMatrixForAnalysis:(const cv::Mat&)inputImage;
 - (void)setAreaOK:(cv::Rect)area;
 - (void)setAreaCancel:(cv::Rect)area;
@@ -27,6 +32,8 @@ enum ETInputModelType{
 - (cv::Rect)areaCancel;
 - (cv::Mat)matOK;
 - (cv::Mat)matCancel;
+#endif
+
 - (void)resetData;
 - (void)setSensitivitySectionOK:(NSInteger)value;
 - (NSInteger)sensitivitySectionOK;

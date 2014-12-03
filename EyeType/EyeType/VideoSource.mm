@@ -26,11 +26,11 @@
 @synthesize quality;
 
 - (void)setVideoQuality{
-    if (quality == videoQualityLow) {
+    if (quality == VideoQualityLow) {
         [session setSessionPreset:AVCaptureSessionPresetLow];
-    } else if (quality == videoQualityMedium) {
+    } else if (quality == VideoQualityMedium) {
         [session setSessionPreset:AVCaptureSessionPresetMedium];
-    } else if (quality == videoQualityHigh) {
+    } else if (quality == VideoQualityHigh) {
         [session setSessionPreset:AVCaptureSessionPresetHigh];
     }
 }

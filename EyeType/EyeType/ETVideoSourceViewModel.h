@@ -14,7 +14,10 @@
 
 @property(nonatomic,strong) ETMovementDetector* movementDetector;
 
+#ifdef __cplusplus
 - (cv::Mat)processFrame:(cv::Mat)frame;
+#endif
+
 - (void)executeOKAction;
 - (void)executeCancelAction;
 - (void)configureMovementDetector;

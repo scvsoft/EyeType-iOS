@@ -15,7 +15,8 @@
 @end
 
 @implementation ETVideoSourceViewController
-@dynamic model;
+
+@synthesize model = _model;
 
 - (void)viewDidLoad
 {
